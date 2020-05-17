@@ -1,5 +1,7 @@
 # Teammates Manager Frontend
 
+[![Build Status](https://travis-ci.com/stefff94/teammates-manager-frontend.svg?branch=master)](https://travis-ci.com/stefff94/teammates-manager-frontend)
+
 ## Project setup
 ```
 npm install
