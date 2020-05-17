@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/stefff94/teammates-manager-frontend.svg?branch=master)](https://travis-ci.com/stefff94/teammates-manager-frontend)
 
+[![Coverage Status](https://coveralls.io/repos/github/stefff94/teammates-manager-frontend/badge.svg?branch=master)](https://coveralls.io/github/stefff94/teammates-manager-frontend?branch=master)
+
 ## Project setup
 ```
 npm install
