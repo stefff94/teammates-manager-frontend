@@ -6,5 +6,5 @@ Given(`I visit the app root page`, () => {
 });
 
 Then(`I see it contains the welcome message`, () => {
-    cy.contains("h1", "Welcome to Your Vue.js App");
+    cy.contains("h1", "Welcome to Teammates App");
 });

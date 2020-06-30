@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class="ui center aligned icon header">
+      <i class="circular users icon"></i>
+    </h1>
+    <HelloWorld msg="Welcome to Teammates App"/>
   </div>
 </template>
 
