@@ -16,22 +16,35 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/node": "^14.0.9",
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.3.0",
-    "@vue/cli-plugin-e2e-cypress": "~4.3.0",
-    "@vue/cli-plugin-eslint": "~4.3.0",
-    "@vue/cli-plugin-unit-jest": "~4.3.0",
-    "@vue/cli-service": "~4.3.0",
-    "@vue/test-utils": "1.0.0-beta.31",
-    "babel-eslint": "^10.1.0",
-    "cypress-cucumber-preprocessor": "^2.3.1",
+    "@cypress/browserify-preprocessor": "^3.0.0",
+    "@cypress/webpack-preprocessor": "^5.4.1",
+    "@types/jest": "^24.0.19",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-typescript": "~4.4.0",
+    "@vue/cli-plugin-unit-jest": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "^1.0.3",
     "coveralls": "^3.1.0",
+    "cypress-cucumber-preprocessor": "^2.3.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "ts-loader": "^7.0.5",
+    "tsify": "^4.0.1",
+    "typescript": "~3.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
@@ -51,10 +64,11 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript/recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "ecmaVersion": 2020
     },
     "rules": {},
     "overrides": [
@@ -76,7 +90,7 @@
     "not dead"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest",
+    "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
     "testMatch": [
       "**/tests/unit/**/*.spec.[jt]s?(x)",
       "**/__tests__/*.[jt]s?(x)",
