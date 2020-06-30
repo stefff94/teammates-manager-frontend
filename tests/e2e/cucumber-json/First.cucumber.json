@@ -23,7 +23,7 @@
             "name": "I visit the app root page",
             "result": {
               "status": "passed",
-              "duration": 390000000
+              "duration": 369000000
             }
           },
           {
@@ -33,7 +33,7 @@
             "name": "I see it contains the welcome message",
             "result": {
               "status": "passed",
-              "duration": 37000000
+              "duration": 26000000
             }
           }
         ]

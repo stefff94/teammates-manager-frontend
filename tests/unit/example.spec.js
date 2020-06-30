@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
 import HelloWorld from '@/components/HelloWorld.vue'
 
-let wrapper: any = null;
-const msg: string = "new message";
+let wrapper = null;
+const msg = "new message";
 
 beforeEach(() => {
   wrapper = shallowMount(HelloWorld, {
