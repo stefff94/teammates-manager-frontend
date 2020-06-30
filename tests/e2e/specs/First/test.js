@@ -5,6 +5,6 @@ Given(`I visit the app root page`, () => {
     cy.visit("/");
 });
 
-Then(`I see it contains the welcome message`, () => {
-    cy.contains("h1", "Welcome to Your Vue.js App");
+Then(`I see it contains the divider`, () => {
+    cy.get("div.ui.divider").should("exist")
 });
