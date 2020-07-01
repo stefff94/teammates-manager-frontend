@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner text-left">
                 <card-front :data="person.personalData"></card-front>
                 <card-back
                         :skills="person.skills"

@@ -5,7 +5,7 @@
                 <i class="right floated large x icon delete"></i>
                 <div class="header text-center">Skills</div>
                 <div class="description mt30">
-                    <div class="ui bulletted list">
+                    <div class="ui bulleted list">
                         <div class="item"
                              v-for="skill in skills"
                              v-bind:key="skill.id">

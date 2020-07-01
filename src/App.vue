@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="m20" style="width: 70%; margin: auto!important;">
 
     <div class="ui divider"></div>
 

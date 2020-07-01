@@ -27,7 +27,7 @@ describe("Card.vue", () => {
 
     it("renders the flip card", () => {
         expect(wrapper
-            .find(".flip-card .flip-card-inner")
+            .find(".flip-card .flip-card-inner.text-left")
             .exists())
             .toBeTruthy();
     });

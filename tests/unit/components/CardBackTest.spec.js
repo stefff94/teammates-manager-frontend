@@ -56,7 +56,7 @@ describe("CardBack.vue", () => {
 
    it("renders the items", () => {
        const items = wrapper
-           .findAll(".description .ui.bulletted.list .item");
+           .findAll(".description .ui.bulleted.list .item");
 
        expect(items.length)
            .toBe(wrapper.vm.skills.length);

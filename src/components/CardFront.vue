@@ -2,8 +2,8 @@
     <div class="flip-card-front">
         <div class="ui card">
             <div class="content">
-                <div class="left floated mini ui image rounded"
-                     :src="data.photoUrl"></div>
+                <img class="left floated mini ui image rounded"
+                     :src="data.photoUrl">
                 <div class="header">{{ data.name }}</div>
                 <div class="meta">{{ data.role }}</div>
                 <div class="description mt35">
@@ -28,7 +28,11 @@
         name: "CardFront",
         props: {
             data: {
-                type: Object
+                photoUrl: String,
+                name: String,
+                role: String,
+                email: String,
+                city: String
             }
         }
     }
