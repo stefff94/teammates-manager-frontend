@@ -3,7 +3,9 @@
         <div class="flip-card">
             <div class="flip-card-inner">
                 <card-front :data="person.personalData"></card-front>
-                <card-back :skills="person.skills" :id="person.id"></card-back>
+                <card-back
+                        :skills="person.skills"
+                        :id="person.id"></card-back>
             </div>
         </div>
     </transition>

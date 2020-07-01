@@ -33,21 +33,27 @@ describe("Card.vue", () => {
     });
 
     it("renders the card front", () => {
-        expect(wrapper.findComponent(CardFront).exists())
+        const cardFrontComponent =
+            wrapper.findComponent(CardFront);
+
+        expect(cardFrontComponent.exists())
             .toBeTruthy();
 
-        expect(wrapper.findComponent(CardFront).props("data"))
+        expect(cardFrontComponent.props("data"))
             .toBe(wrapper.vm.person.personalData);
     });
 
     it("renders the card back", () => {
-        expect(wrapper.findComponent(CardBack).exists())
+        const cardBackComponent =
+            wrapper.findComponent(CardBack);
+        
+        expect(cardBackComponent.exists())
             .toBeTruthy();
 
-        expect(wrapper.findComponent(CardBack).props("skills"))
+        expect(cardBackComponent.props("skills"))
             .toBe(wrapper.vm.person.skills);
 
-        expect(wrapper.findComponent(CardBack).props("id"))
+        expect(cardBackComponent.props("id"))
             .toBe(wrapper.vm.person.id);
     });
 
