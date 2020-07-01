@@ -11,7 +11,8 @@ beforeEach(() => {
                 { id: "2", name: "Spring Boot" },
                 { id: "3", name: "Javascript" },
                 { id: "4", name: "Vue js" }
-            ]
+            ],
+            id: 1
         }
     });
 });
@@ -65,5 +66,19 @@ describe("CardBack.vue", () => {
                .toContain(skill.text())
        );
    });
+
+});
+
+describe("The delete icon button is clicked", () => {
+
+    beforeEach(() => {
+        wrapper.find(".content .icon.delete")
+            .trigger("click");
+    });
+
+    it("emit the corresponding event", () => {
+        expect(wrapper.emitted().delete[0])
+            .toEqual([wrapper.vm.id]);
+    });
 
 });
