@@ -2,7 +2,8 @@
     <div class="flip-card-back">
         <div class="ui card">
             <div class="content">
-                <i class="right floated large x icon delete"></i>
+                <i class="right floated large x icon delete"
+                   @click="deleteTeammate"></i>
                 <div class="header text-center">Skills</div>
                 <div class="description mt30">
                     <div class="ui bulletted list">
@@ -25,6 +26,14 @@
         props: {
             skills: {
                 type: Array
+            },
+            id: {
+                type: Number
+            }
+        },
+        methods: {
+            deleteTeammate() {
+                this.$emit("delete", this.id);
             }
         }
     }
