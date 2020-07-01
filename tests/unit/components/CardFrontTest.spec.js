@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import CardFront from "../../src/components/CardFront";
+import CardFront from "../../../src/components/CardFront";
 
 let wrapper = null;
 
