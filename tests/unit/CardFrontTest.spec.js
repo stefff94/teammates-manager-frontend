@@ -80,7 +80,7 @@ describe("CardFront.vue", () => {
             .toBeTruthy();
 
         expect(items.at(1)
-            .find("content").text())
+            .find(".content").text())
             .toMatch(wrapper.vm.data.city);
     });
 
