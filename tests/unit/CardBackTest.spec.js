@@ -37,7 +37,7 @@ describe("CardBack.vue", () => {
    });
 
    it("renders the header", () => {
-       const header = wrapper.find(".content . header.text-center");
+       const header = wrapper.find(".content .header.text-center");
 
        expect(header.exists())
            .toBeTruthy();
@@ -59,6 +59,11 @@ describe("CardBack.vue", () => {
 
        expect(items.length)
            .toBe(wrapper.vm.skills.length);
+
+       items.wrappers.forEach(skill =>
+           expect(wrapper.vm.skills.map(s => s.name))
+               .toContain(skill.text())
+       );
    });
 
 });
