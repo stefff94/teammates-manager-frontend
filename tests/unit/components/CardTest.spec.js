@@ -11,9 +11,20 @@ beforeEach(() => {
     wrapper = shallowMount(Card, {
         propsData: {
             person: {
-                personalData: {},
-                skills: [],
-                id: 1
+                id: 1,
+                personalData: {
+                    photoUrl: "/images/avatar/large/steve.jpg",
+                    name: "Stefano Vannucchi",
+                    role: "Student",
+                    email: "stefano.vannucchi@stud.unifi.it",
+                    city: "Prato"
+                },
+                skills: [
+                    { id: "1", name: "Java" },
+                    { id: "2", name: "Spring Boot" },
+                    { id: "3", name: "Javascript" },
+                    { id: "4", name: "Vue js" }
+                ]
             }
         }
     });
