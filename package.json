@@ -86,6 +86,9 @@
       "**/__tests__/*.[jt]s?(x)",
       "**/tests/it/**/*.spec.[jt]s?(x)"
     ],
-    "collectCoverage": true
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/src/**/*.vue"
+    ]
   }
 }

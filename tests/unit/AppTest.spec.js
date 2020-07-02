@@ -1,9 +1,12 @@
 import { shallowMount } from '@vue/test-utils'
 import App from "../../src/App";
 import Card from "../../src/components/Card";
+import ApiService from "../../src/services/api.service";
 
 let wrapper = null;
 let teammates = [];
+
+jest.mock("../../src/services/api.service");
 
 beforeEach(() => {
 
@@ -94,6 +97,25 @@ describe("App.vue", () => {
             expect(wrapper.vm.teammates)
                 .toContain(card.props("person"));
         });
+    });
+
+});
+
+describe("The teammates are loaded and the view is updated", () => {
+
+    beforeEach(() => {
+        wrapper.vm.teammates = [];
+    });
+
+    it("renders the teammates", async () => {
+        const resp = { data: teammates };
+        ApiService.getAllTeammates.mockImplementation(() =>
+            Promise.resolve(resp));
+
+        await wrapper.vm.getTeammatesAndUpdateView();
+
+        expect(wrapper.vm.teammates)
+            .toEqual(teammates);
     });
 
 });
