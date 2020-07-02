@@ -101,9 +101,16 @@ describe("App.vue", () => {
 
 });
 
-describe("The teammates are loaded and the view is updated", () => {
+describe("The teammates are loaded and the view is updated correctly", () => {
+
+    let spy = null;
 
     beforeEach(() => {
+        const resp = { data: teammates };
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+
+        spy = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
+
         wrapper = shallowMount(App, {
             data: () => {
                 return {
@@ -113,29 +120,12 @@ describe("The teammates are loaded and the view is updated", () => {
         });
     });
 
-    it("renders the teammates", async () => {
-        const resp = { data: teammates };
-        ApiService.getAllTeammates.mockImplementation(() =>
-            Promise.resolve(resp));
-
-        await wrapper.vm.getAllTeammatesAndUpdateView();
-
-        expect(wrapper.vm.teammates)
-            .toEqual(teammates);
-    });
-
-    it("should call the getAllTeammatesAndUpdateView mehtod on mounted hook", async () => {
-        let spy = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
-
-        shallowMount(App, {
-           data: () => {
-               return {
-                   teammates: []
-               }
-           }
-       });
+    it("renders the teammates on mounted hook", async () => {
 
         await expect(spy).toHaveBeenCalledTimes(1);
+
+        await expect(wrapper.vm.teammates)
+            .toEqual(teammates);
     });
 
 });
