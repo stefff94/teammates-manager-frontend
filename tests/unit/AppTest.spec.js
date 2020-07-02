@@ -9,7 +9,6 @@ let teammates = [];
 jest.mock("../../src/services/api.service");
 
 beforeEach(() => {
-
     teammates = [
         {
             id: 1,
@@ -44,18 +43,19 @@ beforeEach(() => {
             ],
         }
     ]
-
-    wrapper = shallowMount(App, {
-        data: () => {
-            return {
-                teammates: teammates
-            }
-        }
-    });
-
 });
 
 describe("App.vue", () => {
+
+    beforeEach(() => {
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: teammates
+                }
+            }
+        });
+    });
 
     it("renders the divider", () => {
         expect(wrapper.find(".ui.divider"));
@@ -104,7 +104,13 @@ describe("App.vue", () => {
 describe("The teammates are loaded and the view is updated", () => {
 
     beforeEach(() => {
-        wrapper.vm.teammates = [];
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: []
+                }
+            }
+        });
     });
 
     it("renders the teammates", async () => {
@@ -116,6 +122,20 @@ describe("The teammates are loaded and the view is updated", () => {
 
         expect(wrapper.vm.teammates)
             .toEqual(teammates);
+    });
+
+    it("should call the getAllTeammatesAndUpdateView mehtod on mounted hook", async () => {
+        let spy = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
+
+        shallowMount(App, {
+           data: () => {
+               return {
+                   teammates: []
+               }
+           }
+       });
+
+        await expect(spy).toHaveBeenCalledTimes(1);
     });
 
 });
