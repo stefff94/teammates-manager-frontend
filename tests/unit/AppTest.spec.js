@@ -112,7 +112,7 @@ describe("The teammates are loaded and the view is updated", () => {
         ApiService.getAllTeammates.mockImplementation(() =>
             Promise.resolve(resp));
 
-        await wrapper.vm.getTeammatesAndUpdateView();
+        await wrapper.vm.getAllTeammatesAndUpdateView();
 
         expect(wrapper.vm.teammates)
             .toEqual(teammates);
