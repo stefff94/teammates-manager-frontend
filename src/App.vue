@@ -28,6 +28,10 @@ export default {
   components: {
     Card
   },
+  mounted() {
+    this.getAllTeammatesAndUpdateView()
+            .catch(() => {});
+  },
   data() {
     return {
       teammates: []
