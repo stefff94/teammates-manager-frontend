@@ -21,6 +21,7 @@
 
 <script>
 import Card from "./components/Card";
+import ApiService from "./services/api.service";
 
 export default {
   name: 'App',
@@ -30,6 +31,15 @@ export default {
   data() {
     return {
       teammates: []
+    }
+  },
+  methods: {
+    getTeammatesAndUpdateView() {
+      let self = this;
+
+      ApiService.getAllTeammates().then(response =>
+              response.data.forEach(teammate =>
+                      self.teammates.push(teammate)));
     }
   }
 }
