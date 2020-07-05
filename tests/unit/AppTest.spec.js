@@ -204,3 +204,38 @@ describe("The teammate is deleted correctly", () => {
     });
 
 });
+
+describe("The teammate is not deleted after performing delete operation", () => {
+
+    beforeEach(() => {
+        const resp = { data: teammates };
+        const error = { message: "generic error message" };
+
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+        ApiService.deleteTeammate.mockRejectedValue(error);
+
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: []
+                }
+            }
+        });
+
+        const teammateToDelete = 100;
+        wrapper.vm.deleteTeammate(teammateToDelete);
+    });
+
+    it("shows an error message", () => {
+        const errorMessage = wrapper.find(".ui.error.floating.message.mt35");
+
+        expect(errorMessage
+            .find(".header").text())
+            .toMatch("Error deleting teammate");
+
+        expect(errorMessage
+            .find("p").text())
+            .toMatch("Unable to delete the teammate");
+    });
+
+});
