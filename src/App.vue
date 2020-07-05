@@ -22,6 +22,11 @@
       <p>Unable to load the teammates</p>
     </div>
 
+    <div class="ui error floating message mt35" v-if="errorDeletingTeammate">
+      <div class="header">Error deleting teammate</div>
+      <p>Unable to delete the teammate</p>
+    </div>
+
   </div>
 </template>
 
@@ -41,7 +46,8 @@ export default {
   data() {
     return {
       teammates: [],
-      errorLoadingTeammates: false
+      errorLoadingTeammates: false,
+      errorDeletingTeammate: false
     }
   },
   methods: {
@@ -59,7 +65,10 @@ export default {
       let self = this;
 
       ApiService.deleteTeammate(id)
-              .then(() => self.updateViewAfterDelete(id))
+              .then(() => {
+                self.updateViewAfterDelete(id);
+                self.errorDeletingTeammate = false;
+              }).catch(() => self.errorDeletingTeammate = true);
     },
     updateViewAfterDelete(id) {
       this.teammates.splice(
