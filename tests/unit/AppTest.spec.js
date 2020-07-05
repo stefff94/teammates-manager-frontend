@@ -129,3 +129,34 @@ describe("The teammates are loaded and the view is updated correctly", () => {
     });
 
 });
+
+describe("The teammates are not loaded", () => {
+
+    beforeEach(() => {
+        const error = { message: "generic error message" };
+        ApiService.getAllTeammates.mockRejectedValue(error);
+
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: []
+                }
+            }
+        });
+    });
+
+    it("shows an error message", () => {
+
+        const errorMessage = wrapper.find(".ui.error.floating.message.mt35");
+
+        expect(errorMessage
+            .find(".header").text())
+            .toMatch("Error loading teammates");
+
+        expect(errorMessage
+            .find("p").text())
+            .toMatch("Unable to load the teammates");
+
+    });
+
+});
