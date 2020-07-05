@@ -160,3 +160,47 @@ describe("The teammates are not loaded", () => {
     });
 
 });
+
+describe("The teammate is deleted correctly", () => {
+
+    let spyDeleteMethod = null;
+    let spyUpdateViewMethod = null;
+
+    beforeEach(() => {
+        const resp = { data: teammates };
+
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+        ApiService.deleteTeammate.mockResolvedValue(null);
+
+        spyDeleteMethod = jest.spyOn(App.methods,
+            "deleteTeammate");
+        spyUpdateViewMethod = jest.spyOn(App.methods,
+            "updateViewAfterDelete");
+
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: []
+                }
+            }
+        });
+    });
+
+    it("delete the teammate", async () => {
+        const teammateToDelete = wrapper.vm.teammates[0].id;
+
+        wrapper.findAllComponents(Card).wrappers[0]
+            .vm.$emit("delete", teammateToDelete);
+
+        await expect(spyDeleteMethod)
+            .toHaveBeenCalledTimes(1);
+
+        await expect(spyUpdateViewMethod)
+            .toHaveBeenCalledTimes(1);
+
+        await expect(wrapper.vm.teammates
+            .find(t => t.id === teammateToDelete))
+            .toBeUndefined();
+    });
+
+});

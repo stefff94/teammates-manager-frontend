@@ -8,7 +8,7 @@
       Teammates
     </h2>
 
-    <div class="ui three column stackable grid mt35">
+    <div class="ui three column stackable grid mt35" v-if="!errorLoadingTeammates">
       <card class="column"
             v-for="teammate in teammates"
             :person="teammate"
