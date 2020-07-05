@@ -13,6 +13,7 @@
             v-for="teammate in teammates"
             :person="teammate"
             v-bind:key="teammate.id"
+            @delete="deleteTeammate"
             style="margin-bottom: 20px!important;"></card>
     </div>
 
@@ -53,6 +54,17 @@ export default {
                         self.teammates.push(teammate));
                 self.errorLoadingTeammates = false;
               }).catch(() => self.errorLoadingTeammates = true);
+    },
+    async deleteTeammate(id) {
+      let self = this;
+
+      ApiService.deleteTeammate(id)
+              .then(() => self.updateViewAfterDelete(id))
+    },
+    updateViewAfterDelete(id) {
+      this.teammates.splice(
+              this.teammates.find((t, i) =>
+                      t.id === id ? i : null), 1);
     }
   }
 }
