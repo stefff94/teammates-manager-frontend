@@ -5,7 +5,8 @@
                 <card-front :data="person.personalData"></card-front>
                 <card-back
                         :skills="person.skills"
-                        :id="person.id"></card-back>
+                        :id="person.id"
+                        @delete="deleteTeammate"></card-back>
             </div>
         </div>
     </transition>
@@ -24,6 +25,11 @@
         props: {
             person: {
                 type: Object
+            }
+        },
+        methods: {
+            deleteTeammate(id) {
+                this.$emit("delete", id);
             }
         }
     }
