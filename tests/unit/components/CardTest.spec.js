@@ -69,3 +69,22 @@ describe("Card.vue", () => {
     });
 
 });
+
+describe("The delete event is emitted by stubbed CardBack component", () => {
+
+    beforeEach(() => {
+        const cardBackComponent =
+            wrapper.findComponent(CardBack);
+
+        cardBackComponent.vm.$emit("delete",
+            wrapper.vm.person.id);
+    });
+
+    it("intercept it and emit another delete event", () => {
+
+        expect(wrapper.emitted().delete[0])
+            .toEqual([wrapper.vm.person.id]);
+
+    });
+
+});
