@@ -68,3 +68,17 @@ describe("CardBack.vue", () => {
    });
 
 });
+
+describe("The delete icon button is clicked", () => {
+
+    beforeEach(() => {
+        wrapper.find(".content .icon.delete")
+            .trigger("click");
+    });
+
+    it("emit the corresponding event", () => {
+        expect(wrapper.emitted().delete[0])
+            .toEqual([wrapper.vm.id]);
+    });
+
+});
