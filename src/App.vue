@@ -16,6 +16,11 @@
             style="margin-bottom: 20px!important;"></card>
     </div>
 
+    <div class="ui error floating message mt35" v-if="errorLoadingTeammates">
+      <div class="header">Error loading teammates</div>
+      <p>Unable to load the teammates</p>
+    </div>
+
   </div>
 </template>
 
@@ -34,16 +39,20 @@ export default {
   },
   data() {
     return {
-      teammates: []
+      teammates: [],
+      errorLoadingTeammates: false
     }
   },
   methods: {
     async getAllTeammatesAndUpdateView() {
       let self = this;
 
-      ApiService.getAllTeammates().then(response =>
-              response.data.forEach(teammate =>
-                      self.teammates.push(teammate)));
+      ApiService.getAllTeammates()
+              .then(response => {
+                response.data.forEach(teammate =>
+                        self.teammates.push(teammate));
+                self.errorLoadingTeammates = false;
+              }).catch(() => self.errorLoadingTeammates = true);
     }
   }
 }
