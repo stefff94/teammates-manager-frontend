@@ -88,3 +88,20 @@ describe("The delete event is emitted by stubbed CardBack component", () => {
     });
 
 });
+
+describe("The update event is emitted by stubbed CardBack component", () => {
+
+    beforeEach(() => {
+        const cardBackComponent =
+            wrapper.findComponent(CardBack);
+
+        cardBackComponent.vm.$emit("update",
+            wrapper.vm.person.id);
+    });
+
+    it("intercept it and emit another update event", () => {
+        expect(wrapper.emitted().update[0])
+            .toEqual([wrapper.vm.person.id]);
+    });
+
+});
