@@ -14,6 +14,7 @@
             :person="teammate"
             v-bind:key="teammate.id"
             @delete="deleteTeammate"
+            @update="populateNewTeammateForUpdate"
             style="margin-bottom: 20px!important;"></card>
     </div>
 
@@ -45,6 +46,7 @@ export default {
   },
   data() {
     return {
+      newTeammate: null,
       teammates: [],
       errorLoadingTeammates: false,
       errorDeletingTeammate: false
@@ -73,6 +75,31 @@ export default {
     updateViewAfterDelete(id) {
       this.teammates.splice(
               this.teammates.findIndex(t => t.id === id), 1);
+    },
+    populateNewTeammateForUpdate(id) {
+      let self = this;
+      this.teammates.find(teammate => {
+        if (teammate.id === id) {
+          self.newTeammate = {
+            name: {
+              value: teammate.personalData.name
+            },
+            gender: {
+              value: teammate.personalData.gender
+            },
+            email: {
+              value: teammate.personalData.email
+            },
+            city: {
+              value: teammate.personalData.city
+            },
+            role: {
+              value: teammate.personalData.role
+            },
+            skills: teammate.skills
+          }
+        }
+      });
     }
   }
 }

@@ -276,7 +276,7 @@ describe("The teammate is being updated after performing the edit operation", ()
         ApiService.getAllTeammates.mockResolvedValue(resp);
 
         spyUpdateMethod = jest.spyOn(App.methods,
-            "populateObjectForUpdate");
+            "populateNewTeammateForUpdate");
 
         wrapper = shallowMount(App, {
             data: () => {
