@@ -80,7 +80,7 @@
     opacity: 0;
 }
 
-.delete {
+.trash {
     color: red;
     cursor: pointer;
 }

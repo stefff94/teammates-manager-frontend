@@ -32,7 +32,14 @@ describe("CardBack.vue", () => {
 
    it("renders the delete icon button", () => {
        expect(wrapper
-           .find(".content .delete.right.floated.large.x.icon")
+           .find(".content .right.floated.large.icon.trash.alternate.outline")
+           .exists())
+           .toBeTruthy();
+   });
+
+   it("renders the edit icon button", () => {
+       expect(wrapper
+           .find(".content .right.floated.large.icon.pencil.alternate")
            .exists())
            .toBeTruthy();
    });
@@ -72,12 +79,26 @@ describe("CardBack.vue", () => {
 describe("The delete icon button is clicked", () => {
 
     beforeEach(() => {
-        wrapper.find(".content .icon.delete")
+        wrapper.find(".content .icon.trash")
             .trigger("click");
     });
 
     it("emit the corresponding event", () => {
         expect(wrapper.emitted().delete[0])
+            .toEqual([wrapper.vm.id]);
+    });
+
+});
+
+describe("The edit icon button is clicked", () => {
+
+    beforeEach(() => {
+        wrapper.find(".content .icon.pencil")
+            .trigger("click");
+    });
+
+    it("emit the corresponding event", () => {
+        expect(wrapper.emitted().update[0])
             .toEqual([wrapper.vm.id]);
     });
 
