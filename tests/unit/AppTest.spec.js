@@ -5,6 +5,7 @@ import ApiService from "../../src/services/api.service";
 
 let wrapper = null;
 let teammates = [];
+let newTeammate = null;
 
 jest.mock("../../src/services/api.service");
 
@@ -17,7 +18,8 @@ beforeEach(() => {
                 name: "Stefano Vannucchi",
                 role: "Student",
                 email: "stefano.vannucchi@stud.unifi.it",
-                city: "Prato"
+                city: "Prato",
+                gender: "M"
             },
             skills: [
                 { id: "1", name: "Java" },
@@ -33,7 +35,8 @@ beforeEach(() => {
                 name: "Paolo Innocenti",
                 role: "Student",
                 email: "paolo.innocenti@stud.unifi.it",
-                city: "Pistoia"
+                city: "Pistoia",
+                gender: "M"
             },
             skills: [
                 { id: "1", name: "Java" },
@@ -43,6 +46,29 @@ beforeEach(() => {
             ],
         }
     ]
+    newTeammate = {
+        name: {
+            value: "Stefano Vannucchi"
+        },
+        gender: {
+            value: "M"
+        },
+        email: {
+            value: "stefano.vannucchi@stud.unifi.it"
+        },
+        city: {
+            value: "Prato"
+        },
+        role: {
+            value: "Student"
+        },
+        skills: [
+            { id: "1", name: "Java" },
+            { id: "2", name: "Spring Boot" },
+            { id: "3", name: "Javascript" },
+            { id: "4", name: "Vue js" }
+        ]
+    }
 });
 
 describe("App.vue", () => {
@@ -236,6 +262,43 @@ describe("The teammate is not deleted after performing delete operation", () => 
         expect(errorMessage
             .find("p").text())
             .toMatch("Unable to delete the teammate");
+    });
+
+});
+
+describe("The teammate is being updated after performing the edit operation", () => {
+
+    let spyUpdateMethod = null;
+
+    beforeEach(() => {
+        const resp = { data: teammates };
+
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+
+        spyUpdateMethod = jest.spyOn(App.methods,
+            "populateObjectForUpdate");
+
+        wrapper = shallowMount(App, {
+            data: () => {
+                return {
+                    teammates: [],
+                    newTeammate: {}
+                }
+            }
+        });
+    });
+
+    it("it populates the corresponding object", () => {
+        const teammateToUpdate = wrapper.vm.teammates[0].id;
+
+        wrapper.findAllComponents(Card).wrappers[0]
+            .vm.$emit("update", teammateToUpdate);
+
+        expect(spyUpdateMethod)
+            .toHaveBeenCalledTimes(1);
+
+        expect(wrapper.vm.newTeammate)
+            .toEqual(newTeammate);
     });
 
 });
