@@ -72,8 +72,7 @@ export default {
     },
     updateViewAfterDelete(id) {
       this.teammates.splice(
-              this.teammates.find((t, i) =>
-                      t.id === id ? i : null), 1);
+              this.teammates.findIndex(t => t.id === id), 1);
     }
   }
 }
