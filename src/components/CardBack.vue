@@ -4,6 +4,8 @@
             <div class="content">
                 <i class="right floated large icon trash alternate outline"
                    @click="deleteTeammate"></i>
+                <i class="right floated large icon pencil alternate"
+                   @click="updateTeammate"></i>
                 <div class="header text-center">Skills</div>
                 <div class="description mt30">
                     <div class="ui bulleted list">
@@ -34,6 +36,9 @@
         methods: {
             deleteTeammate() {
                 this.$emit("delete", this.id);
+            },
+            updateTeammate() {
+                this.$emit("update", this.id);
             }
         }
     }
