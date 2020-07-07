@@ -6,7 +6,8 @@
                 <card-back
                         :skills="person.skills"
                         :id="person.id"
-                        @delete="deleteTeammate"></card-back>
+                        @delete="deleteTeammate"
+                        @update="updateTeammate"></card-back>
             </div>
         </div>
     </transition>
@@ -30,6 +31,9 @@
         methods: {
             deleteTeammate(id) {
                 this.$emit("delete", id);
+            },
+            updateTeammate(id) {
+                this.$emit("update", id);
             }
         }
     }
