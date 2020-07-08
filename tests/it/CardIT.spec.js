@@ -66,3 +66,25 @@ describe("Card.vue", () => {
     });
 
 });
+
+describe("The events are emitted by CardBack component", () => {
+
+    beforeEach(() => {
+        let cardBackComponent =
+            wrapper.findComponent(CardBack);
+
+        cardBackComponent.vm.deleteTeammate();
+        cardBackComponent.vm.updateTeammate();
+    });
+
+    it("intercept the delete event and emit another delete event", () => {
+        expect(wrapper.emitted().delete[0])
+            .toEqual([id]);
+    });
+
+    it("intercept the update event and emit another update event", () => {
+        expect(wrapper.emitted().update[0])
+            .toEqual([id]);
+    });
+
+});
