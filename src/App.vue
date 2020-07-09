@@ -66,7 +66,7 @@ export default {
     async deleteTeammate(id) {
       let self = this;
 
-      ApiService.deleteTeammate(id)
+      await ApiService.deleteTeammate(id)
               .then(() => {
                 self.updateViewAfterDelete(id);
                 self.errorDeletingTeammate = false;

@@ -146,11 +146,11 @@ describe("The teammates are loaded and the view is updated correctly", () => {
         });
     });
 
-    it("renders the teammates on mounted hook", async () => {
+    it("renders the teammates on mounted hook", () => {
 
-        await expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledTimes(1);
 
-        await expect(wrapper.vm.teammates)
+        expect(wrapper.vm.teammates)
             .toEqual(teammates);
     });
 
@@ -215,16 +215,16 @@ describe("The teammate is deleted correctly", () => {
     it("delete the teammate", async () => {
         const teammateToDelete = wrapper.vm.teammates[0].id;
 
-        wrapper.findAllComponents(Card).wrappers[0]
+        await wrapper.findAllComponents(Card).wrappers[0]
             .vm.$emit("delete", teammateToDelete);
 
-        await expect(spyDeleteMethod)
+        expect(spyDeleteMethod)
             .toHaveBeenCalledTimes(1);
 
-        await expect(spyUpdateViewMethod)
+        expect(spyUpdateViewMethod)
             .toHaveBeenCalledTimes(1);
 
-        await expect(wrapper.vm.teammates
+        expect(wrapper.vm.teammates
             .find(t => t.id === teammateToDelete))
             .toBeUndefined();
     });
@@ -247,12 +247,13 @@ describe("The teammate is not deleted after performing delete operation", () => 
                 }
             }
         });
-
-        const teammateToDelete = 100;
-        wrapper.vm.deleteTeammate(teammateToDelete);
     });
 
-    it("shows an error message", () => {
+    it("shows an error message", async () => {
+        const teammateToDelete = 100;
+
+        await wrapper.vm.deleteTeammate(teammateToDelete);
+
         const errorMessage = wrapper.find(".ui.error.floating.message.mt35");
 
         expect(errorMessage
