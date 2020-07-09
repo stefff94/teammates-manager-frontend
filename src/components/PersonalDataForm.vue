@@ -4,10 +4,10 @@
         <div class="field">
             <label>Personal Data</label>
             <div class="three fields">
-                <div class="field">
+                <div class="field" v-bind:class="teammate.name.error ? 'error' : ''">
                     <input type="text" name="name" placeholder="Name">
                 </div>
-                <div class="field">
+                <div class="field" v-bind:class="teammate.email.error ? 'error' : ''">
                     <input type="text" name="email" placeholder="E-mail">
                 </div>
                 <div class="field">
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="two fields">
-                <div class="field">
+                <div class="field" v-bind:class="teammate.city.error ? 'error' : ''">
                     <input type="text" name="city" placeholder="City">
                 </div>
                 <div class="field">
