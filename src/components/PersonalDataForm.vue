@@ -5,13 +5,13 @@
             <label>Personal Data</label>
             <div class="three fields">
                 <div class="field" v-bind:class="teammate.name.error ? 'error' : ''">
-                    <input type="text" name="name" placeholder="Name">
+                    <input type="text" name="name" placeholder="Name" v-model="teammate.name.value">
                 </div>
                 <div class="field" v-bind:class="teammate.email.error ? 'error' : ''">
-                    <input type="text" name="email" placeholder="E-mail">
+                    <input type="text" name="email" placeholder="E-mail" v-model="teammate.email.value">
                 </div>
                 <div class="field">
-                    <select class="ui selection dropdown" id="gender-dropdown">
+                    <select class="ui selection dropdown" id="gender-dropdown" v-model="teammate.gender.value">
                         <option value="" disabled selected>Gender</option>
                         <option v-for="g in genders" v-bind:key="g.id" v-bind:value="g.id">
                             {{ g.name }}
@@ -21,10 +21,10 @@
             </div>
             <div class="two fields">
                 <div class="field" v-bind:class="teammate.city.error ? 'error' : ''">
-                    <input type="text" name="city" placeholder="City">
+                    <input type="text" name="city" placeholder="City" v-model="teammate.city.value">
                 </div>
                 <div class="field">
-                    <select class="ui selection dropdown" id="role-dropdown">
+                    <select class="ui selection dropdown" id="role-dropdown" v-model="teammate.role.value">
                         <option value="" disabled selected>Role</option>
                         <option v-for="r in roles" v-bind:key="r.id" v-bind:value="r.id">
                             {{ r.name }}

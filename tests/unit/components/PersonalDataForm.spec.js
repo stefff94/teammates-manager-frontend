@@ -211,6 +211,18 @@ describe("PersonalDataForm.vue", () => {
             .toBe(3);
     })
 
+    it('updates the teammate.gender prop', () => {
+        const genderSelectField = wrapper.find(".three.fields .field:nth-of-type(3) select");
+        genderSelectField.findAll('option')
+            .at(2)
+            .element
+            .selected = true;
+        genderSelectField.trigger('change');
+
+        expect(wrapper.vm.teammate.gender.value)
+            .toMatch("F");
+    })
+
     it('renders the city input field', () => {
         const cityInputField = wrapper.find(".two.fields .field:nth-of-type(1) input");
 
@@ -286,6 +298,19 @@ describe("PersonalDataForm.vue", () => {
         expect(roleSelectField.findAll('option').length)
             .toBe(3);
     })
+
+    it('updates the teammate.role prop', () => {
+        const roleSelectField = wrapper.find(".two.fields .field:nth-of-type(2) select");
+        roleSelectField.findAll('option')
+            .at(2)
+            .element
+            .selected = true;
+        roleSelectField.trigger('change');
+
+        expect(wrapper.vm.teammate.role.value)
+            .toMatch("R1");
+    })
+
 
 
 })
