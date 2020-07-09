@@ -19,6 +19,19 @@
                     </select>
                 </div>
             </div>
+            <div class="two fields">
+                <div class="field">
+                    <input type="text" name="city" placeholder="City">
+                </div>
+                <div class="field">
+                    <select class="ui selection dropdown" id="role-dropdown" v-model="teammate.role.value" >
+                        <option value="" disabled selected>Role</option>
+                        <option v-for="r in roles" v-bind:key="r.id" v-bind:value="r.id">
+                            {{ r.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
     </form>
 </template>
