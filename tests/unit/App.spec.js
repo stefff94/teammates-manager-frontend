@@ -9,6 +9,9 @@ beforeEach(() => {
 
 describe('App.vue', () => {
     it('renders the divider', () => {
-        expect(wrapper.find(".ui.divider"))
+        expect(wrapper
+            .find(".ui.divider")
+            .exists())
+            .toBeTruthy();
     })
 });

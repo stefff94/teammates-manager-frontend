@@ -9,7 +9,11 @@
 
 <script>
     export default {
-        name: "PersonalDataForm"
+        name: "PersonalDataForm",
+        props: {
+            teammate: Object,
+            genders: Array
+        }
     }
 </script>
 

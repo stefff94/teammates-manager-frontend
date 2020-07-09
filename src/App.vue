@@ -10,11 +10,11 @@
 </template>
 
 <script>
-
 import PersonalDataForm from "./components/PersonalDataForm";
 export default {
   name: 'App',
   components: {PersonalDataForm}
+
 }
 </script>
 
