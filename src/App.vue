@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="mt35">
+      <personal-data-form></personal-data-form>
+    </div>
 
     <div class="ui divider"></div>
 
@@ -8,8 +11,10 @@
 
 <script>
 
+import PersonalDataForm from "./components/PersonalDataForm";
 export default {
-  name: 'App'
+  name: 'App',
+  components: {PersonalDataForm}
 }
 </script>
 
