@@ -15,10 +15,13 @@ beforeEach(() => {
                 skills: []
             },
             genders: [
-                {'id': 'M', 'name': 'Male'},
-                {'id': 'F', 'name': 'Female'}
-                ]
-
+                {id: 'M', name: 'Male'},
+                {id: 'F', name: 'Female'}
+                ],
+            roles: [
+                {id: 'R0', name: 'Student'},
+                {id: 'R1', name: 'Developer'}
+            ]
         }
     });
 })
@@ -65,7 +68,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the name input field", () => {
-        const nameInputField = wrapper.find(".field:nth-of-type(1) input");
+        const nameInputField = wrapper.find(".three.fields .field:nth-of-type(1) input");
 
         expect(nameInputField
             .exists())
@@ -85,7 +88,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the email input field", () => {
-        const emailInputField = wrapper.find(".field:nth-of-type(2) input");
+        const emailInputField = wrapper.find(".three.fields .field:nth-of-type(2) input");
 
         expect(emailInputField
             .exists())
@@ -102,7 +105,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the gender dropdown select", () => {
-        const genderSelectField = wrapper.find(".field:nth-of-type(3) select");
+        const genderSelectField = wrapper.find(".three.fields .field:nth-of-type(3) select");
 
         expect(genderSelectField
             .exists())
@@ -121,6 +124,45 @@ describe("PersonalDataForm.vue", () => {
             .toBeUndefined();
         expect(genderSelectField.findAll('option').length)
             .toBe(3);
+    })
+
+    it('renders the city input field', () => {
+        const cityInputField = wrapper.find(".two.fields .field:nth-of-type(1) input");
+
+        expect(cityInputField
+            .exists())
+            .toBeTruthy();
+        expect(cityInputField
+            .attributes("type"))
+            .toBe("text");
+        expect(cityInputField
+            .attributes("name"))
+            .toMatch("city");
+        expect(cityInputField
+            .attributes("placeholder"))
+            .toMatch("City");
+    })
+
+    it("renders the role dropdown select", () => {
+        const roleSelectField = wrapper.find(".two.fields .field:nth-of-type(2) select");
+
+        expect(roleSelectField
+            .exists())
+            .toBeTruthy();
+        expect(roleSelectField
+            .attributes("class"))
+            .toBe("ui selection dropdown");
+        expect(roleSelectField
+            .attributes("id"))
+            .toBe("role-dropdown");
+        expect(roleSelectField
+            .element
+            .value)
+            .toBe("");
+        expect(wrapper.vm.teammate.role.value)
+            .toBeUndefined();
+        expect(roleSelectField.findAll('option').length)
+            .toBe(2);
     })
 
 

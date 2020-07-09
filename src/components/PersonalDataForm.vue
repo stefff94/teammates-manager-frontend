@@ -28,7 +28,8 @@
         name: "PersonalDataForm",
         props: {
             teammate: Object,
-            genders: Array
+            genders: Array,
+            roles: Array
         }
     }
 </script>
