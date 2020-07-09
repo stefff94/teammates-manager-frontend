@@ -13,7 +13,7 @@ afterEach(() => {
 
 describe("TagMultiselect.vue", () => {
     it('removes failure from travis as placeholder', () => {
-        expect(wrapper.find('span')
+        expect(wrapper.find('multiselect')
             .exists())
             .toBeTruthy();
     })
