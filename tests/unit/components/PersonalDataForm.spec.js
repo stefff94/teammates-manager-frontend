@@ -21,7 +21,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the header", () => {
-        const header = wrapper.find("h3.ui.dividing.header");
+        const header = wrapper.find("form .ui.dividing.header");
         expect(header
             .exists())
             .toBeTruthy();
