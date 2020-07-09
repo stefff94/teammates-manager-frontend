@@ -7,12 +7,20 @@ beforeEach(() => {
     wrapper = shallowMount(PersonalDataForm, {
         propsData:{
             teammate: {
-                name: {},
+                name: {
+                    value: 'Name',
+                    error: true
+                },
                 gender: {},
-                email: {},
-                city: {},
-                role: {},
-                skills: []
+                email: {
+                    value: 'Email',
+                    error: true
+                },
+                city: {
+                    value: 'City',
+                    error: true
+                },
+                role: {}
             },
             genders: [
                 {id: 'M', name: 'Male'},
@@ -82,9 +90,14 @@ describe("PersonalDataForm.vue", () => {
         expect(nameInputField
             .attributes("placeholder"))
             .toBe("Name");
-        expect(nameInputField
-            .text())
-            .toBe("");
+    })
+
+    it("renders the error for the name input field", () => {
+        const nameInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(1)");
+
+        expect(nameInputFieldWrapper
+            .attributes("class"))
+            .toMatch("field error");
     })
 
     it("renders the email input field", () => {
@@ -104,7 +117,15 @@ describe("PersonalDataForm.vue", () => {
             .toBe("E-mail")
     })
 
-    it("renders the gender dropdown select", () => {
+    it("renders the error for the email input field", () => {
+        const emailInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(2)");
+
+        expect(emailInputFieldWrapper
+            .attributes("class"))
+            .toMatch("field error");
+    })
+
+    it("renders the gender dropdown select when teammate has no gender selected", () => {
         const genderSelectField = wrapper.find(".three.fields .field:nth-of-type(3) select");
 
         expect(genderSelectField
@@ -143,7 +164,15 @@ describe("PersonalDataForm.vue", () => {
             .toMatch("City");
     })
 
-    it("renders the role dropdown select", () => {
+    it("renders the error for the city input field", () => {
+        const cityInputFieldWrapper = wrapper.find(".two.fields .field:nth-of-type(1)");
+
+        expect(cityInputFieldWrapper
+            .attributes("class"))
+            .toMatch("field error");
+    })
+
+    it("renders the role dropdown select when teammate has no role selected", () => {
         const roleSelectField = wrapper.find(".two.fields .field:nth-of-type(2) select");
 
         expect(roleSelectField
@@ -162,7 +191,7 @@ describe("PersonalDataForm.vue", () => {
         expect(wrapper.vm.teammate.role.value)
             .toBeUndefined();
         expect(roleSelectField.findAll('option').length)
-            .toBe(2);
+            .toBe(3);
     })
 
 

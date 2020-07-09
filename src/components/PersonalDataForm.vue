@@ -11,7 +11,7 @@
                     <input type="text" name="email" placeholder="E-mail">
                 </div>
                 <div class="field">
-                    <select class="ui selection dropdown" id="gender-dropdown" v-model="teammate.gender.value">
+                    <select class="ui selection dropdown" id="gender-dropdown">
                         <option value="" disabled selected>Gender</option>
                         <option v-for="g in genders" v-bind:key="g.id" v-bind:value="g.id">
                             {{ g.name }}
@@ -24,7 +24,7 @@
                     <input type="text" name="city" placeholder="City">
                 </div>
                 <div class="field">
-                    <select class="ui selection dropdown" id="role-dropdown" v-model="teammate.role.value" >
+                    <select class="ui selection dropdown" id="role-dropdown">
                         <option value="" disabled selected>Role</option>
                         <option v-for="r in roles" v-bind:key="r.id" v-bind:value="r.id">
                             {{ r.name }}
