@@ -103,6 +103,7 @@ describe("PersonalDataForm.vue", () => {
                     value: 'Name',
                     error: true
                 },
+                gender: {},
                 email: {
                     value: 'Email',
                     error: true
@@ -110,7 +111,8 @@ describe("PersonalDataForm.vue", () => {
                 city: {
                     value: 'City',
                     error: true
-                }
+                },
+                role: {}
             }
         })
         await wrapper.vm.$nextTick();
@@ -170,6 +172,7 @@ describe("PersonalDataForm.vue", () => {
                     value: 'Name',
                     error: true
                 },
+                gender: {},
                 email: {
                     value: 'Email',
                     error: true
@@ -177,7 +180,8 @@ describe("PersonalDataForm.vue", () => {
                 city: {
                     value: 'City',
                     error: true
-                }
+                },
+                role: {}
             }
         })
 
@@ -251,6 +255,7 @@ describe("PersonalDataForm.vue", () => {
                     value: 'Name',
                     error: true
                 },
+                gender: {},
                 email: {
                     value: 'Email',
                     error: true
@@ -258,7 +263,8 @@ describe("PersonalDataForm.vue", () => {
                 city: {
                     value: 'City',
                     error: true
-                }
+                },
+                role: {}
             }
         })
 
