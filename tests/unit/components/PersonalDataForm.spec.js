@@ -9,16 +9,16 @@ beforeEach(() => {
             teammate: {
                 name: {
                     value: 'Name',
-                    error: true
+                    error: false
                 },
                 gender: {},
                 email: {
                     value: 'Email',
-                    error: true
+                    error: false
                 },
                 city: {
                     value: 'City',
-                    error: true
+                    error: false
                 },
                 role: {}
             },
@@ -90,14 +90,46 @@ describe("PersonalDataForm.vue", () => {
         expect(nameInputField
             .attributes("placeholder"))
             .toBe("Name");
+        expect(wrapper
+            .find(".three.fields .field:nth-of-type(1)")
+            .attributes("class"))
+            .toMatch("field");
     })
 
-    it("renders the error for the name input field", () => {
+    it("renders the error for the name input field", async () => {
+        wrapper.setProps({
+            teammate: {
+                name: {
+                    value: 'Name',
+                    error: true
+                },
+                email: {
+                    value: 'Email',
+                    error: true
+                },
+                city: {
+                    value: 'City',
+                    error: true
+                }
+            }
+        })
+        await wrapper.vm.$nextTick();
+
         const nameInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(1)");
 
         expect(nameInputFieldWrapper
             .attributes("class"))
             .toMatch("field error");
+    })
+
+    it("updates the teammate.name prop", () => {
+        const nameInputField = wrapper.find(".three.fields .field:nth-of-type(1) input");
+
+        nameInputField.element.value = "Teammate name";
+        nameInputField.trigger('input');
+
+        expect(wrapper.vm.teammate.name.value)
+            .toMatch("Teammate name");
     })
 
     it("renders the email input field", () => {
@@ -114,10 +146,42 @@ describe("PersonalDataForm.vue", () => {
             .toBe("email");
         expect(emailInputField
             .attributes("placeholder"))
-            .toBe("E-mail")
+            .toBe("E-mail");
+        expect(wrapper
+            .find(".three.fields .field:nth-of-type(2)")
+            .attributes("class"))
+            .toMatch("field");
     })
 
-    it("renders the error for the email input field", () => {
+    it("updates the teammate.email prop", () => {
+        const emailInputField = wrapper.find(".three.fields .field:nth-of-type(2) input");
+
+        emailInputField.element.value = "mail@mail.it";
+        emailInputField.trigger('input');
+
+        expect(wrapper.vm.teammate.email.value)
+            .toMatch("mail@mail.it");
+    })
+
+    it("renders the error for the email input field", async () => {
+        wrapper.setProps({
+            teammate: {
+                name: {
+                    value: 'Name',
+                    error: true
+                },
+                email: {
+                    value: 'Email',
+                    error: true
+                },
+                city: {
+                    value: 'City',
+                    error: true
+                }
+            }
+        })
+
+        await wrapper.vm.$nextTick();
         const emailInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(2)");
 
         expect(emailInputFieldWrapper
@@ -162,14 +226,43 @@ describe("PersonalDataForm.vue", () => {
         expect(cityInputField
             .attributes("placeholder"))
             .toMatch("City");
+        expect(wrapper
+            .find(".two.fields .field:nth-of-type(1)")
+            .attributes("class"))
+            .toMatch("field");
     })
 
-    it("renders the error for the city input field", () => {
+    it("renders the error for the city input field", async () => {
+        wrapper.setProps({
+            teammate: {
+                name: {
+                    value: 'Name',
+                    error: true
+                },
+                email: {
+                    value: 'Email',
+                    error: true
+                },
+                city: {
+                    value: 'City',
+                    error: true
+                }
+            }
+        })
+
+        await wrapper.vm.$nextTick();
         const cityInputFieldWrapper = wrapper.find(".two.fields .field:nth-of-type(1)");
 
         expect(cityInputFieldWrapper
             .attributes("class"))
             .toMatch("field error");
+    })
+
+    it("updates the teammate.city prop", () => {
+        const cityInputField = wrapper.find(".two.fields .field:nth-of-type(1) input");
+        cityInputField.element.value = "Florence";
+        cityInputField.trigger('input');
+        expect(wrapper.vm.teammate.city.value).toBe('Florence')
     })
 
     it("renders the role dropdown select when teammate has no role selected", () => {
