@@ -1,10 +1,15 @@
 import { shallowMount } from "@vue/test-utils";
 import TagMultiselect from "../../../src/components/TagMultiselect";
+import Multiselect from "vue-multiselect";
 
 let wrapper = null;
 
 beforeEach(() => {
-    wrapper = shallowMount(TagMultiselect);
+    wrapper = shallowMount(TagMultiselect, {
+        propsData: {
+            options: []
+        }
+    });
 })
 
 afterEach(() => {
@@ -12,8 +17,8 @@ afterEach(() => {
 })
 
 describe("TagMultiselect.vue", () => {
-    it('removes failure from travis as placeholder', () => {
-        expect(wrapper.find('multiselect')
+    it('renders the multiselect', () => {
+        expect(wrapper.findComponent(Multiselect)
             .exists())
             .toBeTruthy();
     })
