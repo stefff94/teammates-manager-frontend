@@ -8,3 +8,4 @@ script:
   - npm run test:all
 after_script:
   - cat ./coverage/lcov.info | coveralls
+  - sonar-scanner
