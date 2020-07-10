@@ -6,7 +6,8 @@
                      track-by="code"
                      :options="options"
                      :multiple="true"
-                     :taggable="true">
+                     :taggable="true"
+                     @tag="addSkill">
         </multiselect>
     </div>
 </template>
