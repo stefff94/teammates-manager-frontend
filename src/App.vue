@@ -78,11 +78,17 @@
                         "/images/avatar2/large/elyse.png"
                     ]
                 },
-                teammates: []
+                teammates: [],
+                rules: [
+                    { property: "name", reg: /^([^0-9]*)$/ },
+                    { property: "city", reg: /^([^0-9]*)$/ },
+                    { property: "email", reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/ }
+                ]
             }
         },
         methods: {
             insertTeammate() {
+                if(this.teammateIsValid()) {
                     const avatarUrl = avatarBaseUrl
                         + this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
                     const newTeammate = {
@@ -103,8 +109,21 @@
                             newTeammate.id = response.data.id;
                             this.teammates.push(newTeammate);
                         });
-
-                },
+                }
+            },
+            teammateIsValid() {
+                this.newTeammate.errors = [];
+                let isValid = true;
+                this.rules.forEach(r => {
+                    this.newTeammate[r.property].error = false;
+                    if(!r.reg.test(this.newTeammate[r.property].value)) {
+                        this.newTeammate.errors.push("Please enter a correct value for field " + r.property);
+                        this.newTeammate[r.property].error = true;
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            },
             clearNewTeammate() {
                 this.newTeammate.name = {};
                 this.newTeammate.gender = {};
