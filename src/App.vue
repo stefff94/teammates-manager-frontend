@@ -9,7 +9,7 @@
         </div>
 
         <button class="ui button">Submit</button>
-        <button class="ui button">Reset</button>
+        <button class="ui button" @click="clearNewTeammate">Reset</button>
 
         <div class="ui error message mt30" v-if="newTeammate.errors.length > 0">
             <div class="header">
@@ -27,14 +27,13 @@
 
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
-    import $ from 'jquery';
-    import TagMultiselect from "./components/TagMultiselect";
 
+    import TagMultiselect from "./components/TagMultiselect";
     export default {
         name: 'App',
         components: {TagMultiselect, PersonalDataForm},
         mounted() {
-            $('.ui.dropdown').dropdown();
+            this.resetSelects();
         },
         data: function() {
             return{
@@ -45,7 +44,7 @@
                     email: {},
                     city: {},
                     role: {},
-                    skills: {},
+                    skills: [],
                     errors: []
                 },
                 roles: [
@@ -59,6 +58,21 @@
                     {id: 'M', name: 'Male'},
                     {id: 'F', name: 'Female'}
                 ]
+            }
+        },
+        methods: {
+            clearNewTeammate() {
+                this.newTeammate.name = {};
+                this.newTeammate.gender = {};
+                this.newTeammate.email = {};
+                this.newTeammate.role = {};
+                this.newTeammate.city = {};
+                this.newTeammate.skills = [];
+                this.newTeammate.errors = [];
+                this.resetSelects();
+            },
+            resetSelects() {
+                global.$('.ui.dropdown').dropdown('clear');
             }
         }
     }
