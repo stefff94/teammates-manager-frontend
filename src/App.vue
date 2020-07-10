@@ -5,7 +5,7 @@
         </div>
 
         <div class="mt35 mb35">
-            <tag-multiselect></tag-multiselect>
+            <tag-multiselect :options="skills" :teammate="newTeammate"></tag-multiselect>
         </div>
 
         <div class="ui divider"></div>
@@ -26,6 +26,7 @@
         },
         data: function() {
             return{
+                skills: [],
                 newTeammate: {
                     name: {},
                     gender: {},
