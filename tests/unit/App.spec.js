@@ -90,14 +90,36 @@ describe('App.vue', () => {
         expect(wrapper
             .find('.mt35.mb35')
             .exists())
-            .toBeTruthy()
+            .toBeTruthy();
         expect(tagMultiselect
             .exists())
-            .toBeTruthy()
+            .toBeTruthy();
         expect(tagMultiselect.props('teammate'))
             .toBe(wrapper.vm.$data.newTeammate);
         expect(tagMultiselect.props('options'))
-            .toBe(wrapper.vm.$data.skills)
+            .toBe(wrapper.vm.$data.skills);
+    })
+
+    it('renders the submit button', () => {
+        const submitButton = wrapper.find('button.ui.button:nth-of-type(1)');
+
+        expect(submitButton
+            .exists())
+            .toBeTruthy();
+        expect(submitButton
+            .text())
+            .toMatch('Submit');
+    })
+
+    it('renders the reset button', () => {
+        const resetButton = wrapper.find('button.ui.button:nth-of-type(2)')
+
+        expect(resetButton
+            .exists())
+            .toBeTruthy();
+        expect(resetButton
+            .text())
+            .toMatch('Reset');
     })
 
 });
