@@ -10,44 +10,51 @@ global.$ = $
 require('fomantic-ui/dist/semantic.min.js')
 
 let wrapper = null;
-let teammate = null;
-let skills = null;
 
-beforeEach(() => {
-    teammate = {
-        name: {
-            value: 'Name'
-        },
-        gender: {
-            value: 'M'
-        },
-        email: {
-            value: 'email@email.it'
-        },
-        city: {
-            value: 'City'
-        },
-        role: {
-            value: 'R1'
-        },
-        skills: [
-            {code: 'sk1', name: 'skill1'}
-        ],
-        errors: [
-            'error1',
-            'error2'
-        ]
-    }
 
-    skills = [
-        {code: 'sk1', name: 'skill1'},
-        {code: 'sk2', name: 'skill2'}
+let teammate = {
+    name: {
+        value: 'Name'
+    },
+    gender: {
+        value: 'M'
+    },
+    email: {
+        value: 'email@email.it'
+    },
+    city: {
+        value: 'City'
+    },
+    role: {
+        value: 'R1'
+    },
+    skills: [
+        {code: 'sk1', name: 'skill1'}
+    ],
+    errors: [
+        'error1',
+        'error2'
     ]
+}
 
-    wrapper = shallowMount(App);
-});
+let skills = [
+    {code: 'sk1', name: 'skill1'},
+    {code: 'sk2', name: 'skill2'}
+]
+
+
+
 
 describe('App.vue', () => {
+
+    beforeEach(() => {
+
+        wrapper = shallowMount(App);
+    });
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
 
     it('renders the app wrapper', () => {
         const appWrapper = wrapper.find('#app.m20');
@@ -148,3 +155,37 @@ describe('App.vue', () => {
     })
 
 });
+
+describe('the form is reset', () => {
+    beforeEach( () => {
+        wrapper = shallowMount(App);
+    })
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
+
+    it('resets the PersonalDataForm and the TagMultiselect on Reset button click', async () => {
+        const emptyTeammate = {
+            name: {},
+            gender: {},
+            email: {},
+            city: {},
+            role: {},
+            skills: [],
+            errors: []
+        }
+
+        const spyResetSelects = jest.spyOn(wrapper.vm, 'resetSelects');
+        await wrapper.vm.$forceUpdate();
+
+        await wrapper.setData({newTeammate: teammate});
+        const resetButton = wrapper.find('button.ui.button:nth-of-type(2)');
+        resetButton.trigger('click');
+
+        expect(wrapper.vm.$data.newTeammate)
+            .toStrictEqual(emptyTeammate);
+        expect(spyResetSelects)
+            .toHaveBeenCalled();
+    })
+})
