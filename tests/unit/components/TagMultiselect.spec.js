@@ -50,8 +50,12 @@ describe('TagMultiselect.vue', () => {
             .toBe(1);
         expect(wrapper.vm.options[0].name)
             .toMatch('skill');
+        expect(wrapper.vm.options[0].code)
+            .toContain('sk');
         expect(wrapper.vm.teammate.skills[0].name)
             .toMatch('skill');
+        expect(wrapper.vm.teammate.skills[0].code)
+            .toContain('sk')
     })
 
     it('triggers the addSkill function on tag event', async () => {
