@@ -9,6 +9,10 @@ class ApiService {
         return axios.post(backendBaseUrl + '/teammates/new', newTeammate);
     }
 
+    static getSkills() {
+        return axios.get(backendBaseUrl + '/skills');
+    }
+
 }
 
 export default ApiService

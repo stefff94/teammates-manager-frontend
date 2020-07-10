@@ -200,10 +200,21 @@ describe('the teammate is inserted and the view is updated', () => {
 
     beforeEach(() => {
         wrapper = shallowMount(App);
-        const resp = {data: {
+        const respInsertTeammate = {data: {
             id:1
             }}
-        ApiService.insertTeammate.mockResolvedValue(resp);
+        ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
+        let respGetSkills = {
+            0: {
+                id: 1,
+                name: 'Java'
+            },
+            1: {
+                id: 2,
+                name: 'Vue js'
+            }
+        }
+        ApiService.getSkills.mockResolvedValue(respGetSkills);
         spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
 
         const mockMath = Object.create(global.Math)
@@ -281,7 +292,29 @@ describe('the teammate is inserted and the view is updated', () => {
         expect(spyGetSkillsAndUpdateView)
             .toHaveBeenCalledTimes(1);
     })
+
+    it('recovers the skills from the database', async () => {
+        wrapper.vm.getSkillsAndUpdateView()
+        await flushPromises();
+
+        const skill1 = {
+            code: 'Ja9000000',
+            name: 'Java'
+        }
+
+        const skill2 = {
+            code: 'Vu9000000',
+            name: 'Vue js'
+        }
+
+        expect(wrapper.vm.$data.skills)
+            .toContainEqual(skill1);
+        expect(wrapper.vm.$data.skills)
+            .toContainEqual(skill2);
+    })
 })
+
+
 
 describe('the teammate is not valid', () => {
     let spyApiInsertTeammate = null;
