@@ -37,11 +37,6 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('updates the options and skills array', () => {
-        expect(wrapper.vm.options.length)
-            .toBe(0);
-        expect(wrapper.vm.teammate.skills.length)
-            .toBe(0);
-
         wrapper.vm.addSkill('skill');
 
         expect(wrapper.vm.options.length)
@@ -67,6 +62,17 @@ describe('TagMultiselect.vue', () => {
         multiselect.vm.$emit('tag', 'skill');
 
         expect(spyAddSkillMethod).toBeCalledTimes(1)
+    })
+
+    it('renders the teammate skills', async () => {
+        wrapper.vm.teammate.skills.push({code: 'sk1', name: 'skill1'})
+        wrapper.vm.teammate.skills.push({code: 'sk2', name: 'skill2'})
+        await wrapper.vm.$nextTick()
+
+        const multiSelect = wrapper.findComponent(Multiselect);
+
+        expect(multiSelect.props().value.length)
+            .toBe(2);
     })
 
 
