@@ -11,6 +11,15 @@
         <button class="ui button">Submit</button>
         <button class="ui button">Reset</button>
 
+        <div class="ui error message mt30" v-if="newTeammate.errors.length > 0">
+            <div class="header">
+                <span>Issues</span>
+            </div>
+            <ul class="list">
+                <li v-for="e in newTeammate.errors" v-bind:key="e">{{ e }}</li>
+            </ul>
+        </div>
+
         <div class="ui divider"></div>
 
     </div>
@@ -35,7 +44,9 @@
                     gender: {},
                     email: {},
                     city: {},
-                    role: {}
+                    role: {},
+                    skills: {},
+                    errors: []
                 },
                 roles: [
                     {id: 'R1', name: 'Student'},
