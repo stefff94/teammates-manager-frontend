@@ -107,7 +107,7 @@
                     ApiService.insertTeammate(newTeammate)
                         .then((response) => {
                             newTeammate.id = response.data.id;
-                            this.teammates.push(newTeammate);
+                            this.updateViewAfterInsert(newTeammate);
                         });
                 }
             },
@@ -123,6 +123,16 @@
                     }
                 });
                 return isValid;
+            },
+            updateViewAfterInsert(newTeammate) {
+                this.teammates.push(newTeammate);
+                this.clearNewTeammate();
+
+                this.skills = [];
+                this.getSkillsAndUpdateView();
+            },
+            getSkillsAndUpdateView(){
+
             },
             clearNewTeammate() {
                 this.newTeammate.name = {};
