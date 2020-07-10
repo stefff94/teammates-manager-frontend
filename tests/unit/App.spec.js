@@ -11,7 +11,7 @@ require('fomantic-ui/dist/semantic.min.js')
 
 let wrapper = null;
 let teammate = null;
-
+let skills = null;
 
 beforeEach(() => {
     teammate = {
@@ -29,8 +29,16 @@ beforeEach(() => {
         },
         role: {
             value: 'R1'
-        }
+        },
+        skills: [
+            {code: 'sk1', name: 'skill1'}
+        ]
     }
+
+    skills = [
+        {code: 'sk1', name: 'skill1'},
+        {code: 'sk2', name: 'skill2'}
+    ]
 
     wrapper = shallowMount(App);
 });
@@ -71,7 +79,12 @@ describe('App.vue', () => {
             .toBe(wrapper.vm.$data.roles);
     })
 
-    it('renders the TagMultiselect component', () => {
+    it('renders the TagMultiselect component', async () => {
+        wrapper.setData({
+            skills: skills,
+            newTeammate: teammate
+        })
+        await wrapper.vm.$forceUpdate();
         const tagMultiselect = wrapper.findComponent(TagMultiselect);
 
         expect(wrapper
@@ -81,6 +94,10 @@ describe('App.vue', () => {
         expect(tagMultiselect
             .exists())
             .toBeTruthy()
+        expect(tagMultiselect.props('teammate'))
+            .toBe(wrapper.vm.$data.newTeammate);
+        expect(tagMultiselect.props('options'))
+            .toBe(wrapper.vm.$data.skills)
     })
 
 });
