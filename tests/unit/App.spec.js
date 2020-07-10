@@ -204,7 +204,7 @@ describe('the teammate is inserted and the view is updated', () => {
             id:1
             }}
         ApiService.insertTeammate.mockResolvedValue(resp);
-        spyApiInsertTeammate = jest.spyOn(ApiService.methods, "insertTeammate");
+        spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
     })
 
     afterEach(() => {

@@ -28,6 +28,7 @@
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
+    import ApiService from "./services/api.service";
 
     export default {
         name: 'App',
@@ -68,7 +69,7 @@
         },
         methods: {
             insertTeammate() {
-
+                ApiService.insertTeammate(this.newTeammate)
             },
             clearNewTeammate() {
                 this.newTeammate.name = {};
