@@ -36,23 +36,6 @@ describe('TagMultiselect.vue', () => {
             .toBeTruthy();
     })
 
-    it('updates the options and skills array', () => {
-        wrapper.vm.addSkill('skill');
-
-        expect(wrapper.vm.options.length)
-            .toBe(1);
-        expect(wrapper.vm.teammate.skills.length)
-            .toBe(1);
-        expect(wrapper.vm.options[0].name)
-            .toMatch('skill');
-        expect(wrapper.vm.options[0].code)
-            .toContain('sk');
-        expect(wrapper.vm.teammate.skills[0].name)
-            .toMatch('skill');
-        expect(wrapper.vm.teammate.skills[0].code)
-            .toContain('sk')
-    })
-
     it('triggers the addSkill function on tag event', async () => {
         let spyAddSkillMethod = jest.fn()
         wrapper.vm.addSkill = spyAddSkillMethod
@@ -73,6 +56,27 @@ describe('TagMultiselect.vue', () => {
 
         expect(multiSelect.props().value.length)
             .toBe(2);
+    })
+
+    it('updates the options and skills array', () => {
+        wrapper.vm.addSkill('skill');
+
+        expect(wrapper.vm.options.length)
+            .toBe(1);
+        expect(wrapper.vm.teammate.skills.length)
+            .toBe(1);
+        expect(wrapper.vm.options[0].name)
+            .toMatch('skill');
+        expect(wrapper.vm.options[0].code)
+            .toContain('sk');
+        expect(wrapper.vm.teammate.skills[0].name)
+            .toMatch('skill');
+        expect(wrapper.vm.teammate.skills[0].code)
+            .toContain('sk')
+    })
+
+    it('prevents addSkill to add duplicated skill', async () => {
+        wrapper.vm.teammate.skills.push({code: 'sk1', name: 'skill1'})
     })
 
 
