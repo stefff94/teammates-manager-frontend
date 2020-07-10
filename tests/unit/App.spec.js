@@ -245,17 +245,42 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     it('inserts the teammate if it is valid', async () => {
+        const expectedTeammate = {
+            id: 1,
+            personalData: {
+                name: teammate.name.value,
+                role: wrapper.vm.$data.roles.find(r => {
+                    return r.id === teammate.role.value
+                }).name,
+                gender: teammate.gender.value,
+                photoUrl: "https://semantic-ui.com"
+                    + wrapper.vm.$data.avatars[teammate.gender.value][2]
+                ,
+                email: teammate.email.value,
+                city: teammate.city.value
+            },
+            skills: teammate.skills
+        }
+
         const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
         await wrapper.setData({
             newTeammate: teammate
         })
 
+        const mockMath = Object.create(global.Math)
+        mockMath.random = () => 0.9;
+        global.Math = mockMath;
+
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
         await wrapper.vm.$nextTick();
+        await flushPromises();
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(1);
         expect(spyApiInsertTeammate)
             .toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.$data.teammates)
+            .toContainEqual(expectedTeammate);
+
     })
 })

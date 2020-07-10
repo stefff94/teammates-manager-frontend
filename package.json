@@ -18,6 +18,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "flush-promises": "^1.0.2",
     "fomantic-ui": "^2.8.6",
     "jquery": "^3.5.1",
     "vue": "^2.6.11",
