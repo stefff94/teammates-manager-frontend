@@ -6,8 +6,7 @@
                      track-by="code"
                      :options="options"
                      :multiple="true"
-                     :taggable="true"
-                     @tag="addSkill">
+                     :taggable="true">
         </multiselect>
     </div>
 </template>
@@ -25,6 +24,12 @@
         name: "TagMultiselect",
         methods: {
             addSkill(newSkill){
+                const skill = {
+                    name: newSkill,
+                    code: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000)
+                }
+                this.options.push(skill);
+                this.teammate.skills.push(skill);
             }
         }
     }

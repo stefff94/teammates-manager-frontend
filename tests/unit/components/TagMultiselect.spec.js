@@ -54,5 +54,16 @@ describe('TagMultiselect.vue', () => {
             .toMatch('skill');
     })
 
+    it('triggers the addSkill function on tag event', async () => {
+        let spyAddSkillMethod = jest.fn()
+        wrapper.vm.addSkill = spyAddSkillMethod
+        await wrapper.vm.$forceUpdate()
+        const multiselect = wrapper.findComponent(Multiselect);
+
+        multiselect.vm.$emit('tag', 'skill');
+
+        expect(spyAddSkillMethod).toBeCalledTimes(1)
+    })
+
 
 })
