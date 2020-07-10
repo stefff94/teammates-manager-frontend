@@ -196,12 +196,15 @@ describe('the form is reset', () => {
 })
 
 describe('the teammate is inserted and the view is updated', () => {
+    let spyApiInsertTeammate = null;
+
     beforeEach(() => {
         wrapper = shallowMount(App);
         const resp = {data: {
             id:1
             }}
         ApiService.insertTeammate.mockResolvedValue(resp);
+        spyApiInsertTeammate = jest.spyOn(ApiService.methods, "insertTeammate");
     })
 
     afterEach(() => {
@@ -251,6 +254,8 @@ describe('the teammate is inserted and the view is updated', () => {
         await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyApiInsertTeammate)
             .toHaveBeenCalledTimes(1);
     })
 })
