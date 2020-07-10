@@ -32,6 +32,10 @@ beforeEach(() => {
         },
         skills: [
             {code: 'sk1', name: 'skill1'}
+        ],
+        errors: [
+            'error1',
+            'error2'
         ]
     }
 
@@ -80,11 +84,11 @@ describe('App.vue', () => {
     })
 
     it('renders the TagMultiselect component', async () => {
-        wrapper.setData({
+        await wrapper.setData({
             skills: skills,
             newTeammate: teammate
         })
-        await wrapper.vm.$forceUpdate();
+
         const tagMultiselect = wrapper.findComponent(TagMultiselect);
 
         expect(wrapper
@@ -120,6 +124,27 @@ describe('App.vue', () => {
         expect(resetButton
             .text())
             .toMatch('Reset');
+    })
+
+    it('renders the errors list when teammate has errors', async () => {
+        await wrapper.setData({newTeammate: teammate});
+        const errorListWrapper = wrapper.find('.ui.error.message.mt30 .header span');
+
+        expect(errorListWrapper
+            .exists())
+            .toBeTruthy();
+        expect(errorListWrapper
+            .text())
+            .toMatch('Issues');
+        expect(wrapper.findAll('.ui.error.message.mt30 .list li').length)
+            .toBe(2);
+    })
+
+    it('does not render the error list when teammate has no errors', async () => {
+        const errorListWrapper = wrapper.find('.ui.error.message.mt30 .header span');
+        expect(errorListWrapper
+            .exists())
+            .toBeFalsy();
     })
 
 });

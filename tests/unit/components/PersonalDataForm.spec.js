@@ -97,7 +97,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the error for the name input field", async () => {
-        wrapper.setProps({
+        await wrapper.setProps({
             teammate: {
                 name: {
                     value: 'Name',
@@ -115,7 +115,6 @@ describe("PersonalDataForm.vue", () => {
                 role: {}
             }
         })
-        await wrapper.vm.$nextTick();
 
         const nameInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(1)");
 
@@ -166,7 +165,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the error for the email input field", async () => {
-        wrapper.setProps({
+        await wrapper.setProps({
             teammate: {
                 name: {
                     value: 'Name',
@@ -185,7 +184,6 @@ describe("PersonalDataForm.vue", () => {
             }
         })
 
-        await wrapper.vm.$nextTick();
         const emailInputFieldWrapper = wrapper.find(".three.fields .field:nth-of-type(2)");
 
         expect(emailInputFieldWrapper
@@ -249,7 +247,7 @@ describe("PersonalDataForm.vue", () => {
     })
 
     it("renders the error for the city input field", async () => {
-        wrapper.setProps({
+        await wrapper.setProps({
             teammate: {
                 name: {
                     value: 'Name',
@@ -268,7 +266,6 @@ describe("PersonalDataForm.vue", () => {
             }
         })
 
-        await wrapper.vm.$nextTick();
         const cityInputFieldWrapper = wrapper.find(".two.fields .field:nth-of-type(1)");
 
         expect(cityInputFieldWrapper
