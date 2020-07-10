@@ -74,10 +74,4 @@ describe('TagMultiselect.vue', () => {
         expect(wrapper.vm.teammate.skills[0].code)
             .toContain('sk')
     })
-
-    it('prevents addSkill to add duplicated skill', async () => {
-        wrapper.vm.teammate.skills.push({code: 'sk1', name: 'skill1'})
-    })
-
-
 })
