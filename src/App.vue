@@ -29,6 +29,7 @@
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
     import ApiService from "./services/api.service";
+    import { avatarBaseUrl } from "./services/api.service";
 
     export default {
         name: 'App',
@@ -64,13 +65,46 @@
                 genders: [
                     {id: 'M', name: 'Male'},
                     {id: 'F', name: 'Female'}
-                ]
+                ],
+                avatars: {
+                    M: [
+                        "/images/avatar/large/elliot.jpg",
+                        "/images/avatar/large/steve.jpg",
+                        "/images/avatar2/large/matthew.png"
+                    ],
+                    F: [
+                        "/images/avatar/large/stevie.jpg",
+                        "/images/avatar2/large/molly.png",
+                        "/images/avatar2/large/elyse.png"
+                    ]
+                },
+                teammates: []
             }
         },
         methods: {
             insertTeammate() {
-                ApiService.insertTeammate(this.newTeammate)
-            },
+                    const avatarUrl = avatarBaseUrl
+                        + this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
+                    const newTeammate = {
+                        personalData: {
+                            name: this.newTeammate.name.value,
+                            role: this.roles.find(r => {
+                                return r.id === this.newTeammate.role.value
+                            }).name,
+                            gender: this.newTeammate.gender.value,
+                            photoUrl: avatarUrl,
+                            email: this.newTeammate.email.value,
+                            city: this.newTeammate.city.value
+                        },
+                        skills: this.newTeammate.skills
+                    }
+                    ApiService.insertTeammate(newTeammate)
+                        .then((response) => {
+                            newTeammate.id = response.data.id;
+                            this.teammates.push(newTeammate);
+                        });
+
+                },
             clearNewTeammate() {
                 this.newTeammate.name = {};
                 this.newTeammate.gender = {};
