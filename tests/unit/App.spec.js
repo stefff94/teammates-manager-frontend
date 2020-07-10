@@ -205,6 +205,10 @@ describe('the teammate is inserted and the view is updated', () => {
             }}
         ApiService.insertTeammate.mockResolvedValue(resp);
         spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
+
+        const mockMath = Object.create(global.Math)
+        mockMath.random = () => 0.9;
+        global.Math = mockMath;
     })
 
     afterEach(() => {
@@ -225,6 +229,25 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     it('inserts the teammate if it is valid', async () => {
+        const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        const spyUpdateViewAfterInsert = jest.spyOn(wrapper.vm, 'updateViewAfterInsert');
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+        await flushPromises();
+
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyUpdateViewAfterInsert)
+            .toHaveBeenCalledTimes(1);
+    })
+
+    it('updates the view after adding the new teammate', async () => {
         const expectedTeammate = {
             id: 1,
             personalData: {
@@ -241,26 +264,22 @@ describe('the teammate is inserted and the view is updated', () => {
             },
             skills: teammate.skills
         }
-
-        const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        const spyClearNewTeammate = jest.spyOn(wrapper.vm, 'clearNewTeammate');
+        const spyGetSkillsAndUpdateView = jest.spyOn(wrapper.vm, 'getSkillsAndUpdateView');
         await wrapper.setData({
             newTeammate: teammate
         })
-
-        const mockMath = Object.create(global.Math)
-        mockMath.random = () => 0.9;
-        global.Math = mockMath;
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
         await wrapper.vm.$nextTick();
         await flushPromises();
 
-        expect(spyInsertTeammate)
-            .toHaveBeenCalledTimes(1);
-        expect(spyApiInsertTeammate)
-            .toHaveBeenCalledTimes(1);
         expect(wrapper.vm.$data.teammates)
             .toContainEqual(expectedTeammate);
+        expect(spyClearNewTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyGetSkillsAndUpdateView)
+            .toHaveBeenCalledTimes(1);
     })
 })
 
