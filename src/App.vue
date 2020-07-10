@@ -4,6 +4,10 @@
             <personal-data-form :teammate="newTeammate" :genders="genders" :roles="roles"></personal-data-form>
         </div>
 
+        <div class="mt35 mb35">
+            <tag-multiselect></tag-multiselect>
+        </div>
+
         <div class="ui divider"></div>
 
     </div>
@@ -12,10 +16,11 @@
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
     import $ from 'jquery';
+    import TagMultiselect from "./components/TagMultiselect";
 
     export default {
         name: 'App',
-        components: {PersonalDataForm},
+        components: {TagMultiselect, PersonalDataForm},
         mounted() {
             $('.ui.dropdown').dropdown();
         },
