@@ -4,6 +4,7 @@ node_js:
 cache:
   directories:
     - node_modules
+    - semantic
 script:
   - npm run test:all
 after_script:
