@@ -211,26 +211,6 @@ describe('the teammate is inserted and the view is updated', () => {
         wrapper.destroy();
     })
 
-    it('disables submit if teammate is not valid', async () => {
-        const emptyTeammate = {
-            name: {},
-            gender: {},
-            email: {},
-            city: {},
-            role: {},
-            skills: [],
-            errors: []
-        }
-        await wrapper.setData({ newTeammate: emptyTeammate })
-
-        expect(wrapper.vm.submitDisabled)
-            .toBeTruthy();
-        expect(wrapper
-            .find('button.ui.button:nth-of-type(1)')
-            .attributes('disabled'))
-            .toBeDefined();
-    })
-
     it('enables submit if teammate is valid', async () => {
         await wrapper.setData({
             newTeammate: teammate
@@ -281,6 +261,86 @@ describe('the teammate is inserted and the view is updated', () => {
             .toHaveBeenCalledTimes(1);
         expect(wrapper.vm.$data.teammates)
             .toContainEqual(expectedTeammate);
+    })
+})
 
+describe('the teammate is not valid', () => {
+    let spyApiInsertTeammate = null;
+    let spyInsertTeammate = null;
+
+    beforeEach(() => {
+        wrapper = shallowMount(App);
+        spyApiInsertTeammate = jest.fn()
+        ApiService.insertTeammate = spyApiInsertTeammate
+        spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+    })
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
+
+    it('disables submit if teammate is not valid', async () => {
+        const emptyTeammate = {
+            name: {},
+            gender: {},
+            email: {},
+            city: {},
+            role: {},
+            skills: [],
+            errors: []
+        }
+        await wrapper.setData({ newTeammate: emptyTeammate })
+
+        expect(wrapper.vm.submitDisabled)
+            .toBeTruthy();
+        expect(wrapper
+            .find('button.ui.button:nth-of-type(1)')
+            .attributes('disabled'))
+            .toBeDefined();
+    })
+
+    it('does not insert the teammate if email is invalid', async () => {
+        teammate.email.value = 'bad email'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
+    it('does not insert the teammate if name is invalid', async () => {
+        teammate.name.value = '1bad name1'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
+    it('does not insert the teammate if city is invalid', async () => {
+        teammate.name.value = '1bad city1'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
     })
 })
