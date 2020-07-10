@@ -1,6 +1,7 @@
 <template>
     <div>
-        <multiselect tag-placeholder="Add this as a new skill"
+        <multiselect v-model="teammate.skills"
+                     tag-placeholder="Add this as a new skill"
                      placeholder="Search or add a new skill"
                      label="name"
                      track-by="code"
