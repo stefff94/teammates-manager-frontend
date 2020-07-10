@@ -1,49 +1,52 @@
 import { shallowMount } from '@vue/test-utils'
+import flushPromises from "flush-promises";
 import App from "../../src/App";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 
 import jQuery from 'jquery'
 import $ from 'jquery'
 import TagMultiselect from "../../src/components/TagMultiselect";
+import ApiService from "../../src/services/api.service";
+
 global.jQuery = jQuery
 global.$ = $
 require('fomantic-ui/dist/semantic.min.js')
 
 let wrapper = null;
+let teammate = null;
+let skills = null;
 
+jest.mock('../../src/services/api.service');
 
-let teammate = {
-    name: {
-        value: 'Name'
-    },
-    gender: {
-        value: 'M'
-    },
-    email: {
-        value: 'email@email.it'
-    },
-    city: {
-        value: 'City'
-    },
-    role: {
-        value: 'R1'
-    },
-    skills: [
-        {code: 'sk1', name: 'skill1'}
-    ],
-    errors: [
-        'error1',
-        'error2'
+beforeEach(() => {
+    teammate = {
+        name: {
+            value: 'Name'
+        },
+        gender: {
+            value: 'M'
+        },
+        email: {
+            value: 'email@email.it'
+        },
+        city: {
+            value: 'City'
+        },
+        role: {
+            value: 'R1'
+        },
+        skills: [
+            {code: 'sk1', name: 'skill1'}
+        ],
+        errors: []
+    }
+
+    skills = [
+        {code: 'sk1', name: 'skill1'},
+        {code: 'sk2', name: 'skill2'}
     ]
-}
 
-let skills = [
-    {code: 'sk1', name: 'skill1'},
-    {code: 'sk2', name: 'skill2'}
-]
-
-
-
+})
 
 describe('App.vue', () => {
 
@@ -134,6 +137,8 @@ describe('App.vue', () => {
     })
 
     it('renders the errors list when teammate has errors', async () => {
+        teammate.errors.push('error1');
+        teammate.errors.push('error2');
         await wrapper.setData({newTeammate: teammate});
         const errorListWrapper = wrapper.find('.ui.error.message.mt30 .header span');
 
@@ -187,5 +192,65 @@ describe('the form is reset', () => {
             .toStrictEqual(emptyTeammate);
         expect(spyResetSelects)
             .toHaveBeenCalled();
+    })
+})
+
+describe('the teammate is inserted and the view is updated', () => {
+    beforeEach(() => {
+        wrapper = shallowMount(App);
+        const resp = {data: {
+            id:1
+            }}
+        ApiService.insertTeammate.mockResolvedValue(resp);
+    })
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
+
+    it('disables submit if teammate is not valid', async () => {
+        const emptyTeammate = {
+            name: {},
+            gender: {},
+            email: {},
+            city: {},
+            role: {},
+            skills: [],
+            errors: []
+        }
+        await wrapper.setData({ newTeammate: emptyTeammate })
+
+        expect(wrapper.vm.submitDisabled)
+            .toBeTruthy();
+        expect(wrapper
+            .find('button.ui.button:nth-of-type(1)')
+            .attributes('disabled'))
+            .toBeDefined();
+    })
+
+    it('enables submit if teammate is valid', async () => {
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        expect(wrapper.vm.submitDisabled)
+            .toBeFalsy();
+        expect(wrapper
+            .find('button.ui.button:nth-of-type(1)')
+            .attributes('disabled'))
+            .toBeUndefined();
+    })
+
+    it('inserts the teammate if it is valid', async () => {
+        const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
     })
 })
