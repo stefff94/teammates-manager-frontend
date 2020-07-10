@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="mt35">
-      <personal-data-form></personal-data-form>
+    <tag-multiselect></tag-multiselect>
     </div>
 
     <div class="ui divider"></div>
@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import PersonalDataForm from "./components/PersonalDataForm";
+import TagMultiselect from "./components/TagMultiselect";
 export default {
   name: 'App',
-  components: {PersonalDataForm}
+  components: {TagMultiselect}
 
 }
 </script>
