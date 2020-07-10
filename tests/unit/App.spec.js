@@ -4,6 +4,7 @@ import PersonalDataForm from "../../src/components/PersonalDataForm";
 
 import jQuery from 'jquery'
 import $ from 'jquery'
+import TagMultiselect from "../../src/components/TagMultiselect";
 global.jQuery = jQuery
 global.$ = $
 require('fomantic-ui/dist/semantic.min.js')
@@ -68,6 +69,18 @@ describe('App.vue', () => {
             .toBe(wrapper.vm.$data.genders);
         expect(personalDataForm.props('roles'))
             .toBe(wrapper.vm.$data.roles);
+    })
+
+    it('renders the TagMultiselect component', () => {
+        const tagMultiselect = wrapper.findComponent(TagMultiselect);
+
+        expect(wrapper
+            .find('.mt35.mb35')
+            .exists())
+            .toBeTruthy()
+        expect(tagMultiselect
+            .exists())
+            .toBeTruthy()
     })
 
 });
