@@ -8,6 +8,9 @@
             <tag-multiselect :options="skills" :teammate="newTeammate"></tag-multiselect>
         </div>
 
+        <button class="ui button">Submit</button>
+        <button class="ui button">Reset</button>
+
         <div class="ui divider"></div>
 
     </div>
