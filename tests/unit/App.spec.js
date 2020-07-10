@@ -2,6 +2,12 @@ import { shallowMount } from '@vue/test-utils'
 import App from "../../src/App";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 
+import jQuery from 'jquery'
+import $ from 'jquery'
+global.jQuery = jQuery
+global.$ = $
+require('fomantic-ui/dist/semantic.min.js')
+
 let wrapper = null;
 let teammate = null;
 
@@ -29,6 +35,15 @@ beforeEach(() => {
 });
 
 describe('App.vue', () => {
+
+    it('renders the app wrapper', () => {
+        const appWrapper = wrapper.find('#app.m20');
+
+        expect(appWrapper
+            .exists())
+            .toBeTruthy();
+    })
+
     it('renders the divider', () => {
         expect(wrapper
             .find(".ui.divider")
@@ -40,6 +55,10 @@ describe('App.vue', () => {
         wrapper.setData({newTeammate: teammate})
         const personalDataForm = wrapper.findComponent(PersonalDataForm);
 
+        expect(wrapper
+            .find('.mt35')
+            .exists())
+            .toBeTruthy();
         expect(personalDataForm
             .exists())
             .toBeTruthy();
