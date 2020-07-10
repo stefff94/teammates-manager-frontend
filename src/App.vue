@@ -8,7 +8,7 @@
             <tag-multiselect :options="skills" :teammate="newTeammate"></tag-multiselect>
         </div>
 
-        <button class="ui button">Submit</button>
+        <button class="ui button" @click="insertTeammate" :disabled="submitDisabled">Submit</button>
         <button class="ui button" @click="clearNewTeammate">Reset</button>
 
         <div class="ui error message mt30" v-if="newTeammate.errors.length > 0">
@@ -27,13 +27,19 @@
 
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
-
     import TagMultiselect from "./components/TagMultiselect";
+
     export default {
         name: 'App',
         components: {TagMultiselect, PersonalDataForm},
         mounted() {
             this.resetSelects();
+        },
+        computed: {
+            submitDisabled() {
+                let t = this.newTeammate;
+                return !t.name.value || !t.gender.value || !t.email.value || !t.role.value || !t.city.value;
+            }
         },
         data: function() {
             return{
@@ -61,6 +67,9 @@
             }
         },
         methods: {
+            insertTeammate() {
+
+            },
             clearNewTeammate() {
                 this.newTeammate.name = {};
                 this.newTeammate.gender = {};
