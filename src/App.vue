@@ -64,7 +64,8 @@
         },
         methods: {
             handleTeammate(){
-              this.insertTeammate()
+                if(typeof this.newTeammate.id === 'undefined')
+                    this.insertTeammate()
             },
             insertTeammate() {
                 if(this.teammateIsValid()) {
