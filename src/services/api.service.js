@@ -8,6 +8,10 @@ class ApiService {
         return axios.post(backendBaseUrl + '/teammates/new', newTeammate);
     }
 
+    static updateTeammate(id, teammate) {
+        return axios.put(backendBaseUrl + '/teammates/' + id.toString(), teammate);
+    }
+
     static getSkills() {
         return axios.get(backendBaseUrl + '/skills');
     }
