@@ -65,7 +65,9 @@
         methods: {
             handleTeammate(){
                 if(typeof this.newTeammate.id === 'undefined')
-                    this.insertTeammate()
+                    this.insertTeammate();
+                else
+                    this.updateTeammate();
             },
             insertTeammate() {
                 if(this.teammateIsValid()) {
@@ -124,6 +126,10 @@
                             self.skills.push(skill);
                         })
                     })
+            },
+            updateTeammate() {
+                const newTeammate = this.newTeammate;
+                ApiService.updateTeammate(newTeammate.id, newTeammate);
             },
             clearNewTeammate() {
                 this.newTeammate.name = {};
