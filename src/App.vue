@@ -8,7 +8,7 @@
             <tag-multiselect :options="skills" :teammate="newTeammate"></tag-multiselect>
         </div>
 
-        <button class="ui button" @click="insertTeammate" :disabled="submitDisabled">Submit</button>
+        <button class="ui button" @click="handleTeammate" :disabled="submitDisabled">Submit</button>
         <button class="ui button" @click="clearNewTeammate">Reset</button>
 
         <div class="ui error message mt30" v-if="newTeammate.errors.length > 0">
@@ -29,7 +29,7 @@
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
     import ApiService from "./services/api.service";
-    import { avatarBaseUrl } from "./services/api.service";
+    import { avatars, avatarBaseUrl, genders, roles, rules } from "./variables";
 
     export default {
         name: 'App',
@@ -55,38 +55,17 @@
                     skills: [],
                     errors: []
                 },
-                roles: [
-                    {id: 'R1', name: 'Student'},
-                    {id: 'R2', name: 'Frontend developer'},
-                    {id: 'R3', name: 'Backend developer'},
-                    {id: 'R4', name: 'Full Stack developer'},
-                    {id: 'R5', name: 'Analyst Programmer'},
-                ],
-                genders: [
-                    {id: 'M', name: 'Male'},
-                    {id: 'F', name: 'Female'}
-                ],
-                avatars: {
-                    M: [
-                        "/images/avatar/large/elliot.jpg",
-                        "/images/avatar/large/steve.jpg",
-                        "/images/avatar2/large/matthew.png"
-                    ],
-                    F: [
-                        "/images/avatar/large/stevie.jpg",
-                        "/images/avatar2/large/molly.png",
-                        "/images/avatar2/large/elyse.png"
-                    ]
-                },
+                roles: roles,
+                genders: genders,
+                avatars: avatars,
                 teammates: [],
-                rules: [
-                    { property: "name", reg: /^([^0-9]*)$/ },
-                    { property: "city", reg: /^([^0-9]*)$/ },
-                    { property: "email", reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/ }
-                ]
+                rules: rules
             }
         },
         methods: {
+            handleTeammate(){
+              this.insertTeammate()
+            },
             insertTeammate() {
                 if(this.teammateIsValid()) {
                     const avatarUrl = avatarBaseUrl
