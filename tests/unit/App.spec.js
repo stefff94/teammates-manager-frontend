@@ -248,6 +248,11 @@ describe('the teammate is inserted and the view is updated', () => {
             }}
         ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
+        const respUpdateTeammate = {data: {
+                id:1
+            }}
+        ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
+
         let respGetSkills = {
             0: {
                 id: 1,
@@ -395,6 +400,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
     beforeEach(() => {
         teammate = {
+            id: 1,
             name: {
                 value: 'Name'
             },
@@ -420,7 +426,12 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         const respInsertTeammate = {data: {
                 id:1
             }}
-        ApiService.updateTeammate.mockResolvedValue(respInsertTeammate);
+        ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
+
+        const respUpdateTeammate = {data: {
+                id:1
+            }}
+        ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
 
         const mockMath = Object.create(global.Math)
         mockMath.random = () => 0.9;
@@ -448,6 +459,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     it('does not trigger updateTeammate if the teammate has no id', async () => {
         const spyHandleTeammate = jest.spyOn(wrapper.vm, 'handleTeammate');
         const spyUpdateTeammate = jest.spyOn(wrapper.vm, 'updateTeammate');
+        teammate.id = undefined;
         await wrapper.setData({
             newTeammate: teammate
         })
@@ -464,7 +476,6 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     it('triggers the handleTeammate and updateTeammate methods if the teammate is valid and has an id', async () => {
         const spyHandleTeammate = jest.spyOn(wrapper.vm, 'handleTeammate');
         const spyUpdateTeammate = jest.spyOn(wrapper.vm, 'updateTeammate');
-        teammate.id = 1;
         await wrapper.setData({
             newTeammate: teammate
         })
@@ -480,9 +491,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
     it('inserts the teammate if the teammate is valid and has no id', async () => {
         const spyUpdateTeammate = jest.spyOn(wrapper.vm, 'updateTeammate');
-        const spyUpdateViewAfterInsert = jest.spyOn(wrapper.vm, 'updateViewAfterInsert');
         const spyApiUpdateTeammate = jest.spyOn(ApiService, 'updateTeammate');
-        teammate.id = 1;
         await wrapper.setData({
             newTeammate: teammate
         })
@@ -495,60 +504,46 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         expect(spyApiUpdateTeammate)
             .toHaveBeenCalledTimes(1);
     })
-    //
-    // it('updates the view after adding the new teammate', async () => {
-    //     const expectedTeammate = {
-    //         id: 1,
-    //         personalData: {
-    //             name: teammate.name.value,
-    //             role: wrapper.vm.$data.roles.find(r => {
-    //                 return r.id === teammate.role.value
-    //             }).name,
-    //             gender: teammate.gender.value,
-    //             photoUrl: avatarBaseUrl
-    //                 + wrapper.vm.$data.avatars[teammate.gender.value][2]
-    //             ,
-    //             email: teammate.email.value,
-    //             city: teammate.city.value
-    //         },
-    //         skills: teammate.skills
-    //     }
-    //     const spyClearNewTeammate = jest.spyOn(wrapper.vm, 'clearNewTeammate');
-    //     const spyGetSkillsAndUpdateView = jest.spyOn(wrapper.vm, 'getSkillsAndUpdateView');
-    //     await wrapper.setData({
-    //         newTeammate: teammate
-    //     })
-    //
-    //     wrapper.vm.insertTeammate()
-    //     await flushPromises();
-    //
-    //     expect(wrapper.vm.$data.teammates)
-    //         .toContainEqual(expectedTeammate);
-    //     expect(spyClearNewTeammate)
-    //         .toHaveBeenCalledTimes(1);
-    //     expect(spyGetSkillsAndUpdateView)
-    //         .toHaveBeenCalledTimes(1);
-    // })
-    //
-    // it('recovers the skills from the database', async () => {
-    //     const skill1 = {
-    //         code: 'Ja9000000',
-    //         name: 'Java'
-    //     }
-    //
-    //     const skill2 = {
-    //         code: 'Vu9000000',
-    //         name: 'Vue js'
-    //     }
-    //
-    //     wrapper.vm.getSkillsAndUpdateView()
-    //     await flushPromises();
-    //
-    //     expect(wrapper.vm.$data.skills)
-    //         .toContainEqual(skill1);
-    //     expect(wrapper.vm.$data.skills)
-    //         .toContainEqual(skill2);
-    // })
+
+    it('updates the view after updating the teammate', async () => {
+        const savedTeammate = {
+            id: 1,
+            personalData: {
+                name: teammate.name.value,
+                role: wrapper.vm.$data.roles.find(r => {
+                    return r.id === teammate.role.value
+                }).name,
+                gender: teammate.gender.value,
+                photoUrl: avatarBaseUrl
+                    + wrapper.vm.$data.avatars[teammate.gender.value][2]
+                ,
+                email: teammate.email.value,
+                city: teammate.city.value
+            },
+            skills: teammate.skills
+        }
+        wrapper.vm.teammates.push(savedTeammate);
+        savedTeammate.name = 'New Name';
+
+        const spyUpdateViewAfterUpdate = jest.spyOn(wrapper.vm, 'updateViewAfterUpdate');
+        const spyClearNewTeammate = jest.spyOn(wrapper.vm, 'clearNewTeammate');
+        const spyGetSkillsAndUpdateView = jest.spyOn(wrapper.vm, 'getSkillsAndUpdateView');
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.vm.updateTeammate()
+        await flushPromises();
+
+        expect(spyUpdateViewAfterUpdate)
+            .toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.$data.teammates)
+            .toContainEqual(savedTeammate);
+        expect(spyClearNewTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyGetSkillsAndUpdateView)
+            .toHaveBeenCalledTimes(1);
+    })
 })
 
 

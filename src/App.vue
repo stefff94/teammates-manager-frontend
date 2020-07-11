@@ -109,13 +109,11 @@
             updateViewAfterInsert(newTeammate) {
                 this.teammates.push(newTeammate);
                 this.clearNewTeammate();
-
-                this.skills = [];
                 this.getSkillsAndUpdateView();
             },
             getSkillsAndUpdateView(){
                 let self = this;
-
+                this.skills = [];
                 ApiService.getSkills()
                     .then( (result) => {
                         Object.keys(result).forEach((savedSkill) => {
@@ -129,7 +127,17 @@
             },
             updateTeammate() {
                 const newTeammate = this.newTeammate;
-                ApiService.updateTeammate(newTeammate.id, newTeammate);
+                ApiService.updateTeammate(newTeammate.id, newTeammate)
+                .then( () => {
+                    this.updateViewAfterUpdate();
+                })
+
+            },
+            updateViewAfterUpdate() {
+                let teammateIndex = this.teammates.indexOf(t => t.id === this.newTeammate.id);
+                this.teammates[teammateIndex] = this.newTeammate;
+                this.clearNewTeammate();
+                this.getSkillsAndUpdateView();
             },
             clearNewTeammate() {
                 this.newTeammate.name = {};
