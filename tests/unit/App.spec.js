@@ -501,7 +501,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             .toHaveBeenCalledTimes(1);
     })
 
-    it('inserts the teammate if the teammate is valid and has no id', async () => {
+    it('updates the teammate if the teammate is valid and has an id', async () => {
         const spyUpdateTeammate = jest.spyOn(wrapper.vm, 'updateTeammate');
         const spyApiUpdateTeammate = jest.spyOn(ApiService, 'updateTeammate');
         await wrapper.setData({
@@ -522,6 +522,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         await wrapper.setData({ newTeammate: teammate });
         wrapper.vm.insertTeammate(teammate);
         await flushPromises();
+        const teammatesLength = wrapper.vm.teammates.length;
 
         teammate.id = 1;
         teammate.name.value = 'New Name';
@@ -555,6 +556,8 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
         expect(spyUpdateViewAfterUpdate)
             .toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.teammates.length)
+            .toBe(teammatesLength);
         expect(wrapper.vm.teammates)
             .toContainEqual(expectedTeammate);
         expect(spyClearNewTeammate)
