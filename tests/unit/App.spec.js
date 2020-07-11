@@ -433,6 +433,18 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             }}
         ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
 
+        let respGetSkills = {
+            0: {
+                id: 1,
+                name: 'Java'
+            },
+            1: {
+                id: 2,
+                name: 'Vue js'
+            }
+        }
+        ApiService.getSkills.mockResolvedValue(respGetSkills);
+
         const mockMath = Object.create(global.Math)
         mockMath.random = () => 0.9;
         global.Math = mockMath;
@@ -506,7 +518,19 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     })
 
     it('updates the view after updating the teammate', async () => {
-        const savedTeammate = {
+        teammate.id = undefined;
+        await wrapper.setData({ newTeammate: teammate });
+        wrapper.vm.insertTeammate(teammate);
+        await flushPromises();
+
+        teammate.id = 1;
+        teammate.name.value = 'New Name';
+        teammate.photoUrl = avatarBaseUrl
+            + wrapper.vm.$data.avatars[teammate.gender.value][2];
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+        const expectedTeammate = {
             id: 1,
             personalData: {
                 name: teammate.name.value,
@@ -522,23 +546,17 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             },
             skills: teammate.skills
         }
-        wrapper.vm.teammates.push(savedTeammate);
-        savedTeammate.name = 'New Name';
-
         const spyUpdateViewAfterUpdate = jest.spyOn(wrapper.vm, 'updateViewAfterUpdate');
         const spyClearNewTeammate = jest.spyOn(wrapper.vm, 'clearNewTeammate');
         const spyGetSkillsAndUpdateView = jest.spyOn(wrapper.vm, 'getSkillsAndUpdateView');
-        await wrapper.setData({
-            newTeammate: teammate
-        })
 
         wrapper.vm.updateTeammate()
         await flushPromises();
 
         expect(spyUpdateViewAfterUpdate)
             .toHaveBeenCalledTimes(1);
-        expect(wrapper.vm.$data.teammates)
-            .toContainEqual(savedTeammate);
+        expect(wrapper.vm.teammates)
+            .toContainEqual(expectedTeammate);
         expect(spyClearNewTeammate)
             .toHaveBeenCalledTimes(1);
         expect(spyGetSkillsAndUpdateView)
@@ -548,8 +566,8 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
 
 describe('the teammate is not valid', () => {
-    let spyApiInsertTeammate = null;
     let spyInsertTeammate = null;
+    let spyUpdateTeammate = null;
 
     beforeEach(() => {
         teammate = {
@@ -574,9 +592,9 @@ describe('the teammate is not valid', () => {
             errors: []
         }
         wrapper = shallowMount(App);
-        spyApiInsertTeammate = jest.fn()
-        ApiService.insertTeammate = spyApiInsertTeammate
+
         spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        spyUpdateTeammate = jest.spyOn(wrapper.vm, 'updateTeammate');
     })
 
     afterEach(() => {
@@ -613,8 +631,20 @@ describe('the teammate is not valid', () => {
         await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
-            .toHaveBeenCalledTimes(1);
-        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
+    it('does not update the teammate if email is invalid', async () => {
+        teammate.id = 1;
+        teammate.email.value = 'bad email'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
     })
 
@@ -628,8 +658,19 @@ describe('the teammate is not valid', () => {
         await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
-            .toHaveBeenCalledTimes(1);
-        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
+    it('does not update the teammate if name is invalid', async () => {
+        teammate.name.value = '1bad name1'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
     })
 
@@ -643,8 +684,19 @@ describe('the teammate is not valid', () => {
         await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
-            .toHaveBeenCalledTimes(1);
-        expect(spyApiInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
+    it('does not update the teammate if city is invalid', async () => {
+        teammate.name.value = '1bad city1'
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
     })
 })

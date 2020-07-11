@@ -64,34 +64,35 @@
         },
         methods: {
             handleTeammate(){
-                if(typeof this.newTeammate.id === 'undefined')
-                    this.insertTeammate();
-                else
-                    this.updateTeammate();
+                if(this.teammateIsValid()) {
+                    if (typeof this.newTeammate.id === 'undefined')
+                        this.insertTeammate();
+                    else
+                        this.updateTeammate();
+                }
             },
             insertTeammate() {
-                if(this.teammateIsValid()) {
-                    const avatarUrl = avatarBaseUrl
-                        + this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
-                    const newTeammate = {
-                        personalData: {
-                            name: this.newTeammate.name.value,
-                            role: this.roles.find(r => {
-                                return r.id === this.newTeammate.role.value
-                            }).name,
-                            gender: this.newTeammate.gender.value,
-                            photoUrl: avatarUrl,
-                            email: this.newTeammate.email.value,
-                            city: this.newTeammate.city.value
-                        },
-                        skills: this.newTeammate.skills
-                    }
-                    ApiService.insertTeammate(newTeammate)
-                        .then((response) => {
-                            newTeammate.id = response.data.id;
-                            this.updateViewAfterInsert(newTeammate);
-                        });
+                const avatarUrl = avatarBaseUrl
+                    + this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
+                const newTeammate = {
+                    personalData: {
+                        name: this.newTeammate.name.value,
+                        role: this.roles.find(r => {
+                            return r.id === this.newTeammate.role.value
+                        }).name,
+                        gender: this.newTeammate.gender.value,
+                        photoUrl: avatarUrl,
+                        email: this.newTeammate.email.value,
+                        city: this.newTeammate.city.value
+                    },
+                    skills: this.newTeammate.skills
                 }
+                ApiService.insertTeammate(newTeammate)
+                    .then((response) => {
+                        newTeammate.id = response.data.id;
+                        this.updateViewAfterInsert(newTeammate);
+                    });
+
             },
             teammateIsValid() {
                 this.newTeammate.errors = [];
@@ -126,16 +127,30 @@
                     })
             },
             updateTeammate() {
-                const newTeammate = this.newTeammate;
+                const newTeammate = {
+                    id: this.newTeammate.id,
+                    personalData: {
+                        name: this.newTeammate.name.value,
+                        role: this.roles.find(r => {
+                            return r.id === this.newTeammate.role.value
+                        }).name,
+                        gender: this.newTeammate.gender.value,
+                        photoUrl: this.newTeammate.photoUrl,
+                        email: this.newTeammate.email.value,
+                        city: this.newTeammate.city.value
+                    },
+                    skills: this.newTeammate.skills
+                }
                 ApiService.updateTeammate(newTeammate.id, newTeammate)
-                .then( () => {
-                    this.updateViewAfterUpdate();
-                })
+                    .then( () => {
+                        this.updateViewAfterUpdate(newTeammate);
+                    })
 
             },
-            updateViewAfterUpdate() {
-                let teammateIndex = this.teammates.indexOf(t => t.id === this.newTeammate.id);
-                this.teammates[teammateIndex] = this.newTeammate;
+            updateViewAfterUpdate(newTeammate) {
+                let teammateIndex = this.teammates.indexOf(
+                    this.teammates.find(t => t.id === newTeammate.id));
+                this.teammates[teammateIndex] = newTeammate;
                 this.clearNewTeammate();
                 this.getSkillsAndUpdateView();
             },
