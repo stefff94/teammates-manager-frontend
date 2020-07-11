@@ -241,6 +241,23 @@ describe('the teammate is inserted and the view is updated', () => {
             .toBeUndefined();
     })
 
+    it('does not trigger insertTeammate if the teammate has an id', async () => {
+        const spyHandleTeammate = jest.spyOn(wrapper.vm, 'handleTeammate');
+        const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        teammate.id = 1;
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(spyHandleTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(0);
+    })
+
     it('triggers the handleTeammate and insertTeammate methods if the teammate is valid and has no id', async () => {
         const spyHandleTeammate = jest.spyOn(wrapper.vm, 'handleTeammate');
         const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
