@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const backendBaseUrl = "http://localhost:8080/api";
-export const avatarBaseUrl = "https://semantic-ui.com";
 
 class ApiService {
 

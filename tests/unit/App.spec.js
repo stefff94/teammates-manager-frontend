@@ -7,6 +7,7 @@ import jQuery from 'jquery'
 import $ from 'jquery'
 import TagMultiselect from "../../src/components/TagMultiselect";
 import ApiService from "../../src/services/api.service";
+import {avatarBaseUrl} from "../../src/variables";
 
 global.jQuery = jQuery
 global.$ = $
@@ -196,14 +197,15 @@ describe('the form is reset', () => {
 })
 
 describe('the teammate is inserted and the view is updated', () => {
-    let spyApiInsertTeammate = null;
 
     beforeEach(() => {
         wrapper = shallowMount(App);
+
         const respInsertTeammate = {data: {
             id:1
             }}
         ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
+
         let respGetSkills = {
             0: {
                 id: 1,
@@ -215,7 +217,6 @@ describe('the teammate is inserted and the view is updated', () => {
             }
         }
         ApiService.getSkills.mockResolvedValue(respGetSkills);
-        spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
 
         const mockMath = Object.create(global.Math)
         mockMath.random = () => 0.9;
@@ -223,6 +224,7 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     afterEach(() => {
+        jest.clearAllMocks();
         wrapper.destroy();
     })
 
@@ -239,15 +241,31 @@ describe('the teammate is inserted and the view is updated', () => {
             .toBeUndefined();
     })
 
-    it('inserts the teammate if it is valid', async () => {
+    it('triggers the handleTeammate and insertTeammate methods if the teammate is valid and has no id', async () => {
+        const spyHandleTeammate = jest.spyOn(wrapper.vm, 'handleTeammate');
         const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
-        const spyUpdateViewAfterInsert = jest.spyOn(wrapper.vm, 'updateViewAfterInsert');
         await wrapper.setData({
             newTeammate: teammate
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
         await wrapper.vm.$nextTick();
+
+        expect(spyHandleTeammate)
+            .toHaveBeenCalledTimes(1);
+        expect(spyInsertTeammate)
+            .toHaveBeenCalledTimes(1);
+    })
+
+    it('inserts the teammate if the teammate is valid and has no id', async () => {
+        const spyInsertTeammate = jest.spyOn(wrapper.vm, 'insertTeammate');
+        const spyUpdateViewAfterInsert = jest.spyOn(wrapper.vm, 'updateViewAfterInsert');
+        const spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
+        await wrapper.setData({
+            newTeammate: teammate
+        })
+
+        wrapper.vm.handleTeammate();
         await flushPromises();
 
         expect(spyInsertTeammate)
@@ -267,7 +285,7 @@ describe('the teammate is inserted and the view is updated', () => {
                     return r.id === teammate.role.value
                 }).name,
                 gender: teammate.gender.value,
-                photoUrl: "https://semantic-ui.com"
+                photoUrl: avatarBaseUrl
                     + wrapper.vm.$data.avatars[teammate.gender.value][2]
                 ,
                 email: teammate.email.value,
@@ -281,8 +299,7 @@ describe('the teammate is inserted and the view is updated', () => {
             newTeammate: teammate
         })
 
-        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
+        wrapper.vm.insertTeammate()
         await flushPromises();
 
         expect(wrapper.vm.$data.teammates)
@@ -294,9 +311,6 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     it('recovers the skills from the database', async () => {
-        wrapper.vm.getSkillsAndUpdateView()
-        await flushPromises();
-
         const skill1 = {
             code: 'Ja9000000',
             name: 'Java'
@@ -306,6 +320,9 @@ describe('the teammate is inserted and the view is updated', () => {
             code: 'Vu9000000',
             name: 'Vue js'
         }
+
+        wrapper.vm.getSkillsAndUpdateView()
+        await flushPromises();
 
         expect(wrapper.vm.$data.skills)
             .toContainEqual(skill1);
