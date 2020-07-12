@@ -51,6 +51,10 @@
     text-align: center;
 }
 
+.text-left {
+    text-align: left;
+}
+
 .m20 {
     margin: 20px !important;
 }
@@ -76,7 +80,11 @@
     opacity: 0;
 }
 
-.delete {
+.trash {
     color: red;
+    cursor: pointer;
+}
+
+.pencil {
     cursor: pointer;
 }

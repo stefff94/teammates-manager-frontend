@@ -16,6 +16,15 @@ class ApiService {
         return axios.get(backendBaseUrl + '/skills');
     }
 
+    static getAllTeammates() {
+        return axios.get(backendBaseUrl + "/teammates");
+    }
+
+    static deleteTeammate(id) {
+        const url = backendBaseUrl + "/teammates/delete/" + id;
+
+        return axios.delete(url);
+    }
 }
 
 export default ApiService
