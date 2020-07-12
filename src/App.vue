@@ -138,7 +138,9 @@
                                 value: teammate.personalData.city
                             },
                             role: {
-                                value: teammate.personalData.role
+                                value: this.roles.find(
+                                    r => r.name === teammate.personalData.role
+                                ).id
                             },
                             skills: teammate.skills,
                             errors: []
