@@ -29,6 +29,7 @@
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
     import ApiService from "./services/api.service";
+    import $ from 'jquery';
     import { avatars, avatarBaseUrl, genders, roles, rules } from "./variables";
 
     export default {
@@ -36,6 +37,7 @@
         components: {TagMultiselect, PersonalDataForm},
         mounted() {
             this.resetSelects();
+            this.getSkillsAndUpdateView();
         },
         computed: {
             submitDisabled() {
@@ -77,9 +79,9 @@
                 const newTeammate = {
                     personalData: {
                         name: this.newTeammate.name.value,
-                        role: this.roles.find(r => {
-                            return r.id === this.newTeammate.role.value
-                        }).name,
+                        role: this.roles.find(r =>
+                            r.id === this.newTeammate.role.value)
+                            .name,
                         gender: this.newTeammate.gender.value,
                         photoUrl: avatarUrl,
                         email: this.newTeammate.email.value,
@@ -165,7 +167,7 @@
                 this.resetSelects();
             },
             resetSelects() {
-                global.$('.ui.dropdown').dropdown('clear');
+                $('.ui.dropdown').dropdown('clear');
             }
         }
     }
