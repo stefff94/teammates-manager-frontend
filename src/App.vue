@@ -94,7 +94,6 @@
                         newTeammate.id = response.data.id;
                         this.updateViewAfterInsert(newTeammate);
                     });
-
             },
             teammateIsValid() {
                 this.newTeammate.errors = [];
@@ -118,11 +117,12 @@
                 let self = this;
                 this.skills = [];
                 ApiService.getSkills()
-                    .then( (result) => {
-                        Object.keys(result).forEach((savedSkill) => {
+                    .then( (response) => {
+                        let skills = response.data;
+                        skills.forEach((savedSkill) => {
                             let skill = {
-                                code: result[savedSkill].name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
-                                name: result[savedSkill].name
+                                code: savedSkill.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
+                                name: savedSkill.name
                             }
                             self.skills.push(skill);
                         })

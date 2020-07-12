@@ -35,17 +35,11 @@ beforeEach(() => {
         }}
     ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
 
-    let respGetSkills = {
-        0: {
-            id: 1,
-            name: 'Java'
-        },
-        1: {
-            id: 2,
-            name: 'Vue js'
-        }
-    }
-    ApiService.getSkills.mockResolvedValue(respGetSkills);
+    const respGetSkills = [
+        { id: 1, name: 'Java' },
+        { id: 2, name: 'Vue js' }
+    ]
+    ApiService.getSkills.mockResolvedValue({data: respGetSkills});
 
 })
 
@@ -688,7 +682,7 @@ describe('The skills are loaded', () => {
             {id: 1, name: 'Java'},
             {id: 2, name: 'Vue js'}
         ]
-        ApiService.getSkills.mockResolvedValue(respGetSkills);
+        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
 
         spyGetSkillAndUpdateView = jest.spyOn(App.methods, "getSkillsAndUpdateView");
 
@@ -699,9 +693,6 @@ describe('The skills are loaded', () => {
         expect(spyGetSkillAndUpdateView)
             .toHaveBeenCalledTimes(1);
     })
-
-
-
 })
 
 afterEach(() => {
