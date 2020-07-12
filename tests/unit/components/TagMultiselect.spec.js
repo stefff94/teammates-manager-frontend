@@ -13,6 +13,10 @@ beforeEach(() => {
             }
         }
     });
+
+    const mockMath = Object.create(global.Math)
+    mockMath.random = () => 0.9;
+    global.Math = mockMath;
 })
 
 afterEach(() => {
@@ -34,6 +38,15 @@ describe('TagMultiselect.vue', () => {
         expect(multiSelect
             .attributes('taggable'))
             .toBeTruthy();
+        expect(multiSelect
+            .attributes('label'))
+            .toMatch('name');
+        expect(multiSelect
+            .attributes('tagplaceholder'))
+            .toMatch('Add this as a new skill');
+        expect(multiSelect
+            .attributes('trackby'))
+            .toMatch('code')
     })
 
     it('triggers the addSkill function on tag event', async () => {
@@ -47,14 +60,20 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('renders the teammate skills', async () => {
-        wrapper.vm.teammate.skills.push({code: 'sk1', name: 'skill1'})
-        wrapper.vm.teammate.skills.push({code: 'sk2', name: 'skill2'})
+        const skill1 = {code: 'sk1', name: 'skill1'};
+        const skill2 = {code: 'sk2', name: 'skill2'};
+        wrapper.vm.teammate.skills.push(skill1);
+        wrapper.vm.teammate.skills.push(skill2);
         await wrapper.vm.$nextTick()
 
         const multiSelect = wrapper.findComponent(Multiselect);
 
         expect(multiSelect.props().value.length)
             .toBe(2);
+        expect(multiSelect.props().value[0])
+            .toEqual(skill1);
+        expect(multiSelect.props().value[1])
+            .toEqual(skill2);
     })
 
     it('updates the options and skills array', () => {
@@ -67,10 +86,10 @@ describe('TagMultiselect.vue', () => {
         expect(wrapper.vm.options[0].name)
             .toMatch('skill');
         expect(wrapper.vm.options[0].code)
-            .toContain('sk');
+            .toMatch('sk900000');
         expect(wrapper.vm.teammate.skills[0].name)
             .toMatch('skill');
         expect(wrapper.vm.teammate.skills[0].code)
-            .toContain('sk')
+            .toMatch('sk9000000')
     })
 })
