@@ -595,7 +595,7 @@ describe('the teammate is not valid', () => {
     })
 
     it('does not insert the teammate if email is invalid', async () => {
-        newTeammate.email.value = 'bad email'
+        newTeammate.email.value = 'bad email';
         await wrapper.setData({
             newTeammate: newTeammate
         })
@@ -605,6 +605,10 @@ describe('the teammate is not valid', () => {
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field email")
+        expect(wrapper.vm.newTeammate.email.error)
+            .toBeTruthy();
     })
 
     it('does not update the teammate if email is invalid', async () => {
@@ -619,6 +623,10 @@ describe('the teammate is not valid', () => {
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field email")
+        expect(wrapper.vm.newTeammate.email.error)
+            .toBeTruthy();
     })
 
     it('does not insert the teammate if name is invalid', async () => {
@@ -632,6 +640,10 @@ describe('the teammate is not valid', () => {
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field name")
+        expect(wrapper.vm.newTeammate.name.error)
+            .toBeTruthy();
     })
 
     it('does not update the teammate if name is invalid', async () => {
@@ -645,10 +657,14 @@ describe('the teammate is not valid', () => {
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field name")
+        expect(wrapper.vm.newTeammate.name.error)
+            .toBeTruthy();
     })
 
     it('does not insert the teammate if city is invalid', async () => {
-        newTeammate.name.value = '1bad city1'
+        newTeammate.city.value = '1bad city1'
         await wrapper.setData({
             newTeammate: newTeammate
         })
@@ -658,10 +674,14 @@ describe('the teammate is not valid', () => {
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field city")
+        expect(wrapper.vm.newTeammate.city.error)
+            .toBeTruthy();
     })
 
     it('does not update the teammate if city is invalid', async () => {
-        newTeammate.name.value = '1bad city1'
+        newTeammate.city.value = '1bad city1'
         await wrapper.setData({
             newTeammate: newTeammate
         })
@@ -671,6 +691,10 @@ describe('the teammate is not valid', () => {
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
+        expect(wrapper.vm.newTeammate.errors)
+            .toContain("Please enter a correct value for field city")
+        expect(wrapper.vm.newTeammate.city.error)
+            .toBeTruthy();
     })
 })
 
