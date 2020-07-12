@@ -39,9 +39,7 @@ beforeEach(() => {
             },
             skills: [
                 { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" },
-                { id: 3, name: "Javascript" },
-                { id: 4, name: "Vue js" }
+                { id: 2, name: "Spring Boot" }
             ],
         },
         {
@@ -56,9 +54,7 @@ beforeEach(() => {
             },
             skills: [
                 { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" },
-                { id: 3, name: "Javascript" },
-                { id: 4, name: "Vue js" }
+                { id: 2, name: "Spring Boot" }
             ],
         }
     ]
@@ -77,13 +73,11 @@ beforeEach(() => {
             value: "Prato"
         },
         role: {
-            value: "Student"
+            value: "R1"
         },
         skills: [
-            { id: 1, name: "Java" },
-            { id: 2, name: "Spring Boot" },
-            { id: 3, name: "Javascript" },
-            { id: 4, name: "Vue js" }
+            { code: 'Ja9000000', name: "Java" },
+            { code: 'Sp9000000', name: "Spring Boot" }
         ],
         errors: []
     }
@@ -106,6 +100,10 @@ beforeEach(() => {
 
     const resp = { data: teammates };
     ApiService.getAllTeammates.mockResolvedValue(resp);
+
+    const mockMath = Object.create(global.Math)
+    mockMath.random = () => 0.9;
+    global.Math = mockMath;
 });
 
 describe("App.vue", () => {
@@ -556,10 +554,6 @@ describe('the teammate is inserted and the view is updated', () => {
         spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
         spyClearNewTeammate = jest.spyOn(App.methods, 'clearNewTeammate');
         spyGetSkillsAndUpdateView = jest.spyOn(App.methods, 'getSkillsAndUpdateView');
-
-        const mockMath = Object.create(global.Math)
-        mockMath.random = () => 0.9;
-        global.Math = mockMath;
 
         wrapper = shallowMount(App);
 

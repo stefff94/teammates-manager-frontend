@@ -95,94 +95,6 @@ beforeEach(() => {
     global.Math = mockMath;
 });
 
-describe('The teammate is saved after pressing submit', () => {
-    beforeEach(() => {
-        wrapper = mount(App,{
-            data: function() {
-                return{
-                    skills: [],
-                    newTeammate: {
-                        name: {},
-                        gender: {},
-                        email: {},
-                        city: {},
-                        role: {},
-                        skills: [],
-                        errors: []
-                    },
-                    roles: roles,
-                    genders: genders,
-                    avatars: avatars,
-                    teammates: [],
-                    rules: rules
-                }
-            }
-        });
-    });
-
-    it('saves the teammate data from the forms', async () => {
-        let personalDataForm = wrapper.findComponent(PersonalDataForm);
-
-        const nameInputField = personalDataForm.findAll('.three.fields input').at(0)
-        nameInputField.setValue(newTeammate.name.value)
-
-        const emailInputField = personalDataForm.findAll('.three.fields input').at(1)
-        emailInputField.setValue(newTeammate.email.value)
-
-        const genderSelectField = personalDataForm.find(".three.fields .field:nth-of-type(3) select");
-        genderSelectField.findAll('option')
-            .at(1)
-            .element
-            .selected = true;
-        genderSelectField.trigger('change');
-
-        const cityInputField = personalDataForm.findAll('.two.fields input').at(0)
-        cityInputField.setValue(newTeammate.city.value)
-
-        const roleSelectField = personalDataForm.find(".two.fields select");
-        roleSelectField.findAll('option')
-            .at(1)
-            .element
-            .selected = true;
-        roleSelectField.trigger('change');
-
-        const tagMultiselect = wrapper.findComponent(TagMultiselect);
-        const multiselect = tagMultiselect.findComponent(Multiselect);
-
-        newTeammate.skills.forEach(s => {
-            multiselect.vm.$emit('tag', s.name);
-        })
-
-        const expectedTeammate = {
-            id: 3,
-            personalData: {
-                name: newTeammate.name.value,
-                role: wrapper.vm.roles.find(r => {
-                    return r.id === newTeammate.role.value
-                }).name,
-                gender: newTeammate.gender.value,
-                photoUrl: avatarBaseUrl
-                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
-                ,
-                email: newTeammate.email.value,
-                city: newTeammate.city.value
-            },
-            skills: [
-                {"code": "Ja9000000", "name": "Java"},
-                {"code": "Sp9000000", "name": "Spring Boot"}
-            ]
-        }
-
-        await wrapper.vm.$nextTick();
-
-        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
-
-        expect(wrapper.vm.teammates)
-            .toContainEqual(expectedTeammate);
-    })
-})
-
 describe("App.vue", () => {
 
     beforeEach(() => {
@@ -269,7 +181,6 @@ describe("The teammate is being updated after performing the edit operation", ()
         expect(wrapper.vm.newTeammate)
             .toEqual(newTeammate);
     });
-
 });
 
 describe('The teammate is saved after pressing submit', () => {
@@ -277,14 +188,15 @@ describe('The teammate is saved after pressing submit', () => {
         const resp = { data: {
                 id: 1
             }};
-
         ApiService.insertTeammate.mockResolvedValue(resp);
 
         let respGetSkills = [
             { id: 1, name: "Java" },
             { id: 2, name: "Spring Boot" }
         ]
-        ApiService.getSkills.mockResolvedValue(respGetSkills);
+        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+
+        ApiService.getAllTeammates.mockResolvedValue({data: []});
 
         wrapper = mount(App,{
             data: function() {
@@ -310,7 +222,6 @@ describe('The teammate is saved after pressing submit', () => {
     });
 
     it('saves the teammate data from the forms', async () => {
-
         let personalDataForm = wrapper.findComponent(PersonalDataForm);
 
         const nameInputField = personalDataForm.findAll('.three.fields input').at(0)
@@ -376,7 +287,7 @@ describe('The teammate is saved after pressing submit', () => {
 describe('the skills are added to App.skills', () => {
     beforeEach(() => {
 
-        ApiService.getSkills.mockResolvedValue([]);
+        ApiService.getSkills.mockResolvedValue({data: []});
 
         wrapper = mount(App,{
             data: function() {
