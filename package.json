@@ -21,7 +21,8 @@
     "fomantic-ui": "^2.8.6",
     "jquery": "^3.5.1",
     "vue": "^2.6.11",
-    "vue-multiselect": "^2.1.6"
+    "vue-multiselect": "^2.1.6",
+    "flush-promises": "^1.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.6",

@@ -4,14 +4,14 @@ const backendBaseUrl = "http://localhost:8080/api";
 
 class ApiService {
 
-    static async getAllTeammates() {
-        return await axios.get(backendBaseUrl + "/teammates");
+    static getAllTeammates() {
+        return axios.get(backendBaseUrl + "/teammates");
     }
 
-    static async deleteTeammate(id) {
+    static deleteTeammate(id) {
         const url = backendBaseUrl + "/teammates/delete/" + id;
 
-        return await axios.delete(url);
+        return axios.delete(url);
     }
 }
 

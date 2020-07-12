@@ -27,13 +27,7 @@
     export default {
         name: "CardFront",
         props: {
-            data: {
-                photoUrl: String,
-                name: String,
-                role: String,
-                email: String,
-                city: String
-            }
+            data: Object
         }
     }
 </script>

@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import App from "../../src/App";
 import Card from "../../src/components/Card";
 import ApiService from "../../src/services/api.service";
+import flushPromises from "flush-promises";
 
 let wrapper = null;
 let teammates = [];
@@ -22,10 +23,10 @@ beforeEach(() => {
                 gender: "M"
             },
             skills: [
-                { id: "1", name: "Java" },
-                { id: "2", name: "Spring Boot" },
-                { id: "3", name: "Javascript" },
-                { id: "4", name: "Vue js" }
+                { id: 1, name: "Java" },
+                { id: 2, name: "Spring Boot" },
+                { id: 3, name: "Javascript" },
+                { id: 4, name: "Vue js" }
             ],
         },
         {
@@ -39,10 +40,10 @@ beforeEach(() => {
                 gender: "M"
             },
             skills: [
-                { id: "1", name: "Java" },
-                { id: "2", name: "Spring Boot" },
-                { id: "3", name: "Javascript" },
-                { id: "4", name: "Vue js" }
+                { id: 1, name: "Java" },
+                { id: 2, name: "Spring Boot" },
+                { id: 3, name: "Javascript" },
+                { id: 4, name: "Vue js" }
             ],
         }
     ]
@@ -63,10 +64,10 @@ beforeEach(() => {
             value: "Student"
         },
         skills: [
-            { id: "1", name: "Java" },
-            { id: "2", name: "Spring Boot" },
-            { id: "3", name: "Javascript" },
-            { id: "4", name: "Vue js" }
+            { id: 1, name: "Java" },
+            { id: 2, name: "Spring Boot" },
+            { id: 3, name: "Javascript" },
+            { id: 4, name: "Vue js" }
         ]
     }
 });
@@ -74,10 +75,13 @@ beforeEach(() => {
 describe("App.vue", () => {
 
     beforeEach(() => {
+        const resp = { data: teammates };
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+
         wrapper = shallowMount(App, {
             data: () => {
                 return {
-                    teammates: teammates
+                    teammates: []
                 }
             }
         });
@@ -215,8 +219,10 @@ describe("The teammate is deleted correctly", () => {
     it("delete the teammate", async () => {
         const teammateToDelete = wrapper.vm.teammates[0].id;
 
-        await wrapper.findAllComponents(Card).wrappers[0]
+        wrapper.findAllComponents(Card).wrappers[0]
             .vm.$emit("delete", teammateToDelete);
+
+        await flushPromises();
 
         expect(spyDeleteMethod)
             .toHaveBeenCalledTimes(1);
@@ -252,7 +258,9 @@ describe("The teammate is not deleted after performing delete operation", () => 
     it("shows an error message", async () => {
         const teammateToDelete = 100;
 
-        await wrapper.vm.deleteTeammate(teammateToDelete);
+        wrapper.vm.deleteTeammate(teammateToDelete);
+
+        await flushPromises();
 
         const errorMessage = wrapper.find(".ui.error.floating.message.mt35");
 
@@ -289,11 +297,13 @@ describe("The teammate is being updated after performing the edit operation", ()
         });
     });
 
-    it("it populates the corresponding object", () => {
+    it("it populates the corresponding object", async () => {
         const teammateToUpdate = wrapper.vm.teammates[0].id;
 
         wrapper.findAllComponents(Card).wrappers[0]
             .vm.$emit("update", teammateToUpdate);
+
+        await flushPromises();
 
         expect(spyUpdateMethod)
             .toHaveBeenCalledTimes(1);

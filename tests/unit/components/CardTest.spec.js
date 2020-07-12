@@ -20,10 +20,10 @@ beforeEach(() => {
                     city: "Prato"
                 },
                 skills: [
-                    { id: "1", name: "Java" },
-                    { id: "2", name: "Spring Boot" },
-                    { id: "3", name: "Javascript" },
-                    { id: "4", name: "Vue js" }
+                    { id: 1, name: "Java" },
+                    { id: 2, name: "Spring Boot" },
+                    { id: 3, name: "Javascript" },
+                    { id: 4, name: "Vue js" }
                 ]
             }
         }

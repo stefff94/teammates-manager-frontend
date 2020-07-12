@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     this.getAllTeammatesAndUpdateView()
-            .catch(() => {});
+            //.catch(() => {});
   },
   data() {
     return {
@@ -53,7 +53,7 @@ export default {
     }
   },
   methods: {
-    async getAllTeammatesAndUpdateView() {
+    getAllTeammatesAndUpdateView() {
       let self = this;
 
       ApiService.getAllTeammates()
@@ -63,10 +63,10 @@ export default {
                 self.errorLoadingTeammates = false;
               }).catch(() => self.errorLoadingTeammates = true);
     },
-    async deleteTeammate(id) {
+    deleteTeammate(id) {
       let self = this;
 
-      await ApiService.deleteTeammate(id)
+      ApiService.deleteTeammate(id)
               .then(() => {
                 self.updateViewAfterDelete(id);
                 self.errorDeletingTeammate = false;

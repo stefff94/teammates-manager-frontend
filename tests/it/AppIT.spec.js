@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 import App from "../../src/App";
 import Card from "../../src/components/Card";
 import ApiService from "../../src/services/api.service";
+import flushPromises from "flush-promises";
 
 let wrapper = null;
 let teammates = null;
@@ -72,11 +73,15 @@ beforeEach(() => {
 describe("App.vue", () => {
 
     beforeEach(() => {
+        const resp = { data: teammates };
+
+        ApiService.getAllTeammates.mockResolvedValue(resp);
+
         // mount method mounts automatically also child components
         wrapper = mount(App, {
             data: () => {
                 return {
-                    teammates: teammates
+                    teammates: []
                 }
             }
         });
@@ -113,8 +118,10 @@ describe("The teammate is deleted", () => {
     it("delete the teammate", async () => {
         const teammateToDelete = teammates[0].id;
 
-        await wrapper.findAllComponents(Card).wrappers[0]
+        wrapper.findAllComponents(Card).wrappers[0]
             .vm.deleteTeammate(teammateToDelete);
+
+        await flushPromises();
 
         expect(wrapper.vm.teammates
             .find(t => t.id === teammateToDelete))
