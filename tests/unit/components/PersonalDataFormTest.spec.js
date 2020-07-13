@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PersonalDataForm from "../../../src/components/PersonalDataForm";
+import {genders, roles} from "../../../src/variables";
 
 let wrapper = null;
 
@@ -22,14 +23,8 @@ beforeEach(() => {
                 },
                 role: {}
             },
-            genders: [
-                {id: 'M', name: 'Male'},
-                {id: 'F', name: 'Female'}
-                ],
-            roles: [
-                {id: 'R0', name: 'Student'},
-                {id: 'R1', name: 'Developer'}
-            ]
+            genders: genders,
+            roles: roles
         }
     });
 })
@@ -237,7 +232,7 @@ describe("PersonalDataForm.vue", () => {
         genderSelectField.trigger('change');
 
         expect(wrapper.vm.teammate.gender.value)
-            .toMatch("F");
+            .toMatch('F');
     })
 
     it('renders the city input field', () => {
@@ -297,6 +292,7 @@ describe("PersonalDataForm.vue", () => {
 
     it("renders the role dropdown select when teammate has no role selected", () => {
         const roleSelectField = wrapper.find(".two.fields .field:nth-of-type(2) select");
+        const roleOptions = roleSelectField.findAll('option');
 
         expect(roleSelectField
             .exists())
@@ -313,8 +309,43 @@ describe("PersonalDataForm.vue", () => {
             .toBe("");
         expect(wrapper.vm.teammate.role.value)
             .toBeUndefined();
-        expect(roleSelectField.findAll('option').length)
-            .toBe(3);
+        expect(roleOptions.length)
+            .toBe(6);
+        expect(roleOptions.at(1)
+            .element
+            .getAttribute('value'))
+            .toMatch('R1');
+        expect(roleOptions.at(1)
+            .text())
+            .toMatch('Student');
+        expect(roleOptions.at(2)
+            .element
+            .getAttribute('value'))
+            .toMatch('R2');
+        expect(roleOptions.at(2)
+            .text())
+            .toMatch('Frontend developer');
+        expect(roleOptions.at(3)
+            .element
+            .getAttribute('value'))
+            .toMatch('R3');
+        expect(roleOptions.at(3)
+            .text())
+            .toMatch('Backend developer');
+        expect(roleOptions.at(4)
+            .element
+            .getAttribute('value'))
+            .toMatch('R4');
+        expect(roleOptions.at(4)
+            .text())
+            .toMatch('Full Stack developer');
+        expect(roleOptions.at(5)
+            .element
+            .getAttribute('value'))
+            .toMatch('R5');
+        expect(roleOptions.at(5)
+            .text())
+            .toMatch('Analyst Programmer');
     })
 
     it('updates the teammate.role prop', () => {
