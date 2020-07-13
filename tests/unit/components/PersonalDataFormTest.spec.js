@@ -193,6 +193,7 @@ describe("PersonalDataForm.vue", () => {
 
     it("renders the gender dropdown select when teammate has no gender selected", () => {
         const genderSelectField = wrapper.find(".three.fields .field:nth-of-type(3) select");
+        const genderOptions = genderSelectField.findAll('option');
 
         expect(genderSelectField
             .exists())
@@ -206,11 +207,25 @@ describe("PersonalDataForm.vue", () => {
         expect(genderSelectField
             .element
             .value)
-            .toBe("");
+            .toMatch("");
         expect(wrapper.vm.teammate.gender.value)
             .toBeUndefined();
-        expect(genderSelectField.findAll('option').length)
+        expect(genderOptions.length)
             .toBe(3);
+        expect(genderOptions.at(1)
+            .element
+            .getAttribute('value'))
+            .toMatch('M');
+        expect(genderOptions.at(1)
+            .text())
+            .toMatch('Male');
+        expect(genderOptions.at(2)
+            .element
+            .getAttribute('value'))
+            .toMatch('F');
+        expect(genderOptions.at(2)
+            .text())
+            .toMatch('Female');
     })
 
     it('updates the teammate.gender prop', () => {
