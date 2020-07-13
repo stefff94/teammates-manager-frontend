@@ -884,6 +884,23 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         expect(spyGetSkillsAndUpdateView)
             .toHaveBeenCalledTimes(2);
     })
+
+    it('shows an error message if unable to update the teammate', async () => {
+        ApiService.updateTeammate.mockRejectedValue(null);
+        await wrapper.vm.$forceUpdate();
+        await wrapper.setData({newTeammate: newTeammate});
+
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        const errorList = wrapper.findAll('.ui.error.message.mt30 .list li');
+
+        expect(errorList.length)
+            .toBe(1);
+        expect(errorList.at(0)
+            .text())
+            .toMatch("Error while updating the teammate");
+    })
 })
 
 describe('the teammate is not valid', () => {
