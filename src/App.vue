@@ -156,6 +156,8 @@
                 });
             },
             handleTeammate(){
+                this.errorInsertingTeammate = false;
+                this.errorUpdatingTeammate = false;
                 if(this.teammateIsValid()) {
                     if (typeof this.newTeammate.id === 'undefined')
                         this.insertTeammate();
