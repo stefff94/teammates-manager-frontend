@@ -212,10 +212,7 @@ describe('The teammate is created', () => {
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
             },
-            skills: [
-                { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" }
-            ]
+            skills: newTeammate.skills
         }
 
         await wrapper.vm.$nextTick();
