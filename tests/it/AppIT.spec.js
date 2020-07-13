@@ -273,7 +273,7 @@ describe("The teammate is being updated after performing the edit operation", ()
                     return r.id === 'R2'
                 }).name,
                 gender: 'F',
-                photoUrl: wrapper.vm.avatars[selectedGender.value][2]
+                photoUrl: wrapper.vm.avatars[selectedGender.getAttribute('value')][2]
                 ,
                 email: 'NewEmail@email.it',
                 city: 'new city'
