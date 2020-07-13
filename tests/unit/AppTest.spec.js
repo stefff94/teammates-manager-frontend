@@ -975,6 +975,7 @@ describe('the teammate is not valid', () => {
     })
 
     it('does not update the teammate if name is invalid', async () => {
+        newTeammate.id = 1;
         newTeammate.name.value = '1bad name1'
         await wrapper.setData({
             newTeammate: newTeammate
@@ -1009,6 +1010,7 @@ describe('the teammate is not valid', () => {
     })
 
     it('does not update the teammate if city is invalid', async () => {
+        newTeammate.id = 1;
         newTeammate.city.value = '1bad city1'
         await wrapper.setData({
             newTeammate: newTeammate
