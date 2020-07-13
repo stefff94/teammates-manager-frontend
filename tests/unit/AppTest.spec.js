@@ -794,28 +794,46 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         await flushPromises();
         const teammatesLength = wrapper.vm.teammates.length;
 
-        newTeammate.id = 1;
-        newTeammate.name.value = 'New Name';
-        newTeammate.gender.value = 'F';
-        newTeammate.photoUrl = wrapper.vm.avatars[newTeammate.gender.value][2];
+        const updatedTeammate = {
+            id: 1,
+            name: {
+                value: 'New name'
+            },
+            gender: {
+                value: 'F'
+            },
+            email: {
+                value: 'newemail@email.it'
+            },
+            city: {
+                value: 'NewCity'
+            },
+            role: {
+                value: 'R2'
+            },
+            skills: [
+                {code: 'sk1', name: 'skill1'}
+            ],
+            errors: [],
+            photoUrl: teammates[0].personalData.photoUrl
+        }
         await wrapper.setData({
-            newTeammate: newTeammate
+            newTeammate: updatedTeammate
         })
 
         const expectedTeammate = {
             id: 1,
             personalData: {
-                name: newTeammate.name.value,
+                name: updatedTeammate.name.value,
                 role: wrapper.vm.roles.find(r => {
-                    return r.id === newTeammate.role.value
+                    return r.id === updatedTeammate.role.value
                 }).name,
-                gender: newTeammate.gender.value,
-                photoUrl: newTeammate.photoUrl
-                ,
-                email: newTeammate.email.value,
-                city: newTeammate.city.value
+                gender: updatedTeammate.gender.value,
+                photoUrl: wrapper.vm.avatars[newTeammate.gender.value][2],
+                email: updatedTeammate.email.value,
+                city: updatedTeammate.city.value
             },
-            skills: newTeammate.skills
+            skills: updatedTeammate.skills
         }
 
         wrapper.vm.updateTeammate()
