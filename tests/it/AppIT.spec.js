@@ -70,8 +70,8 @@ beforeEach(() => {
             value: "R1"
         },
         skills: [
-            { id: "Ja9000000", name: "Java" },
-            { id: "Sp9000000", name: "Spring Boot" }
+            { id: 1, name: "Java" },
+            { id: 2, name: "Spring Boot" }
         ],
         errors: []
     }
@@ -167,6 +167,9 @@ describe('The teammate is created', () => {
     });
 
     it('saves the teammate data from the forms', async () => {
+        await wrapper.setData({
+            skills: []
+        })
         let personalDataForm = wrapper.findComponent(PersonalDataForm);
 
         const nameInputField = personalDataForm.findAll('.three.fields input').at(0)
@@ -284,7 +287,7 @@ describe('the skills are added to App.skills', () => {
 
     it('adds the skill to the options', () => {
         const tagMultiselect = wrapper.findComponent(TagMultiselect);
-        const newSkill = {id: 'sk9000000', name:'skill'}
+        const newSkill = {id: 1, name:'skill'}
 
         tagMultiselect.vm.addSkill(newSkill.name);
 

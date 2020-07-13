@@ -97,7 +97,7 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('sets the correct id if the options array is empty', async () => {
-        const skill = {id: 0, name: 'skill0'};
+        const skill = {id: 1, name: 'skill1'};
 
         wrapper.vm.addSkill(skill.name);
 
@@ -112,10 +112,10 @@ describe('TagMultiselect.vue', () => {
     it('sets the correct id if the options array is not empty', async () => {
         await wrapper.setProps({
             options: [
-                {id: 0, name: 'skill0'}
+                {id: 1, name: 'skill1'}
             ]
         })
-        const skill = {id: 1, name: 'skill1'};
+        const skill = {id: 2, name: 'skill2'};
 
         wrapper.vm.addSkill(skill.name);
 
