@@ -357,7 +357,7 @@ describe("PersonalDataForm.vue", () => {
         roleSelectField.trigger('change');
 
         expect(wrapper.vm.teammate.role.value)
-            .toMatch("R1");
+            .toMatch("R2");
     })
 
 
