@@ -544,7 +544,7 @@ describe('the teammate is inserted and the view is updated', () => {
                 value: 'R1'
             },
             skills: [
-                {id: 'sk1', name: 'skill1'}
+                {id: 'sk9000000', name: 'skill1'}
             ],
             errors: []
         }
