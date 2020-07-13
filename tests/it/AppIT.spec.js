@@ -81,6 +81,8 @@ beforeEach(() => {
         }}
     ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
+    ApiService.updateTeammate.mockResolvedValue(null);
+
     const respGetSkills = [
         { id: 1, name: 'Java' },
         { id: 2, name: 'Vue js' }
@@ -113,6 +115,7 @@ describe("App.vue", () => {
     });
 
     it("renders the Cards components correctly", () => {
+
         const cards = wrapper.findAllComponents(Card);
 
         cards.wrappers.forEach(card => {
@@ -158,28 +161,71 @@ describe("The teammate is deleted", () => {
 describe("The teammate is being updated after performing the edit operation", () => {
 
     beforeEach(() => {
-        const resp = { data: teammates };
+        const resp = { data: {
+                id: 1
+            }};
+        ApiService.insertTeammate.mockResolvedValue(resp);
 
-        ApiService.getAllTeammates.mockResolvedValue(resp);
+        let respGetSkills = [
+            { id: 1, name: "Java" },
+            { id: 2, name: "Spring Boot" }
+        ]
+        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
 
-        wrapper = mount(App, {
-            data: () => {
-                return {
+        wrapper = mount(App,{
+            data: function() {
+                return{
+                    skills: [],
+                    newTeammate: {
+                        name: {},
+                        gender: {},
+                        email: {},
+                        city: {},
+                        role: {},
+                        skills: [],
+                        errors: []
+                    },
+                    roles: roles,
+                    genders: genders,
+                    avatars: avatars,
                     teammates: [],
-                    newTeammate: {}
+                    rules: rules
                 }
             }
         });
     });
 
     it("it populates the newTeammate object", () => {
+        const expectedNewTeammate = {
+            id: 1,
+            name: {
+                value: "Stefano Vannucchi"
+            },
+            gender: {
+                value: "M"
+            },
+            email: {
+                value: "stefano.vannucchi@stud.unifi.it"
+            },
+            city: {
+                value: "Prato"
+            },
+            role: {
+                value: "R1"
+            },
+            skills: [
+                { code: "Ja9000000", name: "Java" },
+                { code: "Sp9000000", name: "Spring Boot" }
+            ],
+            errors: []
+        }
         const teammateToUpdate = teammates[0].id;
 
         wrapper.findAllComponents(Card).wrappers[0]
             .vm.updateTeammate(teammateToUpdate);
 
         expect(wrapper.vm.newTeammate)
-            .toEqual(newTeammate);
+            .toEqual(expectedNewTeammate);
     });
 
     it("updates the teammate's card with the new data", async () => {
@@ -187,6 +233,8 @@ describe("The teammate is being updated after performing the edit operation", ()
 
         wrapper.findAllComponents(Card).wrappers[0]
             .vm.updateTeammate(teammateToUpdate);
+
+        await wrapper.vm.$nextTick();
 
         let personalDataForm = wrapper.findComponent(PersonalDataForm);
 
@@ -240,6 +288,8 @@ describe("The teammate is being updated after performing the edit operation", ()
         }
 
         await wrapper.vm.$nextTick();
+
+        console.log(wrapper.vm.newTeammate.name.value);
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
         await wrapper.vm.$nextTick();
