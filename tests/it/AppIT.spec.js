@@ -160,13 +160,15 @@ describe("The teammate is deleted", () => {
 
 describe("The teammate is being updated after performing the edit operation", () => {
 
+    let respGetSkills = null;
+
     beforeEach(() => {
         const resp = { data: {
                 id: 1
             }};
         ApiService.insertTeammate.mockResolvedValue(resp);
 
-        let respGetSkills = [
+        respGetSkills = [
             { id: 1, name: "Java" },
             { id: 2, name: "Spring Boot" }
         ]
@@ -213,10 +215,7 @@ describe("The teammate is being updated after performing the edit operation", ()
             role: {
                 value: "R1"
             },
-            skills: [
-                { code: "Ja9000000", name: "Java" },
-                { code: "Sp9000000", name: "Spring Boot" }
-            ],
+            skills: respGetSkills,
             errors: []
         }
         const teammateToUpdate = teammates[0].id;
@@ -279,11 +278,7 @@ describe("The teammate is being updated after performing the edit operation", ()
                 email: 'NewEmail@email.it',
                 city: 'new city'
             },
-            skills: [
-                {code: "Ja9000000", name: "Java"},
-                {code: "Sp9000000", name: "Spring Boot"},
-                {code: "ne9000000", name: "newSkill"}
-            ]
+            skills: respGetSkills
         }
 
         await wrapper.vm.$nextTick();
@@ -297,13 +292,15 @@ describe("The teammate is being updated after performing the edit operation", ()
 });
 
 describe('The teammate is saved after pressing submit', () => {
+    let respGetSkills = null;
+
     beforeEach(() => {
         const resp = { data: {
                 id: 1
             }};
         ApiService.insertTeammate.mockResolvedValue(resp);
 
-        let respGetSkills = [
+        respGetSkills = [
             { id: 1, name: "Java" },
             { id: 2, name: "Spring Boot" }
         ]
@@ -381,8 +378,8 @@ describe('The teammate is saved after pressing submit', () => {
                 city: newTeammate.city.value
             },
             skills: [
-                {"code": "Ja9000000", "name": "Java"},
-                {"code": "Sp9000000", "name": "Spring Boot"}
+                { id: 1, name: "Java" },
+                { id: 2, name: "Spring Boot" }
             ]
         }
 
@@ -426,7 +423,7 @@ describe('the skills are added to App.skills', () => {
 
     it('adds the skill to the options', () => {
         const tagMultiselect = wrapper.findComponent(TagMultiselect);
-        const newSkill = {code: 'sk9000000', name:'skill'}
+        const newSkill = {id: 'sk9000000', name:'skill'}
 
         tagMultiselect.vm.addSkill(newSkill.name);
 
@@ -440,3 +437,4 @@ describe('the skills are added to App.skills', () => {
             .toContainEqual(newSkill);
     })
 })
+
