@@ -57,7 +57,7 @@
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
-    import ApiService from "./services/Api.service";
+    import ApiService from "./services/ApiService";
     import $ from 'jquery';
     import { avatars, genders, roles, rules } from "./variables";
     import Card from "./components/Card";

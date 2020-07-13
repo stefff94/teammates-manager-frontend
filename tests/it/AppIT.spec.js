@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import App from "../../src/App";
-import ApiService from "../../src/services/Api.service";
+import ApiService from "../../src/services/ApiService";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import { avatars, genders, roles, rules } from "../../src/variables";
 import TagMultiselect from "../../src/components/TagMultiselect";
@@ -18,7 +18,7 @@ let wrapper = null;
 let teammates = null;
 let newTeammate = null;
 
-jest.mock("../../src/services/Api.service");
+jest.mock("../../src/services/ApiService");
 
 beforeEach(() => {
     let skills = [

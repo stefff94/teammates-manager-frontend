@@ -3,7 +3,7 @@ import App from "../../src/App";
 import Card from "../../src/components/Card";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
-import ApiService from "../../src/services/Api.service";
+import ApiService from "../../src/services/ApiService";
 import flushPromises from "flush-promises";
 import { avatars, roles } from "../../src/variables";
 
@@ -18,7 +18,7 @@ let newTeammate = null;
 let skills = null;
 let teammates = null;
 
-jest.mock('../../src/services/Api.service');
+jest.mock('../../src/services/ApiService');
 
 beforeEach(() => {
     skills = [
