@@ -245,10 +245,10 @@ describe("The teammate is being updated after performing the edit operation", ()
         emailInputField.setValue('NewEmail@email.it')
 
         const genderSelectField = personalDataForm.find(".three.fields .field:nth-of-type(3) select");
-        genderSelectField.findAll('option')
+        const selectedGender = genderSelectField.findAll('option')
             .at(2)
-            .element
-            .selected = true;
+            .element;
+        selectedGender.selected = true;
         genderSelectField.trigger('change');
 
         const cityInputField = personalDataForm.findAll('.two.fields input').at(0)
@@ -274,8 +274,7 @@ describe("The teammate is being updated after performing the edit operation", ()
                     return r.id === 'R2'
                 }).name,
                 gender: 'F',
-                photoUrl: avatarBaseUrl
-                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                photoUrl: wrapper.vm.avatars[selectedGender.value][2]
                 ,
                 email: 'NewEmail@email.it',
                 city: 'new city'
@@ -288,8 +287,6 @@ describe("The teammate is being updated after performing the edit operation", ()
         }
 
         await wrapper.vm.$nextTick();
-
-        console.log(wrapper.vm.newTeammate.name.value);
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
         await wrapper.vm.$nextTick();
