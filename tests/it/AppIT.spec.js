@@ -158,7 +158,7 @@ describe("The teammate is deleted", () => {
 
 });
 
-describe("The teammate is being updated after performing the edit operation", () => {
+describe("The teammate is updated after performing the edit operation", () => {
 
     let respGetSkills = null;
 
@@ -291,14 +291,14 @@ describe("The teammate is being updated after performing the edit operation", ()
     })
 });
 
-describe('The teammate is saved after pressing submit', () => {
+describe('The teammate is created', () => {
     let respGetSkills = null;
 
     beforeEach(() => {
-        const resp = { data: {
+        const respInsertTeammate = { data: {
                 id: 1
             }};
-        ApiService.insertTeammate.mockResolvedValue(resp);
+        ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
         respGetSkills = [
             { id: 1, name: "Java" },
@@ -412,10 +412,7 @@ describe('The teammate is saved after pressing submit', () => {
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
             },
-            skills: [
-                { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" }
-            ]
+            skills: newTeammate.skills
         }
 
         expect(wrapper.vm.teammates.length)
