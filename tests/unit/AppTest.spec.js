@@ -679,10 +679,11 @@ describe('the teammate is inserted and the view is updated', () => {
         ApiService.insertTeammate.mockRejectedValue(null);
         await wrapper.vm.$forceUpdate();
         await wrapper.setData({newTeammate: newTeammate});
-        const errorList = wrapper.find('.ui.error.message.mt30 .list li');
 
         wrapper.vm.handleTeammate();
         await flushPromises();
+
+        const errorList = wrapper.findAll('.ui.error.message.mt30 .list li');
 
         expect(errorList.length)
             .toBe(1);
