@@ -53,7 +53,7 @@
 <script>
     import PersonalDataForm from "./components/PersonalDataForm";
     import TagMultiselect from "./components/TagMultiselect";
-    import ApiService from "./services/api.service";
+    import ApiServiceService from "./services/ApiService.service";
     import $ from 'jquery';
     import { avatars, genders, roles, rules } from "./variables";
     import Card from "./components/Card";
@@ -100,7 +100,7 @@
             getAllTeammatesAndUpdateView() {
                 let self = this;
 
-                ApiService.getAllTeammates()
+                ApiServiceService.getAllTeammates()
                     .then(response => {
                         response.data.forEach(teammate =>
                             self.teammates.push(teammate));
@@ -110,7 +110,7 @@
             deleteTeammate(id) {
                 let self = this;
 
-                ApiService.deleteTeammate(id)
+                ApiServiceService.deleteTeammate(id)
                     .then(() => {
                         self.updateViewAfterDelete(id);
                         self.errorDeletingTeammate = false;
@@ -180,7 +180,7 @@
                     },
                     skills: this.newTeammate.skills
                 }
-                ApiService.insertTeammate(newTeammate)
+                ApiServiceService.insertTeammate(newTeammate)
                     .then((response) => {
                         newTeammate.id = response.data.id;
                         this.updateViewAfterInsert(newTeammate);
@@ -207,7 +207,7 @@
             getSkillsAndUpdateView(){
                 let self = this;
                 this.skills = [];
-                ApiService.getSkills()
+                ApiServiceService.getSkills()
                     .then( (response) => {
                         let skills = response.data;
                         skills.forEach((savedSkill) => {
@@ -241,7 +241,7 @@
                         Math.floor(Math.random() * 3)];
                 }
 
-                ApiService.updateTeammate(newTeammate.id, newTeammate)
+                ApiServiceService.updateTeammate(newTeammate.id, newTeammate)
                     .then( () => {
                         this.updateViewAfterUpdate(newTeammate);
                     })

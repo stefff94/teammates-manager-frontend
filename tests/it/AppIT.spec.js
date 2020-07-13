@@ -1,8 +1,8 @@
 import { mount } from "@vue/test-utils";
 import App from "../../src/App";
-import ApiService from "../../src/services/api.service";
+import ApiServiceService from "../../src/services/ApiService.service";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
-import { avatarBaseUrl, avatars, genders, roles, rules } from "../../src/variables";
+import { avatars, genders, roles, rules } from "../../src/variables";
 import TagMultiselect from "../../src/components/TagMultiselect";
 import Multiselect from "vue-multiselect";
 import Card from "../../src/components/Card";
@@ -18,7 +18,7 @@ let wrapper = null;
 let teammates = null;
 let newTeammate = null;
 
-jest.mock("../../src/services/api.service");
+jest.mock("../../src/services/ApiService.service");
 
 beforeEach(() => {
     let skills = [
@@ -79,18 +79,18 @@ beforeEach(() => {
     const respInsertTeammate = {data: {
             id: 3
         }}
-    ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
+    ApiServiceService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
-    ApiService.updateTeammate.mockResolvedValue(null);
+    ApiServiceService.updateTeammate.mockResolvedValue(null);
 
     const respGetSkills = [
         { id: 1, name: 'Java' },
         { id: 2, name: 'Vue js' }
     ]
-    ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+    ApiServiceService.getSkills.mockResolvedValue({data: respGetSkills});
 
     const resp = { data: teammates };
-    ApiService.getAllTeammates.mockResolvedValue(resp);
+    ApiServiceService.getAllTeammates.mockResolvedValue(resp);
 
     const mockMath = Object.create(global.Math)
     mockMath.random = () => 0.9;
@@ -102,7 +102,7 @@ describe("App.vue", () => {
     beforeEach(() => {
         const resp = { data: teammates };
 
-        ApiService.getAllTeammates.mockResolvedValue(resp);
+        ApiServiceService.getAllTeammates.mockResolvedValue(resp);
 
         // mount method mounts automatically also child components
         wrapper = mount(App, {
@@ -131,8 +131,8 @@ describe("The teammate is deleted", () => {
     beforeEach(() => {
         const resp = { data: teammates };
 
-        ApiService.getAllTeammates.mockResolvedValue(resp);
-        ApiService.deleteTeammate.mockResolvedValue(null);
+        ApiServiceService.getAllTeammates.mockResolvedValue(resp);
+        ApiServiceService.deleteTeammate.mockResolvedValue(null);
 
         wrapper = mount(App, {
             data: () => {
@@ -164,13 +164,13 @@ describe("The teammate is being updated after performing the edit operation", ()
         const resp = { data: {
                 id: 1
             }};
-        ApiService.insertTeammate.mockResolvedValue(resp);
+        ApiServiceService.insertTeammate.mockResolvedValue(resp);
 
         let respGetSkills = [
             { id: 1, name: "Java" },
             { id: 2, name: "Spring Boot" }
         ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+        ApiServiceService.getSkills.mockResolvedValue({data: respGetSkills});
 
         wrapper = mount(App,{
             data: function() {
@@ -301,15 +301,15 @@ describe('The teammate is saved after pressing submit', () => {
         const resp = { data: {
                 id: 1
             }};
-        ApiService.insertTeammate.mockResolvedValue(resp);
+        ApiServiceService.insertTeammate.mockResolvedValue(resp);
 
         let respGetSkills = [
             { id: 1, name: "Java" },
             { id: 2, name: "Spring Boot" }
         ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+        ApiServiceService.getSkills.mockResolvedValue({data: respGetSkills});
 
-        ApiService.getAllTeammates.mockResolvedValue({data: []});
+        ApiServiceService.getAllTeammates.mockResolvedValue({data: []});
 
         wrapper = mount(App,{
             data: function() {
@@ -399,7 +399,7 @@ describe('The teammate is saved after pressing submit', () => {
 describe('the skills are added to App.skills', () => {
     beforeEach(() => {
 
-        ApiService.getSkills.mockResolvedValue({data: []});
+        ApiServiceService.getSkills.mockResolvedValue({data: []});
 
         wrapper = mount(App,{
             data: function() {

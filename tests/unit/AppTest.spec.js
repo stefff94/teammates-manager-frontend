@@ -3,9 +3,9 @@ import App from "../../src/App";
 import Card from "../../src/components/Card";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
-import ApiService from "../../src/services/api.service";
+import ApiServiceService from "../../src/services/ApiService.service";
 import flushPromises from "flush-promises";
-import {avatarBaseUrl, avatars, roles} from "../../src/variables";
+import { avatars, roles } from "../../src/variables";
 
 import jQuery from 'jquery'
 import $ from 'jquery'
@@ -18,7 +18,7 @@ let newTeammate = null;
 let skills = null;
 let teammates = null;
 
-jest.mock('../../src/services/api.service');
+jest.mock('../../src/services/ApiService.service');
 
 beforeEach(() => {
     skills = [
@@ -85,21 +85,21 @@ beforeEach(() => {
     const respInsertTeammate = {data: {
             id:1
         }}
-    ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
+    ApiServiceService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
     const respUpdateTeammate = {data: {
             id:1
         }}
-    ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
+    ApiServiceService.updateTeammate.mockResolvedValue(respUpdateTeammate);
 
     const respGetSkills = [
         { id: 1, name: 'Java' },
         { id: 2, name: 'Vue js' }
     ]
-    ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+    ApiServiceService.getSkills.mockResolvedValue({data: respGetSkills});
 
     const resp = { data: teammates };
-    ApiService.getAllTeammates.mockResolvedValue(resp);
+    ApiServiceService.getAllTeammates.mockResolvedValue(resp);
 
     const mockMath = Object.create(global.Math)
     mockMath.random = () => 0.9;
@@ -283,7 +283,7 @@ describe("The teammates are loaded and the view is updated correctly", () => {
 
     beforeEach(() => {
         const resp = { data: teammates };
-        ApiService.getAllTeammates.mockResolvedValue(resp);
+        ApiServiceService.getAllTeammates.mockResolvedValue(resp);
 
         spy = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
 
@@ -310,7 +310,7 @@ describe("The teammates are not loaded", () => {
 
     beforeEach(() => {
         const error = { message: "generic error message" };
-        ApiService.getAllTeammates.mockRejectedValue(error);
+        ApiServiceService.getAllTeammates.mockRejectedValue(error);
 
         wrapper = shallowMount(App, {
             data: () => {
@@ -345,8 +345,8 @@ describe("The teammate is deleted correctly", () => {
     beforeEach(() => {
         const resp = { data: teammates };
 
-        ApiService.getAllTeammates.mockResolvedValue(resp);
-        ApiService.deleteTeammate.mockResolvedValue(null);
+        ApiServiceService.getAllTeammates.mockResolvedValue(resp);
+        ApiServiceService.deleteTeammate.mockResolvedValue(null);
 
         spyDeleteMethod = jest.spyOn(App.methods,
             "deleteTeammate");
@@ -389,8 +389,8 @@ describe("The teammate is not deleted after performing delete operation", () => 
         const resp = { data: teammates };
         const error = { message: "generic error message" };
 
-        ApiService.getAllTeammates.mockResolvedValue(resp);
-        ApiService.deleteTeammate.mockRejectedValue(error);
+        ApiServiceService.getAllTeammates.mockResolvedValue(resp);
+        ApiServiceService.deleteTeammate.mockRejectedValue(error);
 
         wrapper = shallowMount(App, {
             data: () => {
@@ -552,7 +552,7 @@ describe('the teammate is inserted and the view is updated', () => {
         spyHandleTeammate = jest.spyOn(App.methods, 'handleTeammate');
         spyInsertTeammate = jest.spyOn(App.methods, 'insertTeammate');
         spyUpdateViewAfterInsert = jest.spyOn(App.methods, 'updateViewAfterInsert');
-        spyApiInsertTeammate = jest.spyOn(ApiService, "insertTeammate");
+        spyApiInsertTeammate = jest.spyOn(ApiServiceService, "insertTeammate");
         spyClearNewTeammate = jest.spyOn(App.methods, 'clearNewTeammate');
         spyGetSkillsAndUpdateView = jest.spyOn(App.methods, 'getSkillsAndUpdateView');
 
@@ -728,7 +728,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
         spyHandleTeammate = jest.spyOn(App.methods, 'handleTeammate');
         spyUpdateTeammate = jest.spyOn(App.methods, 'updateTeammate');
-        spyApiUpdateTeammate = jest.spyOn(ApiService, 'updateTeammate');
+        spyApiUpdateTeammate = jest.spyOn(ApiServiceService, 'updateTeammate');
         spyUpdateViewAfterUpdate = jest.spyOn(App.methods, 'updateViewAfterUpdate');
         spyClearNewTeammate = jest.spyOn(App.methods, 'clearNewTeammate');
         spyGetSkillsAndUpdateView = jest.spyOn(App.methods, 'getSkillsAndUpdateView');
@@ -1034,7 +1034,7 @@ describe('The skills are loaded', () => {
             {id: 1, name: 'Java'},
             {id: 2, name: 'Vue js'}
         ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+        ApiServiceService.getSkills.mockResolvedValue({data: respGetSkills});
 
         spyGetSkillAndUpdateView = jest.spyOn(App.methods, "getSkillsAndUpdateView");
 
