@@ -687,6 +687,9 @@ describe('the teammate is inserted and the view is updated', () => {
 
         expect(errorList.length)
             .toBe(1);
+        expect(errorList.at(0)
+            .text())
+            .toMatch("Error while inserting the teammate");
     })
 })
 
