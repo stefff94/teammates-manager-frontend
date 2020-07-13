@@ -375,8 +375,7 @@ describe('The teammate is saved after pressing submit', () => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: avatarBaseUrl
-                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                photoUrl: wrapper.vm.$data.avatars[newTeammate.gender.value][2]
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
