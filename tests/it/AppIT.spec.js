@@ -70,8 +70,8 @@ beforeEach(() => {
             value: "R1"
         },
         skills: [
-            { code: "Ja9000000", name: "Java" },
-            { code: "Sp9000000", name: "Spring Boot" }
+            { id: "Ja9000000", name: "Java" },
+            { id: "Sp9000000", name: "Spring Boot" }
         ],
         errors: []
     }
@@ -390,6 +390,38 @@ describe('The teammate is saved after pressing submit', () => {
 
         expect(wrapper.vm.teammates)
             .toContainEqual(expectedTeammate);
+    })
+
+    it('creates a new card for the teammate', async () => {
+        await wrapper.setData({ newTeammate: newTeammate })
+        wrapper.vm.handleTeammate();
+
+        await flushPromises();
+
+        const resultData = wrapper.vm.teammates[0];
+        const expectedTeammate = {
+            id: 1,
+            personalData: {
+                name: newTeammate.name.value,
+                role: wrapper.vm.roles.find(r => {
+                    return r.id === newTeammate.role.value
+                }).name,
+                gender: newTeammate.gender.value,
+                photoUrl: wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                ,
+                email: newTeammate.email.value,
+                city: newTeammate.city.value
+            },
+            skills: [
+                { id: 1, name: "Java" },
+                { id: 2, name: "Spring Boot" }
+            ]
+        }
+
+        expect(wrapper.vm.teammates.length)
+            .toBe(1);
+        expect(resultData)
+            .toEqual(expectedTeammate);
     })
 })
 
