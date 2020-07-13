@@ -674,6 +674,19 @@ describe('the teammate is inserted and the view is updated', () => {
         expect(wrapper.vm.skills)
             .toContainEqual(skill2);
     })
+
+    it('shows an error message if unable to insert the teammate', async () => {
+        ApiService.insertTeammate.mockRejectedValue(null);
+        await wrapper.vm.$forceUpdate();
+        await wrapper.setData({newTeammate: newTeammate});
+        const errorList = wrapper.find('.ui.error.message.mt30 .list li');
+
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        expect(errorList.length)
+            .toBe(1);
+    })
 })
 
 describe('the teammate is updated and the view is updated accordingly', () => {
