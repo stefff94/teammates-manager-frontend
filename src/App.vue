@@ -201,14 +201,7 @@
                 this.skills = [];
                 ApiService.getSkills()
                     .then( (response) => {
-                        let skills = response.data;
-                        skills.forEach((savedSkill) => {
-                            let skill = {
-                                id: savedSkill.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
-                                name: savedSkill.name
-                            }
-                            self.skills.push(skill);
-                        })
+                       self.skills = response.data;
                     })
             },
             updateTeammate() {
