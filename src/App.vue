@@ -133,6 +133,7 @@
                             teammateSkills.push(skill);
                         })
                         self.newTeammate = {
+                            id: teammate.id,
                             name: {
                                 value: teammate.personalData.name
                             },
