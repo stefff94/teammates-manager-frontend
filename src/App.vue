@@ -27,7 +27,7 @@
         <div class="ui divider"></div>
 
         <h2 class="ui center aligned icon header">
-            <i class="circular users icon"></i>
+            <em class="circular users icon"></em>
             Teammates
         </h2>
 

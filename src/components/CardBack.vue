@@ -2,10 +2,10 @@
     <div class="flip-card-back">
         <div class="ui card">
             <div class="content">
-                <i class="right floated large icon trash alternate outline"
-                   @click="deleteTeammate"></i>
-                <i class="right floated large icon pencil alternate"
-                   @click="updateTeammate"></i>
+                <em class="right floated large icon trash alternate outline"
+                   @click="deleteTeammate"></em>
+                <em class="right floated large icon pencil alternate"
+                   @click="updateTeammate"></em>
                 <div class="header text-center">Skills</div>
                 <div class="description mt30">
                     <div class="ui bulleted list">

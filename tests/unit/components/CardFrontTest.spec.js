@@ -39,6 +39,8 @@ describe("CardFront.vue", () => {
 
         expect(image.attributes("src"))
             .toMatch(wrapper.vm.data.photoUrl);
+        expect(image.attributes("alt"))
+            .toMatch("icon");
     });
 
     it("renders the header", () => {
