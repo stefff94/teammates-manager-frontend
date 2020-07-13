@@ -181,6 +181,72 @@ describe("The teammate is being updated after performing the edit operation", ()
         expect(wrapper.vm.newTeammate)
             .toEqual(newTeammate);
     });
+
+    it("updates the teammate's card with the new data", async () => {
+        const teammateToUpdate = teammates[0].id;
+
+        wrapper.findAllComponents(Card).wrappers[0]
+            .vm.updateTeammate(teammateToUpdate);
+
+        let personalDataForm = wrapper.findComponent(PersonalDataForm);
+
+        const nameInputField = personalDataForm.findAll('.three.fields input').at(0)
+        nameInputField.setValue('New name')
+
+        const emailInputField = personalDataForm.findAll('.three.fields input').at(1)
+        emailInputField.setValue('NewEmail@email.it')
+
+        const genderSelectField = personalDataForm.find(".three.fields .field:nth-of-type(3) select");
+        genderSelectField.findAll('option')
+            .at(2)
+            .element
+            .selected = true;
+        genderSelectField.trigger('change');
+
+        const cityInputField = personalDataForm.findAll('.two.fields input').at(0)
+        cityInputField.setValue("new city")
+
+        const roleSelectField = personalDataForm.find(".two.fields select");
+        roleSelectField.findAll('option')
+            .at(2)
+            .element
+            .selected = true;
+        roleSelectField.trigger('change');
+
+        const multiselect =  wrapper.findComponent(TagMultiselect)
+            .findComponent(Multiselect);
+
+        multiselect.vm.$emit('tag', "newSkill");
+
+        const expectedTeammate = {
+            id: 1,
+            personalData: {
+                name: 'New name',
+                role: wrapper.vm.roles.find(r => {
+                    return r.id === 'R2'
+                }).name,
+                gender: 'F',
+                photoUrl: avatarBaseUrl
+                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                ,
+                email: 'NewEmail@email.it',
+                city: 'new city'
+            },
+            skills: [
+                {code: "Ja9000000", name: "Java"},
+                {code: "Sp9000000", name: "Spring Boot"},
+                {code: "ne9000000", name: "newSkill"}
+            ]
+        }
+
+        await wrapper.vm.$nextTick();
+
+        wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.vm.teammates)
+            .toContainEqual(expectedTeammate);
+    })
 });
 
 describe('The teammate is saved after pressing submit', () => {
