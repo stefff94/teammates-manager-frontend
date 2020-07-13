@@ -5,7 +5,7 @@ import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
 import ApiService from "../../src/services/api.service";
 import flushPromises from "flush-promises";
-import { avatarBaseUrl } from "../../src/variables";
+import {avatarBaseUrl, avatars, roles} from "../../src/variables";
 
 import jQuery from 'jquery'
 import $ from 'jquery'
@@ -452,6 +452,7 @@ describe("The teammate is being updated after performing the edit operation", ()
 
         wrapper.findAllComponents(Card).wrappers[0]
             .vm.$emit("update", teammateToUpdate);
+        newTeammate.id = wrapper.vm.teammates[0].id;
 
         await flushPromises();
 
@@ -684,9 +685,10 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     let spyUpdateViewAfterUpdate = null;
     let spyClearNewTeammate = null;
     let spyGetSkillsAndUpdateView = null;
+    let savedTeammate = null;
 
     beforeEach(() => {
-         newTeammate = {
+        newTeammate = {
             id: 1,
             name: {
                 value: 'Name'
@@ -706,7 +708,23 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             skills: [
                 {code: 'sk1', name: 'skill1'}
             ],
-            errors: []
+            errors: [],
+            photoUrl: avatars['M'][2]
+        }
+
+        savedTeammate = {
+            id: 1,
+            personalData: {
+                name: newTeammate.name.value,
+                role: roles.find(r => {
+                    return r.id === newTeammate.role.value
+                }).name,
+                gender: newTeammate.gender.value,
+                photoUrl: avatars[newTeammate.gender.value][2],
+                email: newTeammate.email.value,
+                city: newTeammate.city.value
+            },
+            skills: newTeammate.skills
         }
 
         spyHandleTeammate = jest.spyOn(App.methods, 'handleTeammate');
@@ -757,7 +775,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     it('triggers the handleTeammate and updateTeammate methods if the teammate is valid and has an id', async () => {
         await wrapper.setData({
             newTeammate: newTeammate,
-            teammates: []
+            teammates: [savedTeammate]
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
@@ -772,7 +790,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     it('updates the teammate if the teammate is valid and has an id', async () => {
         await wrapper.setData({
             newTeammate: newTeammate,
-            teammates: []
+            teammates: [savedTeammate]
         })
 
         wrapper.vm.handleTeammate();
