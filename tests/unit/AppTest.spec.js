@@ -627,12 +627,11 @@ describe('the teammate is inserted and the view is updated', () => {
             id: 1,
             personalData: {
                 name: newTeammate.name.value,
-                role: wrapper.vm.$data.roles.find(r => {
+                role: wrapper.vm.roles.find(r => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: avatarBaseUrl
-                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                photoUrl: wrapper.vm.avatars[newTeammate.gender.value][2]
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
