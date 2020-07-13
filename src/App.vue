@@ -235,6 +235,13 @@
                     },
                     skills: this.newTeammate.skills
                 }
+                const oldTeammate = this.teammates.find(t => t.id === newTeammate.id);
+                if(oldTeammate.personalData.gender !== newTeammate.personalData.gender) {
+                    newTeammate.personalData.photoUrl = this.avatars[
+                        newTeammate.personalData.gender][
+                        Math.floor(Math.random() * 3)];
+                }
+
                 ApiService.updateTeammate(newTeammate.id, newTeammate)
                     .then( () => {
                         this.updateViewAfterUpdate(newTeammate);
