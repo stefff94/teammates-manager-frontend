@@ -26,10 +26,12 @@
         name: "TagMultiselect",
         methods: {
             addSkill(newSkill){
-                const skill = {
-                    name: newSkill,
-                    id: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000)
-                }
+                let skill = this.options.find(s => s.name === newSkill);
+                if(typeof skill === "undefined")
+                    skill = {
+                        name: newSkill,
+                        id: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000)
+                    }
                 this.options.push(skill);
                 this.teammate.skills.push(skill);
             }
