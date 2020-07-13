@@ -28,7 +28,7 @@
             addSkill(newSkill){
                 const skill = {
                     name: newSkill,
-                    code: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000)
+                    id: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000)
                 }
                 this.options.push(skill);
                 this.teammate.skills.push(skill);
