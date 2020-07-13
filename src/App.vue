@@ -17,7 +17,7 @@
             </div>
             <ul class="list">
                 <li v-for="e in newTeammate.errors" v-bind:key="e">{{ e }}</li>
-                <li v-if="errorInsertingTeammate"></li>
+                <li v-if="errorInsertingTeammate">Error while inserting the teammate</li>
             </ul>
         </div>
 
