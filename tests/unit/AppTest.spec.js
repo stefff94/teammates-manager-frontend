@@ -810,7 +810,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: teammates[0].personalData.photoUrl
+                photoUrl: newTeammate.photoUrl
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
