@@ -166,8 +166,7 @@
                 }
             },
             insertTeammate() {
-                const avatarUrl = avatarBaseUrl
-                    + this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
+                const avatarUrl = this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
                 const newTeammate = {
                     personalData: {
                         name: this.newTeammate.name.value,
