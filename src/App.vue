@@ -124,14 +124,6 @@
                 let self = this;
                 this.teammates.find(teammate => {
                     if (teammate.id === id) {
-                        let teammateSkills = []
-                        teammate.skills.forEach(s => {
-                            let skill = {
-                                id: s.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
-                                name: s.name
-                            }
-                            teammateSkills.push(skill);
-                        })
                         self.newTeammate = {
                             id: teammate.id,
                             name: {
@@ -151,7 +143,7 @@
                                     r => r.name === teammate.personalData.role
                                 ).id
                             },
-                            skills: teammateSkills,
+                            skills: teammate.skills,
                             errors: []
                         }
                     }
