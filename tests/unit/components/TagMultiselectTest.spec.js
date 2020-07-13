@@ -46,7 +46,7 @@ describe('TagMultiselect.vue', () => {
             .toMatch('Add this as a new skill');
         expect(multiSelect
             .attributes('trackby'))
-            .toMatch('code')
+            .toMatch('id')
     })
 
     it('triggers the addSkill function on tag event', async () => {
@@ -97,4 +97,36 @@ describe('TagMultiselect.vue', () => {
         expect(wrapper.vm.teammate.skills[0].id)
             .toMatch(skill.id)
     })
+})
+
+describe("Setting an existing skill, uses the db's id", () => {
+    beforeEach(() => {
+        wrapper = shallowMount(TagMultiselect, {
+            propsData: {
+                options: [],
+                teammate: {
+                    skills: []
+                }
+            }
+        });
+
+        const mockMath = Object.create(global.Math)
+        mockMath.random = () => 0.9;
+        global.Math = mockMath;
+    })
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
+
+    it("returns the existing skill with its db's id", () => {
+        const existingSkill = {id: 1, name: 'skill1'};
+        wrapper.vm.options.push(existingSkill);
+
+        wrapper.vm.addSkill(existingSkill.name);
+
+        expect(wrapper.vm.teammate.skills)
+            .toContainEqual(existingSkill);
+    })
+
 })

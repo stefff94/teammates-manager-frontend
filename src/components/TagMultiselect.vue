@@ -4,7 +4,7 @@
                      tag-placeholder="Add this as a new skill"
                      placeholder="Search or add a new skill"
                      label="name"
-                     track-by="code"
+                     track-by="id"
                      :options="options"
                      :multiple="true"
                      :taggable="true"
