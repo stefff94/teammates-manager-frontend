@@ -11,13 +11,16 @@
         <button class="ui button" @click="handleTeammate" :disabled="submitDisabled">Submit</button>
         <button class="ui button" @click="clearNewTeammate">Reset</button>
 
-        <div class="ui error message mt30" v-if="newTeammate.errors.length > 0 || errorInsertingTeammate">
+        <div class="ui error message mt30" v-if="newTeammate.errors.length > 0 ||
+         errorInsertingTeammate ||
+          errorUpdatingTeammate">
             <div class="header">
                 <span>Issues</span>
             </div>
             <ul class="list">
                 <li v-for="e in newTeammate.errors" v-bind:key="e">{{ e }}</li>
                 <li v-if="errorInsertingTeammate">Error while inserting the teammate</li>
+                <li v-if="errorUpdatingTeammate">Error while updating the teammate</li>
             </ul>
         </div>
 
@@ -95,7 +98,8 @@
                 rules: rules,
                 errorLoadingTeammates: false,
                 errorDeletingTeammate: false,
-                errorInsertingTeammate: false
+                errorInsertingTeammate: false,
+                errorUpdatingTeammate: false
             }
         },
         methods: {
@@ -205,7 +209,7 @@
                 this.skills = [];
                 ApiService.getSkills()
                     .then( (response) => {
-                       self.skills = response.data;
+                        self.skills = response.data;
                     })
             },
             updateTeammate() {
@@ -233,6 +237,8 @@
                 ApiService.updateTeammate(newTeammate.id, newTeammate)
                     .then( () => {
                         this.updateViewAfterUpdate(newTeammate);
+                    }, () => {
+                        this.errorUpdatingTeammate = true;
                     })
 
             },
