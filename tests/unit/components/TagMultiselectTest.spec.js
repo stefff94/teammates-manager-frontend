@@ -92,6 +92,10 @@ describe('TagMultiselect.vue', () => {
             .toMatch(skill.name);
         expect(wrapper.vm.options[0].id)
             .toMatch(skill.id);
+        expect(wrapper.vm.teammate.skills[0].name)
+            .toMatch(skill.name);
+        expect(wrapper.vm.teammate.skills[0].id)
+            .toMatch(skill.id)
     })
 })
 
