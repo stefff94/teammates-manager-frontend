@@ -686,7 +686,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     let spyGetSkillsAndUpdateView = null;
 
     beforeEach(() => {
-        newTeammate = {
+         newTeammate = {
             id: 1,
             name: {
                 value: 'Name'
@@ -796,21 +796,21 @@ describe('the teammate is updated and the view is updated accordingly', () => {
 
         newTeammate.id = 1;
         newTeammate.name.value = 'New Name';
-        newTeammate.photoUrl = avatarBaseUrl
-            + wrapper.vm.$data.avatars[newTeammate.gender.value][2];
+        newTeammate.gender.value = 'F';
+        newTeammate.photoUrl = wrapper.vm.avatars[newTeammate.gender.value][2];
         await wrapper.setData({
             newTeammate: newTeammate
         })
+
         const expectedTeammate = {
             id: 1,
             personalData: {
                 name: newTeammate.name.value,
-                role: wrapper.vm.$data.roles.find(r => {
+                role: wrapper.vm.roles.find(r => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: avatarBaseUrl
-                    + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                photoUrl: teammates[0].personalData.photoUrl
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
