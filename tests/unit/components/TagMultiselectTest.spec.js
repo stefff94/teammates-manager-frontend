@@ -57,6 +57,8 @@ describe('TagMultiselect.vue', () => {
         multiselect.vm.$emit('tag', 'skill');
 
         expect(spyAddSkillMethod).toBeCalledTimes(1)
+        expect(wrapper.vm
+            .props('options')[0])
     })
 
     it('renders the teammate skills', async () => {

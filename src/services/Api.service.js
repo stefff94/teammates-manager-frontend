@@ -2,7 +2,7 @@ import axios from "axios";
 
 const backendBaseUrl = "http://localhost:8080/api";
 
-class ApiServiceService {
+class ApiService {
 
     static insertTeammate(newTeammate) {
         return axios.post(backendBaseUrl + '/teammates/new', newTeammate);
@@ -27,4 +27,4 @@ class ApiServiceService {
     }
 }
 
-export default ApiServiceService
+export default ApiService
