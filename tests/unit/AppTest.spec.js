@@ -691,6 +691,29 @@ describe('the teammate is inserted and the view is updated', () => {
             .text())
             .toMatch("Error while inserting the teammate");
     })
+
+    it('resets the error message on submit', async () => {
+        await wrapper.setData({
+            newTeammate: newTeammate,
+            teammates: []});
+
+        ApiService.insertTeammate.mockRejectedValue(null);
+        await wrapper.vm.$forceUpdate();
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        ApiService.insertTeammate.mockResolvedValue({ data : {
+                id: 1
+            }});
+        await wrapper.vm.$forceUpdate();
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        const errorList = wrapper.findAll('.ui.error.message.mt30 .list li');
+
+        expect(errorList.length)
+            .toBe(0);
+    })
 })
 
 describe('the teammate is updated and the view is updated accordingly', () => {
@@ -900,6 +923,27 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         expect(errorList.at(0)
             .text())
             .toMatch("Error while updating the teammate");
+    })
+
+    it('deletes the error message if able to update the teammate', async () => {
+        await wrapper.setData({newTeammate: newTeammate});
+
+        ApiService.updateTeammate.mockRejectedValue(null);
+        await wrapper.vm.$forceUpdate();
+
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        ApiService.updateTeammate.mockResolvedValue(null);
+        await wrapper.vm.$forceUpdate();
+
+        wrapper.vm.handleTeammate();
+        await flushPromises();
+
+        const errorList = wrapper.findAll('.ui.error.message.mt30 .list li');
+
+        expect(errorList.length)
+            .toBe(0);
     })
 })
 
