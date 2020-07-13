@@ -26,8 +26,11 @@
         name: "TagMultiselect",
         methods: {
             addSkill(newSkill){
+                let maxOptionIndex = -1;
+                if(this.options.length > 0)
+                    maxOptionIndex = Math.max.apply(Math, this.options.map(o => { return o.id; }))
                 const skill = {
-                    id: newSkill.substring(0, 2) + Math.floor(Math.random() * 10000000),
+                    id: maxOptionIndex + 1,
                     name: newSkill
                 }
                 this.options.push(skill);

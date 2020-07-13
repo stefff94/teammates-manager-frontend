@@ -84,7 +84,7 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('updates the options and skills array', async () => {
-        const skill = {id: 1, name: 'skill'};
+        const skill = {id: 1, name: 'skill1'};
 
         wrapper.vm.addSkill(skill.name);
 
@@ -94,10 +94,37 @@ describe('TagMultiselect.vue', () => {
             .toBe(1);
         expect(wrapper.vm.teammate.skills.length)
             .toBe(1);
+    })
+
+    it('sets the correct id if the options array is empty', async () => {
+        const skill = {id: 0, name: 'skill0'};
+
+        wrapper.vm.addSkill(skill.name);
+
+        await wrapper.vm.$nextTick();
+
         expect(wrapper.vm.options[0])
             .toEqual(skill);
         expect(wrapper.vm.teammate.skills[0])
-            .toMatch(skill)
+            .toEqual(skill);
+    })
+
+    it('sets the correct id if the options array is not empty', async () => {
+        await wrapper.setProps({
+            options: [
+                {id: 0, name: 'skill0'}
+            ]
+        })
+        const skill = {id: 1, name: 'skill1'};
+
+        wrapper.vm.addSkill(skill.name);
+
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.vm.options[1])
+            .toEqual(skill);
+        expect(wrapper.vm.teammate.skills[0])
+            .toEqual(skill);
     })
 })
 
