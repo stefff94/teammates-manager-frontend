@@ -22,8 +22,8 @@ jest.mock('../../src/services/Api.service');
 
 beforeEach(() => {
     skills = [
-        {id: 'sk1', name: 'skill1'},
-        {id: 'sk2', name: 'skill2'}
+        {id: 1, name: 'skill1'},
+        {id: 2, name: 'skill2'}
     ]
 
     teammates = [
@@ -76,8 +76,8 @@ beforeEach(() => {
             value: "R1"
         },
         skills: [
-            { id: 'Ja9000000', name: "Java" },
-            { id: 'Sp9000000', name: "Spring Boot" }
+            { id: 1, name: "Java" },
+            { id: 2, name: "Spring Boot" }
         ],
         errors: []
     }
@@ -183,9 +183,9 @@ describe("App.vue", () => {
             .exists())
             .toBeTruthy();
         expect(tagMultiselect.props('teammate'))
-            .toBe(wrapper.vm.$data.newTeammate);
+            .toBe(wrapper.vm.newTeammate);
         expect(tagMultiselect.props('options'))
-            .toBe(wrapper.vm.$data.skills);
+            .toBe(wrapper.vm.skills);
     })
 
     it('renders the submit button', () => {
@@ -657,12 +657,12 @@ describe('the teammate is inserted and the view is updated', () => {
 
     it('recovers the skills from the database', async () => {
         const skill1 = {
-            id: 'Ja9000000',
+            id: 1,
             name: 'Java'
         }
 
         const skill2 = {
-            id: 'Vu9000000',
+            id: 2,
             name: 'Vue js'
         }
 
