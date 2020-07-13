@@ -127,7 +127,7 @@
                         let teammateSkills = []
                         teammate.skills.forEach(s => {
                             let skill = {
-                                code: s.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
+                                id: s.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
                                 name: s.name
                             }
                             teammateSkills.push(skill);
@@ -212,7 +212,7 @@
                         let skills = response.data;
                         skills.forEach((savedSkill) => {
                             let skill = {
-                                code: savedSkill.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
+                                id: savedSkill.name.substring(0, 2) + Math.floor((Math.random() * 10000000)),
                                 name: savedSkill.name
                             }
                             self.skills.push(skill);

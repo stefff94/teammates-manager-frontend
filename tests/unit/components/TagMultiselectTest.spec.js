@@ -57,13 +57,14 @@ describe('TagMultiselect.vue', () => {
         multiselect.vm.$emit('tag', 'skill');
 
         expect(spyAddSkillMethod).toBeCalledTimes(1)
-        expect(wrapper.vm
-            .props('options')[0])
+        expect(wrapper.vm.options[0]
+            .name)
+            .toMatch('skill');
     })
 
     it('renders the teammate skills', async () => {
-        const skill1 = {code: 'sk1', name: 'skill1'};
-        const skill2 = {code: 'sk2', name: 'skill2'};
+        const skill1 = {id: 'sk1', name: 'skill1'};
+        const skill2 = {id: 'sk2', name: 'skill2'};
         wrapper.vm.teammate.skills.push(skill1);
         wrapper.vm.teammate.skills.push(skill2);
         await wrapper.vm.$nextTick()
@@ -79,19 +80,21 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('updates the options and skills array', () => {
-        wrapper.vm.addSkill('skill');
+        const skill = {id: 'sk9000000', name: 'skill'};
+
+        wrapper.vm.addSkill(skill.name);
 
         expect(wrapper.vm.options.length)
             .toBe(1);
         expect(wrapper.vm.teammate.skills.length)
             .toBe(1);
         expect(wrapper.vm.options[0].name)
-            .toMatch('skill');
-        expect(wrapper.vm.options[0].code)
-            .toMatch('sk900000');
+            .toMatch(skill.name);
+        expect(wrapper.vm.options[0].id)
+            .toMatch(skill.id);
         expect(wrapper.vm.teammate.skills[0].name)
-            .toMatch('skill');
-        expect(wrapper.vm.teammate.skills[0].code)
-            .toMatch('sk9000000')
+            .toMatch(skill.name);
+        expect(wrapper.vm.teammate.skills[0].id)
+            .toMatch(skill.id)
     })
 })
