@@ -4,26 +4,30 @@ import Multiselect from 'vue-multiselect';
 
 let wrapper = null;
 
-beforeEach(() => {
-    wrapper = shallowMount(TagMultiselect, {
-        propsData: {
-            options: [],
-            teammate: {
-                skills: []
-            }
-        }
-    });
-
-    const mockMath = Object.create(global.Math)
-    mockMath.random = () => 0.9;
-    global.Math = mockMath;
-})
-
-afterEach(() => {
-    wrapper.destroy();
-})
-
 describe('TagMultiselect.vue', () => {
+    let spyAddSkillMethod = null;
+
+    beforeEach(() => {
+        const mockMath = Object.create(global.Math)
+        mockMath.random = () => 0.9;
+        global.Math = mockMath;
+
+        spyAddSkillMethod = jest.spyOn(TagMultiselect.methods, 'addSkill');
+
+        wrapper = shallowMount(TagMultiselect, {
+            propsData: {
+                options: [],
+                teammate: {
+                    skills: []
+                }
+            }
+        });
+    })
+
+    afterEach(() => {
+        wrapper.destroy();
+    })
+
     it('renders the multiselect', () => {
         const multiSelect = wrapper.findComponent(Multiselect);
         expect(multiSelect
@@ -50,7 +54,7 @@ describe('TagMultiselect.vue', () => {
     })
 
     it('triggers the addSkill function on tag event', async () => {
-        const spyAddSkillMethod = jest.spyOn(wrapper.vm, 'addSkill');
+
         await wrapper.vm.$forceUpdate();
         const multiselect = wrapper.findComponent(Multiselect);
 
@@ -79,10 +83,12 @@ describe('TagMultiselect.vue', () => {
             .toEqual(skill2);
     })
 
-    it('updates the options and skills array', () => {
+    it('updates the options and skills array', async () => {
         const skill = {id: 'sk9000000', name: 'skill'};
 
         wrapper.vm.addSkill(skill.name);
+
+        await wrapper.vm.$nextTick();
 
         expect(wrapper.vm.options.length)
             .toBe(1);
@@ -99,34 +105,44 @@ describe('TagMultiselect.vue', () => {
     })
 })
 
-describe("Setting an existing skill, uses the db's id", () => {
-    beforeEach(() => {
-        wrapper = shallowMount(TagMultiselect, {
-            propsData: {
-                options: [],
-                teammate: {
-                    skills: []
-                }
-            }
-        });
+describe('Adding an existing skill removes it from the teammate', () => {
 
+    beforeEach(() => {
         const mockMath = Object.create(global.Math)
         mockMath.random = () => 0.9;
         global.Math = mockMath;
+
+        wrapper = shallowMount(TagMultiselect, {
+            propsData: {
+                options: [
+                    {id:1, name: "Java"},
+                    {id:2, name: "Vue js"}
+                ],
+                teammate: {
+                    skills: [
+                        {id:1, name: "Java"},
+                        {id:2, name: "Vue js"}
+                    ]
+                }
+            }
+        });
     })
 
     afterEach(() => {
         wrapper.destroy();
     })
 
-    it("returns the existing skill with its db's id", () => {
-        const existingSkill = {id: 1, name: 'skill1'};
-        wrapper.vm.options.push(existingSkill);
+    it("removes the skill from the teammate's skills", async () => {
+        const skillToRemain = { id: 1, name: 'Java' };
+        const multiSelect = wrapper.findComponent(Multiselect);
 
-        wrapper.vm.addSkill(existingSkill.name);
+        multiSelect.vm.$emit('input', [skillToRemain]);
 
+        await wrapper.vm.$forceUpdate();
+
+        expect(wrapper.vm.teammate.skills.length)
+            .toBe(1);
         expect(wrapper.vm.teammate.skills)
-            .toContainEqual(existingSkill);
+            .toContainEqual(skillToRemain);
     })
-
 })
