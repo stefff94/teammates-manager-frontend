@@ -1,10 +1,11 @@
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils';
+import flushPromises from "flush-promises";
+
 import App from "../../src/App";
+import ApiService from "../../src/services/ApiService";
 import Card from "../../src/components/Card";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
-import ApiService from "../../src/services/ApiService";
-import flushPromises from "flush-promises";
 import { avatars, roles } from "../../src/variables";
 
 import jQuery from 'jquery'
@@ -15,17 +16,12 @@ require('fomantic-ui/dist/semantic.min.js')
 
 let wrapper = null;
 let newTeammate = null;
-let skills = null;
 let teammates = null;
+let respGetSkills = null;
 
 jest.mock('../../src/services/ApiService');
 
 beforeEach(() => {
-    skills = [
-        {id: 1, name: 'skill1'},
-        {id: 2, name: 'skill2'}
-    ]
-
     teammates = [
         {
             id: 1,
@@ -39,7 +35,7 @@ beforeEach(() => {
             },
             skills: [
                 { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" }
+                { id: 2, name: "Vue js" }
             ],
         },
         {
@@ -54,7 +50,7 @@ beforeEach(() => {
             },
             skills: [
                 { id: 1, name: "Java" },
-                { id: 2, name: "Spring Boot" }
+                { id: 2, name: "Vue js" }
             ],
         }
     ]
@@ -77,7 +73,7 @@ beforeEach(() => {
         },
         skills: [
             { id: 1, name: "Java" },
-            { id: 2, name: "Spring Boot" }
+            { id: 2, name: "Vue js" }
         ],
         errors: []
     }
@@ -87,12 +83,9 @@ beforeEach(() => {
         }}
     ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
-    const respUpdateTeammate = {data: {
-            id:1
-        }}
-    ApiService.updateTeammate.mockResolvedValue(respUpdateTeammate);
+    ApiService.updateTeammate.mockResolvedValue(null);
 
-    const respGetSkills = [
+    respGetSkills = [
         { id: 1, name: 'Java' },
         { id: 2, name: 'Vue js' }
     ]
@@ -109,32 +102,10 @@ beforeEach(() => {
 describe("App.vue", () => {
 
     beforeEach(() => {
-        newTeammate = {
-            name: {
-                value: 'Name'
-            },
-            gender: {
-                value: 'M'
-            },
-            email: {
-                value: 'email@email.it'
-            },
-            city: {
-                value: 'City'
-            },
-            role: {
-                value: 'R1'
-            },
-            skills: [
-                {id: 'sk1', name: 'skill1'}
-            ],
-            errors: []
-        }
-
         wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: []
+            data() {
+                return{
+                    newTeammate: newTeammate
                 }
             }
         });
@@ -149,7 +120,6 @@ describe("App.vue", () => {
     })
 
     it('renders the PersonalDataForm', () => {
-        wrapper.setData({newTeammate: newTeammate})
         const personalDataForm = wrapper.findComponent(PersonalDataForm);
 
         expect(wrapper
@@ -167,12 +137,7 @@ describe("App.vue", () => {
             .toBe(wrapper.vm.$data.roles);
     })
 
-    it('renders the TagMultiselect component', async () => {
-        await wrapper.setData({
-            skills: skills,
-            newTeammate: newTeammate
-        })
-
+    it('renders the TagMultiselect component', () => {
         const tagMultiselect = wrapper.findComponent(TagMultiselect);
 
         expect(wrapper
@@ -269,7 +234,6 @@ describe("App.vue", () => {
 
             expect(card.attributes("style"))
                 .toMatch("margin-bottom: 20px");
-
             expect(wrapper.vm.teammates)
                 .toContain(card.props("person"));
         });
@@ -279,26 +243,19 @@ describe("App.vue", () => {
 
 describe("The teammates are loaded and the view is updated correctly", () => {
 
-    let spy = null;
+    let spyGetAllTeammatesAndUpdateView = null;
 
     beforeEach(() => {
-        const resp = { data: teammates };
-        ApiService.getAllTeammates.mockResolvedValue(resp);
+        const respGetAllTeammates = { data: teammates };
+        ApiService.getAllTeammates.mockResolvedValue(respGetAllTeammates);
 
-        spy = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
+        spyGetAllTeammatesAndUpdateView = jest.spyOn(App.methods, "getAllTeammatesAndUpdateView");
 
-        wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = shallowMount(App);
     });
 
     it("renders the teammates on mounted hook", () => {
-
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyGetAllTeammatesAndUpdateView).toHaveBeenCalledTimes(1);
 
         expect(wrapper.vm.teammates)
             .toEqual(teammates);
@@ -312,17 +269,10 @@ describe("The teammates are not loaded", () => {
         const error = { message: "generic error message" };
         ApiService.getAllTeammates.mockRejectedValue(error);
 
-        wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = shallowMount(App);
     });
 
     it("shows an error message", () => {
-
         const errorMessage = wrapper.find(".ui.error.floating.message.mt35");
 
         expect(errorMessage
@@ -343,9 +293,6 @@ describe("The teammate is deleted correctly", () => {
     let spyUpdateViewMethod = null;
 
     beforeEach(() => {
-        const resp = { data: teammates };
-
-        ApiService.getAllTeammates.mockResolvedValue(resp);
         ApiService.deleteTeammate.mockResolvedValue(null);
 
         spyDeleteMethod = jest.spyOn(App.methods,
@@ -353,13 +300,7 @@ describe("The teammate is deleted correctly", () => {
         spyUpdateViewMethod = jest.spyOn(App.methods,
             "updateViewAfterDelete");
 
-        wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = shallowMount(App);
     });
 
     it("delete the teammate", async () => {
@@ -386,19 +327,10 @@ describe("The teammate is deleted correctly", () => {
 describe("The teammate is not deleted after performing delete operation", () => {
 
     beforeEach(() => {
-        const resp = { data: teammates };
         const error = { message: "generic error message" };
-
-        ApiService.getAllTeammates.mockResolvedValue(resp);
         ApiService.deleteTeammate.mockRejectedValue(error);
 
-        wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = shallowMount(App);
     });
 
     it("shows an error message", async () => {
@@ -413,7 +345,6 @@ describe("The teammate is not deleted after performing delete operation", () => 
         expect(errorMessage
             .find(".header").text())
             .toMatch("Error deleting teammate");
-
         expect(errorMessage
             .find("p").text())
             .toMatch("Unable to delete the teammate");
@@ -429,32 +360,15 @@ describe("The teammate is being updated after performing the edit operation", ()
         spyUpdateMethod = jest.spyOn(App.methods,
             "populateNewTeammateForUpdate");
 
-        wrapper = shallowMount(App, {
-            data: () => {
-                return {
-                    teammates: [],
-                    newTeammate:{
-                        name: {},
-                        gender: {},
-                        email: {},
-                        city: {},
-                        role: {},
-                        skills: [],
-                        errors: []
-                    }
-                }
-            }
-        });
+        wrapper = shallowMount(App);
     });
 
-    it("it populates the corresponding object", async () => {
+    it("it populates the corresponding object", () => {
         const teammateToUpdate = wrapper.vm.teammates[0].id;
 
         wrapper.findAllComponents(Card).wrappers[0]
             .vm.$emit("update", teammateToUpdate);
         newTeammate.id = wrapper.vm.teammates[0].id;
-
-        await flushPromises();
 
         expect(spyUpdateMethod)
             .toHaveBeenCalledTimes(1);
@@ -468,34 +382,18 @@ describe('the form is reset', () => {
     let spyResetSelects = null;
 
     beforeEach( () => {
-        newTeammate = {
-            name: {
-                value: 'Name'
-            },
-            gender: {
-                value: 'M'
-            },
-            email: {
-                value: 'email@email.it'
-            },
-            city: {
-                value: 'City'
-            },
-            role: {
-                value: 'R1'
-            },
-            skills: [
-                {id: 'sk1', name: 'skill1'}
-            ],
-            errors: []
-        }
-
         spyResetSelects = jest.spyOn(App.methods, 'resetSelects');
 
-        wrapper = shallowMount(App);
+        wrapper = shallowMount(App, {
+            data() {
+                return{
+                    newTeammate: newTeammate
+                }
+            }
+        });
     })
 
-    it('resets the PersonalDataForm and the TagMultiselect on Reset button click', async () => {
+    it('resets the PersonalDataForm and the TagMultiselect on Reset button click', () => {
         const emptyTeammate = {
             name: {},
             gender: {},
@@ -505,9 +403,8 @@ describe('the form is reset', () => {
             skills: [],
             errors: []
         }
-
-        await wrapper.setData({newTeammate: newTeammate});
         const resetButton = wrapper.find('button.ui.button:nth-of-type(2)');
+
         resetButton.trigger('click');
 
         expect(wrapper.vm.$data.newTeammate)
@@ -527,28 +424,6 @@ describe('the teammate is inserted and the view is updated', () => {
     let spyGetSkillsAndUpdateView = null;
 
     beforeEach(() => {
-        newTeammate = {
-            name: {
-                value: 'Name'
-            },
-            gender: {
-                value: 'M'
-            },
-            email: {
-                value: 'email@email.it'
-            },
-            city: {
-                value: 'City'
-            },
-            role: {
-                value: 'R1'
-            },
-            skills: [
-                {id: 'sk9000000', name: 'skill1'}
-            ],
-            errors: []
-        }
-
         spyHandleTeammate = jest.spyOn(App.methods, 'handleTeammate');
         spyInsertTeammate = jest.spyOn(App.methods, 'insertTeammate');
         spyUpdateViewAfterInsert = jest.spyOn(App.methods, 'updateViewAfterInsert');
@@ -556,16 +431,23 @@ describe('the teammate is inserted and the view is updated', () => {
         spyClearNewTeammate = jest.spyOn(App.methods, 'clearNewTeammate');
         spyGetSkillsAndUpdateView = jest.spyOn(App.methods, 'getSkillsAndUpdateView');
 
-        wrapper = shallowMount(App);
+        ApiService.getAllTeammates.mockResolvedValue({data: []});
 
+        const updateTeammateMock = jest.fn();
+
+        wrapper = shallowMount(App, {
+            data() {
+                return{
+                    newTeammate: newTeammate
+                }
+            }
+        });
+
+        wrapper.vm.updateTeammate = updateTeammateMock;
         spyGetSkillsAndUpdateView.mockClear(); // Resets the spy so that it's not counting the mounted call
     })
 
-    it('enables submit if teammate is valid', async () => {
-        await wrapper.setData({
-            newTeammate: newTeammate
-        })
-
+    it('enables submit if teammate is valid', () => {
         expect(wrapper.vm.submitDisabled)
             .toBeFalsy();
         expect(wrapper
@@ -581,7 +463,6 @@ describe('the teammate is inserted and the view is updated', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyHandleTeammate)
             .toHaveBeenCalledTimes(1);
@@ -589,14 +470,8 @@ describe('the teammate is inserted and the view is updated', () => {
             .toHaveBeenCalledTimes(0);
     })
 
-    it('triggers the handleTeammate and insertTeammate methods if the teammate is valid and has no id', async () => {
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: []
-        })
-
+    it('triggers the handleTeammate and insertTeammate methods if the teammate is valid and has no id', () => {
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyHandleTeammate)
             .toHaveBeenCalledTimes(1);
@@ -605,12 +480,6 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     it('inserts the teammate if the teammate is valid and has no id', async () => {
-
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: []
-        })
-
         wrapper.vm.handleTeammate();
         await flushPromises();
 
@@ -639,11 +508,6 @@ describe('the teammate is inserted and the view is updated', () => {
             skills: newTeammate.skills
         }
 
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: []
-        })
-
         wrapper.vm.insertTeammate()
         await flushPromises();
 
@@ -656,29 +520,16 @@ describe('the teammate is inserted and the view is updated', () => {
     })
 
     it('recovers the skills from the database', async () => {
-        const skill1 = {
-            id: 1,
-            name: 'Java'
-        }
-
-        const skill2 = {
-            id: 2,
-            name: 'Vue js'
-        }
-
         wrapper.vm.getSkillsAndUpdateView()
         await flushPromises();
 
         expect(wrapper.vm.skills)
-            .toContainEqual(skill1);
-        expect(wrapper.vm.skills)
-            .toContainEqual(skill2);
+            .toEqual(respGetSkills);
     })
 
     it('shows an error message if unable to insert the teammate', async () => {
         ApiService.insertTeammate.mockRejectedValue(null);
         await wrapper.vm.$forceUpdate();
-        await wrapper.setData({newTeammate: newTeammate});
 
         wrapper.vm.handleTeammate();
         await flushPromises();
@@ -694,18 +545,9 @@ describe('the teammate is inserted and the view is updated', () => {
 
     it('resets the insertTeammate error message on submit', async () => {
         await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: []});
+            errorInsertingTeammate: true
+        })
 
-        ApiService.insertTeammate.mockRejectedValue(null);
-        await wrapper.vm.$forceUpdate();
-        wrapper.vm.handleTeammate();
-        await flushPromises();
-
-        ApiService.insertTeammate.mockResolvedValue({ data : {
-                id: 1
-            }});
-        await wrapper.vm.$forceUpdate();
         wrapper.vm.handleTeammate();
         await flushPromises();
 
@@ -727,29 +569,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     let savedTeammate = null;
 
     beforeEach(() => {
-        newTeammate = {
-            id: 1,
-            name: {
-                value: 'Name'
-            },
-            gender: {
-                value: 'M'
-            },
-            email: {
-                value: 'email@email.it'
-            },
-            city: {
-                value: 'City'
-            },
-            role: {
-                value: 'R1'
-            },
-            skills: [
-                {id: 'sk1', name: 'skill1'}
-            ],
-            errors: [],
-            photoUrl: avatars['M'][2]
-        }
+        newTeammate.id = 1;
 
         savedTeammate = {
             id: 1,
@@ -765,6 +585,9 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             },
             skills: newTeammate.skills
         }
+        teammates = [savedTeammate];
+        ApiService.getAllTeammates.mockResolvedValue({data: teammates});
+
 
         spyHandleTeammate = jest.spyOn(App.methods, 'handleTeammate');
         spyUpdateTeammate = jest.spyOn(App.methods, 'updateTeammate');
@@ -777,16 +600,18 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         mockMath.random = () => 0.9;
         global.Math = mockMath;
 
-        wrapper = shallowMount(App);
+        wrapper = shallowMount(App, {
+            data() {
+                return{
+                    newTeammate: newTeammate
+                }
+            }
+        });
 
         spyGetSkillsAndUpdateView.mockClear(); // Resets the spy so that it's not counting the mounted call
     })
 
-    it('enables submit if teammate is valid', async () => {
-        await wrapper.setData({
-            newTeammate: newTeammate
-        })
-
+    it('enables submit if teammate is valid', () => {
         expect(wrapper.vm.submitDisabled)
             .toBeFalsy();
         expect(wrapper
@@ -798,7 +623,6 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     it('does not trigger updateTeammate if the teammate has no id', async () => {
         newTeammate.id = undefined;
         await wrapper.setData({
-            newTeammate: newTeammate,
             teammates: []
         })
 
@@ -811,14 +635,8 @@ describe('the teammate is updated and the view is updated accordingly', () => {
             .toHaveBeenCalledTimes(0);
     })
 
-    it('triggers the handleTeammate and updateTeammate methods if the teammate is valid and has an id', async () => {
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: [savedTeammate]
-        })
-
+    it('triggers the handleTeammate and updateTeammate methods if the teammate is valid and has an id', () => {
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyHandleTeammate)
             .toHaveBeenCalledTimes(1);
@@ -827,11 +645,6 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     })
 
     it('updates the teammate if the teammate is valid and has an id', async () => {
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: [savedTeammate]
-        })
-
         wrapper.vm.handleTeammate();
         await flushPromises();
 
@@ -842,15 +655,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     })
 
     it('updates the view after updating the teammate', async () => {
-        newTeammate.id = undefined;
-        await wrapper.setData({
-            newTeammate: newTeammate,
-            teammates: []
-        });
-        wrapper.vm.insertTeammate(newTeammate);
-        await flushPromises();
         const teammatesLength = wrapper.vm.teammates.length;
-
         const updatedTeammate = {
             id: 1,
             name: {
@@ -869,7 +674,7 @@ describe('the teammate is updated and the view is updated accordingly', () => {
                 value: 'R2'
             },
             skills: [
-                {id: 'sk1', name: 'skill1'}
+                {id: 1, name: 'skill1'}
             ],
             errors: [],
             photoUrl: teammates[0].personalData.photoUrl
@@ -903,15 +708,14 @@ describe('the teammate is updated and the view is updated accordingly', () => {
         expect(wrapper.vm.teammates)
             .toContainEqual(expectedTeammate);
         expect(spyClearNewTeammate)
-            .toHaveBeenCalledTimes(2);
+            .toHaveBeenCalledTimes(1);
         expect(spyGetSkillsAndUpdateView)
-            .toHaveBeenCalledTimes(2);
+            .toHaveBeenCalledTimes(1);
     })
 
     it('shows an error message if unable to update the teammate', async () => {
         ApiService.updateTeammate.mockRejectedValue(null);
         await wrapper.vm.$forceUpdate();
-        await wrapper.setData({newTeammate: newTeammate});
 
         wrapper.vm.handleTeammate();
         await flushPromises();
@@ -926,17 +730,10 @@ describe('the teammate is updated and the view is updated accordingly', () => {
     })
 
     it('resets the updateTeammate error message on submit', async () => {
-        await wrapper.setData({ newTeammate: newTeammate });
+        await wrapper.setData({
+            errorUpdatingTeammate: true
+        })
 
-        ApiService.updateTeammate.mockRejectedValue(null);
-        await wrapper.vm.$forceUpdate();
-        wrapper.vm.handleTeammate();
-        await flushPromises();
-
-        ApiService.updateTeammate.mockResolvedValue({ data : {
-                id: 1
-            }});
-        await wrapper.vm.$forceUpdate();
         wrapper.vm.handleTeammate();
         await flushPromises();
 
@@ -952,46 +749,13 @@ describe('the teammate is not valid', () => {
     let spyUpdateTeammate = null;
 
     beforeEach(() => {
-        newTeammate = {
-            name: {
-                value: 'Name'
-            },
-            gender: {
-                value: 'M'
-            },
-            email: {
-                value: 'email@email.it'
-            },
-            city: {
-                value: 'City'
-            },
-            role: {
-                value: 'R1'
-            },
-            skills: [
-                {id: 'sk1', name: 'skill1'}
-            ],
-            errors: []
-        }
-
         spyInsertTeammate = jest.spyOn(App.methods, 'insertTeammate');
         spyUpdateTeammate = jest.spyOn(App.methods, 'updateTeammate');
 
         wrapper = shallowMount(App);
     })
 
-    it('disables submit if teammate is not valid', async () => {
-        const emptyTeammate = {
-            name: {},
-            gender: {},
-            email: {},
-            city: {},
-            role: {},
-            skills: [],
-            errors: []
-        }
-        await wrapper.setData({ newTeammate: emptyTeammate })
-
+    it('disables submit if teammate is not valid', () => {
         expect(wrapper.vm.submitDisabled)
             .toBeTruthy();
         expect(wrapper
@@ -1007,7 +771,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1025,7 +788,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1042,7 +804,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1060,7 +821,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1077,7 +837,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyInsertTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1095,7 +854,6 @@ describe('the teammate is not valid', () => {
         })
 
         wrapper.find('button.ui.button:nth-of-type(1)').trigger('click');
-        await wrapper.vm.$nextTick();
 
         expect(spyUpdateTeammate)
             .toHaveBeenCalledTimes(0);
@@ -1110,12 +868,6 @@ describe('The skills are loaded', () => {
     let spyGetSkillAndUpdateView = null;
 
     beforeEach(() => {
-        const respGetSkills = [
-            {id: 1, name: 'Java'},
-            {id: 2, name: 'Vue js'}
-        ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
-
         spyGetSkillAndUpdateView = jest.spyOn(App.methods, "getSkillsAndUpdateView");
 
         wrapper = shallowMount(App);

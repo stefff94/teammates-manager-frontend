@@ -1,11 +1,4 @@
 import { mount } from "@vue/test-utils";
-import App from "../../src/App";
-import ApiService from "../../src/services/ApiService";
-import PersonalDataForm from "../../src/components/PersonalDataForm";
-import { avatars, genders, roles, rules } from "../../src/variables";
-import TagMultiselect from "../../src/components/TagMultiselect";
-import Multiselect from "vue-multiselect";
-import Card from "../../src/components/Card";
 import flushPromises from "flush-promises";
 
 import jQuery from "jquery";
@@ -14,16 +7,24 @@ global.jQuery = jQuery
 global.$ = $
 require('fomantic-ui/dist/semantic.min.js')
 
+import App from "../../src/App";
+import ApiService from "../../src/services/ApiService";
+import Card from "../../src/components/Card";
+import Multiselect from "vue-multiselect";
+import PersonalDataForm from "../../src/components/PersonalDataForm";
+import TagMultiselect from "../../src/components/TagMultiselect";
+
 let wrapper = null;
 let teammates = null;
 let newTeammate = null;
+let respGetSkills = null;
 
 jest.mock("../../src/services/ApiService");
 
 beforeEach(() => {
-    let skills = [
+    const skills = [
         { id: 1, name: "Java" },
-        { id: 2, name: "Spring Boot" }
+        { id: 2, name: "Vue js" }
     ];
 
     teammates = [
@@ -71,7 +72,7 @@ beforeEach(() => {
         },
         skills: [
             { id: 1, name: "Java" },
-            { id: 2, name: "Spring Boot" }
+            { id: 2, name: "Vue js" }
         ],
         errors: []
     }
@@ -83,14 +84,14 @@ beforeEach(() => {
 
     ApiService.updateTeammate.mockResolvedValue(null);
 
-    const respGetSkills = [
+    respGetSkills = [
         { id: 1, name: 'Java' },
         { id: 2, name: 'Vue js' }
     ]
     ApiService.getSkills.mockResolvedValue({data: respGetSkills});
 
-    const resp = { data: teammates };
-    ApiService.getAllTeammates.mockResolvedValue(resp);
+    const respGetAllTeammates = { data: teammates };
+    ApiService.getAllTeammates.mockResolvedValue(respGetAllTeammates);
 
     const mockMath = Object.create(global.Math)
     mockMath.random = () => 0.9;
@@ -100,22 +101,11 @@ beforeEach(() => {
 describe("App.vue", () => {
 
     beforeEach(() => {
-        const resp = { data: teammates };
-
-        ApiService.getAllTeammates.mockResolvedValue(resp);
-
         // mount method mounts automatically also child components
-        wrapper = mount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = mount(App);
     });
 
     it("renders the Cards components correctly", () => {
-
         const cards = wrapper.findAllComponents(Card);
 
         cards.wrappers.forEach(card => {
@@ -127,7 +117,6 @@ describe("App.vue", () => {
 });
 
 describe('The teammate is created', () => {
-    let respGetSkills = null;
 
     beforeEach(() => {
         const respInsertTeammate = { data: {
@@ -135,41 +124,14 @@ describe('The teammate is created', () => {
             }};
         ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
-        respGetSkills = [
-            { id: 1, name: "Java" },
-            { id: 2, name: "Spring Boot" }
-        ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
+        ApiService.getSkills.mockResolvedValue({data: []});
 
         ApiService.getAllTeammates.mockResolvedValue({data: []});
 
-        wrapper = mount(App,{
-            data: function() {
-                return{
-                    skills: [],
-                    newTeammate: {
-                        name: {},
-                        gender: {},
-                        email: {},
-                        city: {},
-                        role: {},
-                        skills: [],
-                        errors: []
-                    },
-                    roles: roles,
-                    genders: genders,
-                    avatars: avatars,
-                    teammates: [],
-                    rules: rules
-                }
-            }
-        });
+        wrapper = mount(App);
     });
 
     it('saves the teammate data from the forms', async () => {
-        await wrapper.setData({
-            skills: []
-        })
         let personalDataForm = wrapper.findComponent(PersonalDataForm);
 
         const nameInputField = personalDataForm.findAll('.three.fields input').at(0)
@@ -262,27 +224,7 @@ describe('the skills are added to App.skills', () => {
 
         ApiService.getSkills.mockResolvedValue({data: []});
 
-        wrapper = mount(App,{
-            data: function() {
-                return{
-                    skills: [],
-                    newTeammate: {
-                        name: {},
-                        gender: {},
-                        email: {},
-                        city: {},
-                        role: {},
-                        skills: [],
-                        errors: []
-                    },
-                    roles: roles,
-                    genders: genders,
-                    avatars: avatars,
-                    teammates: [],
-                    rules: rules
-                }
-            }
-        });
+        wrapper = mount(App);
     })
 
     it('adds the skill to the options', () => {
@@ -305,18 +247,9 @@ describe('the skills are added to App.skills', () => {
 describe("The teammate is deleted", () => {
 
     beforeEach(() => {
-        const resp = { data: teammates };
-
-        ApiService.getAllTeammates.mockResolvedValue(resp);
         ApiService.deleteTeammate.mockResolvedValue(null);
 
-        wrapper = mount(App, {
-            data: () => {
-                return {
-                    teammates: []
-                }
-            }
-        });
+        wrapper = mount(App);
     });
 
     it("delete the teammate", async () => {
@@ -336,41 +269,13 @@ describe("The teammate is deleted", () => {
 
 describe("The teammate is updated after performing the edit operation", () => {
 
-    let respGetSkills = null;
-
     beforeEach(() => {
-        const resp = { data: {
+        const respInsertTeammate = { data: {
                 id: 1
             }};
-        ApiService.insertTeammate.mockResolvedValue(resp);
+        ApiService.insertTeammate.mockResolvedValue(respInsertTeammate);
 
-        respGetSkills = [
-            { id: 1, name: "Java" },
-            { id: 2, name: "Spring Boot" }
-        ]
-        ApiService.getSkills.mockResolvedValue({data: respGetSkills});
-
-        wrapper = mount(App,{
-            data: function() {
-                return{
-                    skills: [],
-                    newTeammate: {
-                        name: {},
-                        gender: {},
-                        email: {},
-                        city: {},
-                        role: {},
-                        skills: [],
-                        errors: []
-                    },
-                    roles: roles,
-                    genders: genders,
-                    avatars: avatars,
-                    teammates: [],
-                    rules: rules
-                }
-            }
-        });
+        wrapper = mount(App);
     });
 
     it("it populates the newTeammate object", () => {
