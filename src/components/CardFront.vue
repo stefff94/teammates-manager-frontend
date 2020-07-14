@@ -9,11 +9,11 @@
                 <div class="description mt35">
                     <div class="ui list">
                         <div class="item">
-                            <em class="mail icon"></em>
+                            <i class="mail icon"></i>
                             <div class="content">{{ data.email }}</div>
                         </div>
                         <div class="item">
-                            <em class="globe icon"></em>
+                            <i class="globe icon"></i>
                             <div class="content">{{ data.city }}</div>
                         </div>
                     </div>
