@@ -13,7 +13,7 @@ beforeEach(() => {
     id = 1;
 
     personalData = {
-        photoUrl: "/images/avatar/large/steve.jpg",
+        photoUrl: "https://semantic-ui.com/images/avatar/large/steve.jpg",
         name: "Stefano Vannucchi",
         role: "Student",
         email: "stefano.vannucchi@stud.unifi.it",

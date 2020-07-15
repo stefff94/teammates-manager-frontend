@@ -10,7 +10,7 @@ class ApiService {
     }
 
     static updateTeammate(id, teammate) {
-        return axios.put(backendBaseUrl + '/teammates/' + id.toString(), teammate);
+        return axios.put(backendBaseUrl + '/teammates/update/' + id, teammate);
     }
 
     static getSkills() {

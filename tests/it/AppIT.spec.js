@@ -13,6 +13,7 @@ import Card from "../../src/components/Card";
 import Multiselect from "vue-multiselect";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
+import { avatarBaseUrl } from "../../src/variables";
 
 let wrapper = null;
 let teammates = null;
@@ -31,7 +32,7 @@ beforeEach(() => {
         {
             id: 1,
             personalData: {
-                photoUrl: "/images/avatar/large/steve.jpg",
+                photoUrl: "https://semantic-ui.com/images/avatar/large/steve.jpg",
                 name: "Stefano Vannucchi",
                 role: "Student",
                 email: "stefano.vannucchi@stud.unifi.it",
@@ -43,7 +44,7 @@ beforeEach(() => {
         {
             id: 2,
             personalData: {
-                photoUrl: "/images/avatar/large/matthew.jpg",
+                photoUrl: "https://semantic-ui.com/images/avatar/large/matthew.jpg",
                 name: "Paolo Innocenti",
                 role: "Student",
                 email: "paolo.innocenti@stud.unifi.it",
@@ -172,7 +173,7 @@ describe('The teammate is created', () => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: wrapper.vm.$data.avatars[newTeammate.gender.value][2]
+                photoUrl: avatarBaseUrl + wrapper.vm.$data.avatars[newTeammate.gender.value][2]
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
@@ -204,8 +205,8 @@ describe('The teammate is created', () => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: wrapper.vm.$data.avatars[newTeammate.gender.value][2]
-                ,
+                photoUrl: avatarBaseUrl +
+                    wrapper.vm.$data.avatars[newTeammate.gender.value][2],
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
             },
@@ -296,6 +297,9 @@ describe("The teammate is updated after performing the edit operation", () => {
             role: {
                 value: "R1"
             },
+            photoUrl: {
+                value: "https://semantic-ui.com/images/avatar/large/steve.jpg"
+            },
             skills: respGetSkills,
             errors: []
         }
@@ -354,8 +358,8 @@ describe("The teammate is updated after performing the edit operation", () => {
                     return r.id === 'R2'
                 }).name,
                 gender: 'F',
-                photoUrl: wrapper.vm.avatars[selectedGender.getAttribute('value')][2]
-                ,
+                photoUrl: avatarBaseUrl +
+                    wrapper.vm.avatars[selectedGender.getAttribute('value')][2],
                 email: 'NewEmail@email.it',
                 city: 'new city'
             },

@@ -6,7 +6,7 @@ import ApiService from "../../src/services/ApiService";
 import Card from "../../src/components/Card";
 import PersonalDataForm from "../../src/components/PersonalDataForm";
 import TagMultiselect from "../../src/components/TagMultiselect";
-import { avatars, roles } from "../../src/variables";
+import { avatarBaseUrl, avatars, roles } from "../../src/variables";
 
 import jQuery from 'jquery'
 import $ from 'jquery'
@@ -26,7 +26,7 @@ beforeEach(() => {
         {
             id: 1,
             personalData: {
-                photoUrl: "/images/avatar/large/steve.jpg",
+                photoUrl: "https://semantic-ui.com/images/avatar/large/steve.jpg",
                 name: "Stefano Vannucchi",
                 role: "Student",
                 email: "stefano.vannucchi@stud.unifi.it",
@@ -41,7 +41,7 @@ beforeEach(() => {
         {
             id: 2,
             personalData: {
-                photoUrl: "/images/avatar/large/matthew.jpg",
+                photoUrl: "https://semantic-ui.com/images/avatar/large/matthew.jpg",
                 name: "Paolo Innocenti",
                 role: "Student",
                 email: "paolo.innocenti@stud.unifi.it",
@@ -70,6 +70,9 @@ beforeEach(() => {
         },
         role: {
             value: "R1"
+        },
+        photoUrl: {
+            value: "https://semantic-ui.com/images/avatar/large/steve.jpg"
         },
         skills: [
             { id: 1, name: "Java" },
@@ -395,11 +398,13 @@ describe('the form is reset', () => {
 
     it('resets the PersonalDataForm and the TagMultiselect on Reset button click', () => {
         const emptyTeammate = {
+            id: null,
             name: {},
             gender: {},
             email: {},
             city: {},
             role: {},
+            photoUrl: {},
             skills: [],
             errors: []
         }
@@ -500,7 +505,7 @@ describe('the teammate is inserted and the view is updated', () => {
                     return r.id === newTeammate.role.value
                 }).name,
                 gender: newTeammate.gender.value,
-                photoUrl: wrapper.vm.avatars[newTeammate.gender.value][2]
+                photoUrl: avatarBaseUrl + wrapper.vm.avatars[newTeammate.gender.value][2]
                 ,
                 email: newTeammate.email.value,
                 city: newTeammate.city.value
@@ -691,7 +696,8 @@ describe('the teammate is updated and the view is updated accordingly', () => {
                     return r.id === updatedTeammate.role.value
                 }).name,
                 gender: updatedTeammate.gender.value,
-                photoUrl: wrapper.vm.avatars[updatedTeammate.gender.value][2],
+                photoUrl: avatarBaseUrl +
+                    wrapper.vm.avatars[updatedTeammate.gender.value][2],
                 email: updatedTeammate.email.value,
                 city: updatedTeammate.city.value
             },

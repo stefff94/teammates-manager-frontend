@@ -59,7 +59,7 @@
     import TagMultiselect from "./components/TagMultiselect";
     import ApiService from "./services/ApiService";
     import $ from 'jquery';
-    import { avatars, genders, roles, rules } from "./variables";
+    import { avatarBaseUrl, avatars, genders, roles, rules } from "./variables";
     import Card from "./components/Card";
 
     export default {
@@ -67,7 +67,8 @@
         components: {
             Card,
             PersonalDataForm,
-            TagMultiselect},
+            TagMultiselect
+        },
         mounted() {
             this.resetSelects();
             this.getSkillsAndUpdateView();
@@ -76,18 +77,24 @@
         computed: {
             submitDisabled() {
                 let t = this.newTeammate;
-                return !t.name.value || !t.gender.value || !t.email.value || !t.role.value || !t.city.value;
+                return !t.name.value
+                    || !t.gender.value
+                    || !t.email.value
+                    || !t.role.value
+                    || !t.city.value;
             }
         },
         data: function() {
             return{
                 skills: [],
                 newTeammate: {
+                    id: null,
                     name: {},
                     gender: {},
                     email: {},
                     city: {},
                     role: {},
+                    photoUrl: {},
                     skills: [],
                     errors: []
                 },
@@ -149,6 +156,9 @@
                                     r => r.name === teammate.personalData.role
                                 ).id
                             },
+                            photoUrl: {
+                                value: teammate.personalData.photoUrl
+                            },
                             skills: teammate.skills,
                             errors: []
                         }
@@ -159,14 +169,16 @@
                 this.errorInsertingTeammate = false;
                 this.errorUpdatingTeammate = false;
                 if(this.teammateIsValid()) {
-                    if (typeof this.newTeammate.id === 'undefined')
+                    if (typeof this.newTeammate.id === 'undefined' || this.newTeammate.id == null)
                         this.insertTeammate();
                     else
                         this.updateTeammate();
                 }
             },
             insertTeammate() {
-                const avatarUrl = this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
+                const avatarUrl = avatarBaseUrl +
+                    this.avatars[this.newTeammate.gender.value][Math.floor(Math.random() * 3)];
+
                 const newTeammate = {
                     personalData: {
                         name: this.newTeammate.name.value,
@@ -223,7 +235,7 @@
                             return r.id === this.newTeammate.role.value
                         }).name,
                         gender: this.newTeammate.gender.value,
-                        photoUrl: this.newTeammate.photoUrl,
+                        photoUrl: this.newTeammate.photoUrl.value,
                         email: this.newTeammate.email.value,
                         city: this.newTeammate.city.value
                     },
@@ -231,7 +243,7 @@
                 }
                 const oldTeammate = this.teammates.find(t => t.id === newTeammate.id);
                 if(oldTeammate.personalData.gender !== newTeammate.personalData.gender) {
-                    newTeammate.personalData.photoUrl = this.avatars[
+                    newTeammate.personalData.photoUrl = avatarBaseUrl + this.avatars[
                         newTeammate.personalData.gender][
                         Math.floor(Math.random() * 3)];
                 }
@@ -252,11 +264,13 @@
                 this.getSkillsAndUpdateView();
             },
             clearNewTeammate() {
+                this.newTeammate.id = null;
                 this.newTeammate.name = {};
                 this.newTeammate.gender = {};
                 this.newTeammate.email = {};
                 this.newTeammate.role = {};
                 this.newTeammate.city = {};
+                this.newTeammate.photoUrl = {};
                 this.newTeammate.skills = [];
                 this.newTeammate.errors = [];
                 this.resetSelects();

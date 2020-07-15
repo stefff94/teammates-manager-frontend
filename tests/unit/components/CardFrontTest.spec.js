@@ -7,7 +7,7 @@ beforeEach(() => {
     wrapper = shallowMount(CardFront, {
         propsData: {
             data: {
-                photoUrl: "/images/avatar/large/steve.jpg",
+                photoUrl: "https://semantic-ui.com/images/avatar/large/steve.jpg",
                 name: "Stefano Vannucchi",
                 role: "Student",
                 email: "stefano.vannucchi@stud.unifi.it",
