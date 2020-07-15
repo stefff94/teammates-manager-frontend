@@ -358,10 +358,13 @@ describe("The teammate is not deleted after performing delete operation", () => 
 describe("The teammate is being updated after performing the edit operation", () => {
 
     let spyUpdateMethod = null;
+    let spyPopulateSelects = null;
 
     beforeEach(() => {
         spyUpdateMethod = jest.spyOn(App.methods,
             "populateNewTeammateForUpdate");
+        spyPopulateSelects = jest.spyOn(App.methods,
+            "populateSelects");
 
         wrapper = shallowMount(App);
     });
@@ -377,6 +380,8 @@ describe("The teammate is being updated after performing the edit operation", ()
             .toHaveBeenCalledTimes(1);
         expect(wrapper.vm.newTeammate)
             .toEqual(newTeammate);
+        expect(spyPopulateSelects)
+            .toHaveBeenCalledTimes(1);
     });
 
 });

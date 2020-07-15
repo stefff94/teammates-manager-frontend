@@ -162,6 +162,8 @@
                             skills: teammate.skills,
                             errors: []
                         }
+                        self.populateSelects(self.newTeammate.gender.value,
+                            self.newTeammate.role.value);
                     }
                 });
             },
@@ -277,6 +279,10 @@
             },
             resetSelects() {
                 $('.ui.dropdown').dropdown('clear');
+            },
+            populateSelects(gender, role) {
+                $('#gender-dropdown').dropdown('set selected', gender);
+                $('#role-dropdown').dropdown('set selected', role);
             }
         }
     }
