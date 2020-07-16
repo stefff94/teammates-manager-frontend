@@ -5,7 +5,7 @@
         </div>
 
         <div class="mt35 mb35">
-            <tag-multiselect :options="skills" :teammate="newTeammate"></tag-multiselect>
+            <tag-multiselect id="skill-multiselect" :options="skills" :teammate="newTeammate"></tag-multiselect>
         </div>
 
         <button class="ui button" @click="handleTeammate" :disabled="submitDisabled">Submit</button>

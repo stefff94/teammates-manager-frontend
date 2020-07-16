@@ -196,7 +196,7 @@ describe('PersonalDataForm.vue', () => {
             .toBeTruthy();
         expect(genderSelectField
             .attributes('class'))
-            .toBe('ui selection dropdown');
+            .toBe('ui selection dropdown gender-dropdown');
         expect(genderSelectField
             .attributes('id'))
             .toBe('gender-dropdown');
@@ -300,7 +300,7 @@ describe('PersonalDataForm.vue', () => {
             .toBeTruthy();
         expect(roleSelectField
             .attributes('class'))
-            .toBe('ui selection dropdown');
+            .toBe('ui selection dropdown role-dropdown');
         expect(roleSelectField
             .attributes('id'))
             .toBe('role-dropdown');

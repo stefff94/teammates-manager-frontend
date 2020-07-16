@@ -32,14 +32,14 @@ describe("CardBack.vue", () => {
 
    it("renders the delete icon button", () => {
        expect(wrapper
-           .find(".content .right.floated.large.icon.trash.alternate.outline")
+           .find(".content .right.floated.large.icon.trash.alternate.outline.delete")
            .exists())
            .toBeTruthy();
    });
 
    it("renders the edit icon button", () => {
        expect(wrapper
-           .find(".content .right.floated.large.icon.pencil.alternate")
+           .find(".content .right.floated.large.icon.pencil.alternate.update")
            .exists())
            .toBeTruthy();
    });
