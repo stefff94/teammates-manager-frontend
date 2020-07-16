@@ -32,9 +32,6 @@
     backface-visibility: hidden;
 }
 
-.flip-card-front {
-}
-
 .flip-card-back {
     transform: rotateY(180deg);
 }
@@ -49,6 +46,10 @@
 
 .text-center {
     text-align: center;
+}
+
+.text-left {
+    text-align: left;
 }
 
 .m20 {
@@ -76,7 +77,11 @@
     opacity: 0;
 }
 
-.delete {
+.trash {
     color: red;
+    cursor: pointer;
+}
+
+.pencil {
     cursor: pointer;
 }
