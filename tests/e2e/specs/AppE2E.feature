@@ -54,16 +54,16 @@ Feature: App E2E Tests
     And I insert "Another skill" in the multiselect
     When I click on "Submit"
     Then There should be a teammate card with the updated teammate
-#
-#  Scenario: Filling the form with a wrong values and pressing Submit, I should see an error
-#    Given I visit the app root page
-#    And I fill "name" with "Paolo1"
-#    And I fill "email" with "paolo innocenti"
-#    And I select "M" for "gender-dropdown"
-#    And I fill "city" with "Florence1"
-#    And I select "Student" for "role-dropdown"
-#    And I insert "Skill" in the multiselect
-#    When I click on "Submit"
-#    Then I should see the error message: "Please enter a correct value for field name"
-#    And I should see the error message: "Please enter a correct value for field email"
-#    And I should see the error message: "Please enter a correct value for field city"
+
+  Scenario: Filling the form with a wrong values and pressing Submit, I should see an error
+    Given I visit the app root page
+    And I fill "name" with "Paolo1"
+    And I fill "email" with "paolo innocenti"
+    And I select "M" for "gender-dropdown"
+    And I fill "city" with "Florence1"
+    And I select "Student" for "role-dropdown"
+    And I insert "Skill" in the multiselect
+    When I click on "Submit"
+    Then I should see the error message: "Please enter a correct value for field name"
+    And I should see the error message: "Please enter a correct value for field email"
+    And I should see the error message: "Please enter a correct value for field city"

@@ -169,6 +169,17 @@ Then("There should be a teammate card with the updated teammate", () => {
         .should("contain", "Another skill");
 });
 
+Then(/^I should see the error message: "(.*?)"$/, message => {
+    cy.get(".ui.error.message .header")
+        .get("span")
+        .should("contain", "Issues");
+
+    cy.get(".ui.error.message .header")
+        .get("ul")
+        .children()
+        .should("contain", message);
+});
+
 After({ tags: "@cleanDB" }, () => {
     cy.get(".icon.trash")
         .each((el) =>
