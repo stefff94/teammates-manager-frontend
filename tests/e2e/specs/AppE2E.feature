@@ -8,12 +8,12 @@ Feature: App E2E Tests
     When I visit the app root page
     Then I see it contains the teammates list
 
-#  @initializeDB
-#  @cleanDB
-#  Scenario: Clicking the teammate's delete button, I should see the teammate disappear
-#    Given I visit the app root page
-#    When I click the teammate's "delete" button
-#    Then I see it disappear
+  @initializeDB
+  @cleanDB
+  Scenario: Clicking the teammate's delete button, I should see the teammate disappear
+    Given I visit the app root page
+    When I click the teammate's "delete" button
+    Then I see it disappear
 #
 #  Scenario: Filling the form and pressing Reset, I should see an empty form
 #    Given I visit the app root page

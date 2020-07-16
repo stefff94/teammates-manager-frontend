@@ -76,6 +76,17 @@ Then(`I see it contains the teammates list`, () => {
         .should("contain", paolo.skills[1].name);
 });
 
+When(/^I click the teammate's "(.*?)" button$/, buttonName => {
+    cy.get(".icon." + buttonName).first()
+        .click({force: true});
+});
+
+Then("I see it disappear", () => {
+    cy.get(".ui.three.column.stackable.grid.mt35")
+        .children()
+        .should("have.length", 1);
+});
+
 After({ tags: "@cleanDB" }, () => {
     cy.get(".icon.trash")
         .each((el) =>
