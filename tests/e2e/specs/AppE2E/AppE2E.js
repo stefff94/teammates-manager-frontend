@@ -1,4 +1,4 @@
-import { When, Then, Before, After } from "cypress-cucumber-preprocessor/steps";
+import { When, Then, Before, After, And } from "cypress-cucumber-preprocessor/steps";
 import ApiService from "../../../../src/services/ApiService";
 
 let stefano = {
@@ -85,6 +85,47 @@ Then("I see it disappear", () => {
     cy.get(".ui.three.column.stackable.grid.mt35")
         .children()
         .should("have.length", 1);
+});
+
+And(/^I fill "(.*?)" with "(.*?)"$/, (fieldName, data) => {
+    cy.get("input[name='" + fieldName + "']")
+        .type(data);
+});
+
+And(/^I select "(.*?)" for "(.*?)"$/, (dropdownValue, dropdownName) => {
+    cy.get(".ui.selection.dropdown." + dropdownName)
+        .click()
+        .get(".menu.transition.visible .item")
+        .contains(dropdownValue).click();
+});
+
+And(/^I insert "(.*?)" in the multiselect$/, skillName => {
+    cy.get("#skill-multiselect")
+        .click()
+        .type(skillName)
+        .contains(skillName)
+        .click();
+});
+
+When(/^I click on "(.*?)"$/, buttonName => {
+    cy.get(".ui.button")
+        .contains(buttonName)
+        .click();
+});
+
+Then("There shouldn't be any data in the fields", () => {
+    cy.get("input[name='name']")
+        .should("be.empty");
+    cy.get("input[name='email']")
+        .should("be.empty");
+    cy.get(".ui.selection.dropdown.gender-dropdown")
+        .should("contain", "Gender");
+    cy.get("input[name='city']")
+        .should("be.empty");
+    cy.get(".ui.selection.dropdown.role-dropdown")
+        .should("contain", "Role")
+    cy.get("#skill-multiselect")
+        .should("contain", "Search or add a new skill");
 });
 
 After({ tags: "@cleanDB" }, () => {
