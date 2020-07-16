@@ -25,18 +25,18 @@ Feature: App E2E Tests
     And I insert "Skill" in the multiselect
     When I click on "Reset"
     Then There shouldn't be any data in the fields
-#
-#  @cleanDB
-#  Scenario: Filling the form and pressing Submit, I should see a new teammate with the data
-#    Given I visit the app root page
-#    And I fill "name" with "Paolo"
-#    And I fill "email" with "paolo.innocenti@stud.unifi.it"
-#    And I select "M" for "gender-dropdown"
-#    And I fill "city" with "Florence"
-#    And I select "Student" for "role-dropdown"
-#    And I insert "Skill" in the multiselect
-#    When I click on "Submit"
-#    Then There should be a teammate card for the new teammate
+
+  @cleanDB
+  Scenario: Filling the form and pressing Submit, I should see a new teammate with the data
+    Given I visit the app root page
+    And I fill "name" with "Paolo"
+    And I fill "email" with "paolo.innocenti@stud.unifi.it"
+    And I select "M" for "gender-dropdown"
+    And I fill "city" with "Florence"
+    And I select "Student" for "role-dropdown"
+    And I insert "Skill" in the multiselect
+    When I click on "Submit"
+    Then There should be a teammate card for the new teammate
 #
 #  @initializeDB
 #  @cleanDB

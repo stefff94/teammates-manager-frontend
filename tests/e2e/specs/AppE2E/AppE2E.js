@@ -128,6 +128,22 @@ Then("There shouldn't be any data in the fields", () => {
         .should("contain", "Search or add a new skill");
 });
 
+Then("There should be a teammate card for the new teammate", () => {
+    const cards = cy.get(".ui.three.column.stackable.grid.mt35")
+        .children();
+
+    cards
+        .should("contain", "Paolo");
+    cards
+        .should("contain", "Student");
+    cards
+        .should("contain", "paolo.innocenti@stud.unifi.it");
+    cards
+        .should("contain", "Florence");
+    cards
+        .should("contain", "Skill");
+});
+
 After({ tags: "@cleanDB" }, () => {
     cy.get(".icon.trash")
         .each((el) =>
