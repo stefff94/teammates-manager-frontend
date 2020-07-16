@@ -87,6 +87,11 @@ Then("I see it disappear", () => {
         .should("have.length", 1);
 });
 
+And(/^I clear the field "(.*?)"$/, fieldName => {
+    cy.get("input[name='" + fieldName + "']")
+        .clear();
+});
+
 And(/^I fill "(.*?)" with "(.*?)"$/, (fieldName, data) => {
     cy.get("input[name='" + fieldName + "']")
         .type(data);
@@ -142,6 +147,26 @@ Then("There should be a teammate card for the new teammate", () => {
         .should("contain", "Florence");
     cards
         .should("contain", "Skill");
+});
+
+Then("There should be a teammate card with the updated teammate", () => {
+    const cards = cy.get(".ui.three.column.stackable.grid.mt35")
+        .children();
+
+    cards
+        .should("contain", "Updated Name");
+    cards
+        .should("contain", "Analyst Programmer");
+    cards
+        .should("contain", "updated@email.it");
+    cards
+        .should("contain", "Updated City");
+    cards
+        .should("contain", "Java");
+    cards
+        .should("contain", "Vue js");
+    cards
+        .should("contain", "Another skill");
 });
 
 After({ tags: "@cleanDB" }, () => {

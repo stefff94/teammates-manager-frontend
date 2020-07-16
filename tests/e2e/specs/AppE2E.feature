@@ -37,23 +37,23 @@ Feature: App E2E Tests
     And I insert "Skill" in the multiselect
     When I click on "Submit"
     Then There should be a teammate card for the new teammate
-#
-#  @initializeDB
-#  @cleanDB
-#  Scenario: Updating an existent teammate, I should see the teammate's data updated
-#    Given I visit the app root page
-#    And I click the teammate's "update" button
-#    And I clear the field "name"
-#    And I fill "name" with "Updated Name"
-#    And I clear the field "email"
-#    And I fill "email" with "updated@email.it"
-#    And I select "F" for "gender-dropdown"
-#    And I clear the field "city"
-#    And I fill "city" with "Updated City"
-#    And I select "Analyst Programmer" for "role-dropdown"
-#    And I insert "Another skill" in the multiselect
-#    When I click on "Submit"
-#    Then There should be a teammate card with the updated teammate
+
+  @initializeDB
+  @cleanDB
+  Scenario: Updating an existent teammate, I should see the teammate's data updated
+    Given I visit the app root page
+    And I click the teammate's "update" button
+    And I clear the field "name"
+    And I fill "name" with "Updated Name"
+    And I clear the field "email"
+    And I fill "email" with "updated@email.it"
+    And I select "F" for "gender-dropdown"
+    And I clear the field "city"
+    And I fill "city" with "Updated City"
+    And I select "Analyst Programmer" for "role-dropdown"
+    And I insert "Another skill" in the multiselect
+    When I click on "Submit"
+    Then There should be a teammate card with the updated teammate
 #
 #  Scenario: Filling the form with a wrong values and pressing Submit, I should see an error
 #    Given I visit the app root page
