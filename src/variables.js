@@ -1,14 +1,14 @@
 export const roles = [
-    {id: 'R1', name: 'Student'},
-    {id: 'R2', name: 'Frontend developer'},
-    {id: 'R3', name: 'Backend developer'},
-    {id: 'R4', name: 'Full Stack developer'},
-    {id: 'R5', name: 'Analyst Programmer'},
+    {id: "R1", name: "Student"},
+    {id: "R2", name: "Frontend developer"},
+    {id: "R3", name: "Backend developer"},
+    {id: "R4", name: "Full Stack developer"},
+    {id: "R5", name: "Analyst Programmer"},
 ]
 
 export const genders = [
-    {id: 'M', name: 'Male'},
-    {id: 'F', name: 'Female'}
+    {id: "M", name: "Male"},
+    {id: "F", name: "Female"}
 ]
 
 export const avatars = {

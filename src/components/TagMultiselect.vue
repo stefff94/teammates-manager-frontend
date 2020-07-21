@@ -28,7 +28,9 @@
             addSkill(newSkill){
                 let maxOptionIndex = 0;
                 if(this.options.length > 0)
-                    maxOptionIndex = Math.max.apply(Math, this.options.map(o => { return o.id; }))
+                    maxOptionIndex = Math.max
+                        .apply(Math, this.options.map(o => o.id));
+
                 const skill = {
                     id: maxOptionIndex + 1,
                     name: newSkill

@@ -8,20 +8,13 @@
 
 // /* eslint-disable import/no-extraneous-dependencies, global-require */
 const webpack = require('@cypress/webpack-preprocessor')
-// const cucumber = require('cypress-cucumber-preprocessor').default
 
 module.exports = (on, config) => {
-  // on('file:preprocessor', webpack({
-  //  webpackOptions: require('@vue/cli-service/webpack.config'),
-  //  watchOptions: {}
-  // }))
 
   const options = {
     webpackOptions: require("../webpack.config.js")
   };
   on("file:preprocessor", webpack(options));
-
-  //on('file:preprocessor', cucumber())
 
   return Object.assign({}, config, {
     fixturesFolder: 'tests/e2e/fixtures',

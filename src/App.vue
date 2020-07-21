@@ -1,19 +1,27 @@
 <template>
     <div id="app" class="m20">
         <div class="mt35">
-            <personal-data-form :teammate="newTeammate" :genders="genders" :roles="roles"></personal-data-form>
+            <personal-data-form :teammate="newTeammate"
+                                :genders="genders"
+                                :roles="roles"></personal-data-form>
         </div>
 
         <div class="mt35 mb35">
-            <tag-multiselect id="skill-multiselect" :options="skills" :teammate="newTeammate"></tag-multiselect>
+            <tag-multiselect id="skill-multiselect"
+                             :options="skills"
+                             :teammate="newTeammate"></tag-multiselect>
         </div>
 
-        <button class="ui button" @click="handleTeammate" :disabled="submitDisabled">Submit</button>
-        <button class="ui button" @click="clearNewTeammate">Reset</button>
+        <button class="ui button"
+                @click="handleTeammate"
+                :disabled="submitDisabled">Submit</button>
+        <button class="ui button"
+                @click="clearNewTeammate">Reset</button>
 
-        <div class="ui error message mt30" v-if="newTeammate.errors.length > 0 ||
-         errorInsertingTeammate ||
-          errorUpdatingTeammate">
+        <div class="ui error message mt30"
+             v-if="newTeammate.errors.length > 0
+                || errorInsertingTeammate
+                || errorUpdatingTeammate">
             <div class="header">
                 <span>Issues</span>
             </div>
@@ -27,7 +35,7 @@
         <div class="ui divider"></div>
 
         <h2 class="ui center aligned icon header">
-            <em class="circular users icon"></em>
+            <i class="circular users icon"></i>
             Teammates
         </h2>
 
@@ -167,14 +175,17 @@
                     }
                 });
             },
-            handleTeammate(){
+            handleTeammate() {
                 this.errorInsertingTeammate = false;
                 this.errorUpdatingTeammate = false;
-                if(this.teammateIsValid()) {
-                    if (typeof this.newTeammate.id === 'undefined' || this.newTeammate.id == null)
+                if (this.teammateIsValid()) {
+                    if (typeof this.newTeammate.id === 'undefined'
+                        || this.newTeammate.id == null) {
+
                         this.insertTeammate();
-                    else
+                    } else {
                         this.updateTeammate();
+                    }
                 }
             },
             insertTeammate() {
@@ -198,17 +209,16 @@
                     .then((response) => {
                         newTeammate.id = response.data.id;
                         this.updateViewAfterInsert(newTeammate);
-                    }, () => {
-                        this.errorInsertingTeammate = true;
-                    });
+                    }).catch(() => this.errorInsertingTeammate = true);
             },
             teammateIsValid() {
                 this.newTeammate.errors = [];
                 let isValid = true;
                 this.rules.forEach(r => {
                     this.newTeammate[r.property].error = false;
-                    if(!r.reg.test(this.newTeammate[r.property].value)) {
-                        this.newTeammate.errors.push("Please enter a correct value for field " + r.property);
+                    if (!r.reg.test(this.newTeammate[r.property].value)) {
+                        this.newTeammate.errors
+                            .push("Please enter a correct value for field " + r.property);
                         this.newTeammate[r.property].error = true;
                         isValid = false;
                     }
@@ -220,13 +230,11 @@
                 this.clearNewTeammate();
                 this.getSkillsAndUpdateView();
             },
-            getSkillsAndUpdateView(){
+            getSkillsAndUpdateView() {
                 let self = this;
                 this.skills = [];
                 ApiService.getSkills()
-                    .then( (response) => {
-                        self.skills = response.data;
-                    })
+                    .then((response) => self.skills = response.data)
             },
             updateTeammate() {
                 const newTeammate = {
@@ -244,19 +252,15 @@
                     skills: this.newTeammate.skills
                 }
                 const oldTeammate = this.teammates.find(t => t.id === newTeammate.id);
-                if(oldTeammate.personalData.gender !== newTeammate.personalData.gender) {
+                if (oldTeammate.personalData.gender !== newTeammate.personalData.gender) {
                     newTeammate.personalData.photoUrl = avatarBaseUrl + this.avatars[
                         newTeammate.personalData.gender][
                         Math.floor(Math.random() * 3)];
                 }
 
                 ApiService.updateTeammate(newTeammate.id, newTeammate)
-                    .then( () => {
-                        this.updateViewAfterUpdate(newTeammate);
-                    }, () => {
-                        this.errorUpdatingTeammate = true;
-                    })
-
+                    .then(() => this.updateViewAfterUpdate(newTeammate))
+                    .catch(() => this.errorUpdatingTeammate = true);
             },
             updateViewAfterUpdate(newTeammate) {
                 let teammateIndex = this.teammates.indexOf(
